@@ -44,7 +44,6 @@ const AccessGateForm: React.FC = () => {
   const fetchAttempts = async () => {
     try {
       const response = await apiClient.get("/user/access-gate/attempts");
-      console.log(response.data);
       const limits: RateLimitInfo[] = response.data.limits.map(
         (limit: RateLimitInfo) => ({
           limit: limit.limit,

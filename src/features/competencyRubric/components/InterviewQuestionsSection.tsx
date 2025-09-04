@@ -1,10 +1,14 @@
 import type { RootState } from "@/store";
-import { Typography, Box } from "@mui/material";
+import { Box } from "@mui/material";
 import { useSelector } from "react-redux";
 import QuestionItem from "./QuestionItem";
 import AddQuestionButton from "./AddQuestionButton";
 import { useDispatch } from "react-redux";
-import { removeQuestion, updateQuestion } from "@/store/rubricSlice";
+import {
+  removeQuestion,
+  selectQuestions,
+  updateQuestion,
+} from "@/store/rubricSlice";
 
 interface InterviewQuestionsSectionProps {
   competencyId: string;
@@ -16,14 +20,12 @@ const InterviewQuestionsSection: React.FC<InterviewQuestionsSectionProps> = ({
   editable,
 }) => {
   const dispatch = useDispatch();
-  const questions = useSelector(
-    (state: RootState) => state.rubric.rubrics[competencyId]?.questions || []
+  const questions = useSelector((state: RootState) =>
+    selectQuestions(state, competencyId)
   );
 
   return (
     <Box>
-      <Typography variant="subtitle1">Interview Questions</Typography>
-
       {questions.map((q, i) => (
         <QuestionItem
           key={q.id}

@@ -1,5 +1,7 @@
 import AppButton from "@/components/AppButton";
 import type { RootState } from "@/store";
+import { selectRubrics } from "@/store/rubricSlice";
+import type { Rubric } from "@/types/rubric";
 import { Box, Typography, Button, Link } from "@mui/material";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useSelector } from "react-redux";
@@ -12,6 +14,7 @@ interface RubricHeaderProps {
   competencyId: string;
   onNext: () => void;
   onPrev: () => void;
+  onSave: (rubric: Rubric) => void;
 }
 
 const RubricHeader = ({
@@ -21,11 +24,13 @@ const RubricHeader = ({
   competencyId,
   onNext,
   onPrev,
+  onSave,
 }: RubricHeaderProps) => {
   const navigate = useNavigate();
   const questions = useSelector(
     (state: RootState) => state.rubric.rubrics[competencyId]?.questions || []
   );
+  const rubric = useSelector(selectRubrics);
 
   return (
     <Box
@@ -34,7 +39,7 @@ const RubricHeader = ({
         flexDirection: "column",
         gap: 2.5,
         px: { xs: 1, md: 2 },
-        py: 1.5,
+        py: 1,
         borderRadius: "0 0 16px 16px",
       }}
     >
@@ -100,7 +105,9 @@ const RubricHeader = ({
             type="submit"
             colorVariant="secondary"
             disabled={questions.length === 0}
-            onClick={() => navigate("/recruiter-home/jobs")}
+            onClick={() => {
+              onSave(rubric[competencyId]);
+            }}
             sx={{ maxWidth: "120px", width: "fit-content" }}
           >
             Complete

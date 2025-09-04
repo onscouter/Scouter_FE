@@ -185,3 +185,7 @@ export const {
 export default rubricSlice.reducer;
 
 export const selectRubrics = (state: RootState) => state.rubric.rubrics;
+export const selectCriteria = (state: RootState, competencyId: string) =>
+  state.rubric.rubrics[competencyId].criteria;
+export const selectQuestions = (state: RootState, competencyId: string) =>
+  state.rubric.rubrics[competencyId].questions;

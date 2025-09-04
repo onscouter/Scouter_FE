@@ -2,6 +2,7 @@ import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { type Competency } from "@/types/competency";
 import { Plus, Minus } from "lucide-react";
+import { nanoid } from "nanoid";
 
 interface CustomCompetencyFormProps {
   showForm: boolean;
@@ -25,7 +26,7 @@ const CustomCompetencyForm: React.FC<CustomCompetencyFormProps> = ({
 
   const handleSubmit = () => {
     if (!name.trim()) return;
-    onAdd({ name: name.trim(), description: description.trim() });
+    onAdd({ id: nanoid(), name: name.trim(), description: description.trim() });
     resetForm();
   };
 

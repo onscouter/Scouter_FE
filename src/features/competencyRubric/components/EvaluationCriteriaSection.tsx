@@ -7,6 +7,7 @@ import {
   addIndicator,
   deleteIndicator,
   editIndicator,
+  selectCriteria,
 } from "@/store/rubricSlice";
 import type { EvaluationLevel } from "@/types/rubric";
 
@@ -20,9 +21,8 @@ const EvaluationCriteriaSection: React.FC<EvaluationCriteriaSectionProps> = ({
   editable,
 }) => {
   const dispatch = useDispatch();
-
-  const criteria = useSelector(
-    (state: RootState) => state.rubric.rubrics[competencyId]?.criteria || []
+  const criteria = useSelector((state: RootState) =>
+    selectCriteria(state, competencyId)
   );
 
   const handleSave = (levelIndex: number, updatedLevel: EvaluationLevel) => {

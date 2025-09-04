@@ -23,6 +23,9 @@ import {
   setTitle,
   setDescription,
 } from "@/store/newJobSlice";
+import { setAppLoading } from "@/store/appSlice";
+import { nanoid } from "@reduxjs/toolkit";
+import { setRubric } from "@/store/rubricSlice";
 
 const CreateRolePage = () => {
   const theme = useTheme();
@@ -44,7 +47,24 @@ const CreateRolePage = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   const handleOnClick = () => {
-    navigate(`/recruiter-home/create-role/competency-rubric`);
+    dispatch(setAppLoading(true));
+
+    // Simulate AI call with setTimeout
+    setTimeout(() => {
+      selectedCompetencies.forEach((comp) => {
+        const mockRubric = {
+          id: nanoid(), // optional
+          competencyId: comp.id,
+          questions: [], // empty for now
+          criteria: [], // empty for now
+        };
+
+        dispatch(setRubric(mockRubric));
+      });
+
+      dispatch(setAppLoading(false)); // hide loader
+      navigate(`/recruiter-home/create-role/competency-rubric`);
+    }, 1500);
   };
 
   const handleSuggestClick = async () => {

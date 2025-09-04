@@ -36,6 +36,7 @@ export interface EvaluationLevel {
 }
 
 export interface Rubric {
+  id: string;
   competencyId: string;
   questions: InterviewQuestion[];
   criteria: EvaluationLevel[];

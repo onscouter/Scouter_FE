@@ -1,36 +1,38 @@
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import TrackerLayout from "@/layout/TrackerLayout";
 import RubricHeader from "@/features/competencyRubric/components/RubricHeader";
-import { selectRubrics, setRubric } from "@/store/rubricSlice";
-import type { Rubric } from "@/types/rubric";
 import RubricEditor from "@/features/competencyRubric/components/RubricEditor";
 import { selectSelectedCompetencies } from "@/store/newJobSlice";
+import type { Rubric } from "@/types/rubric";
+import { selectRubrics } from "@/store/rubricSlice";
 
 const InterviewRubricPage: React.FC = () => {
-  const dispatch = useDispatch();
+  // const { mutate: saveRubrics, isPending } = useSaveAllRubrics();
+
   const competencies = useSelector(selectSelectedCompetencies);
-  const rubrics = useSelector(selectRubrics);
   const [stepIndex, setStepIndex] = useState(0);
 
   const current = competencies[stepIndex];
 
-  useEffect(() => {
-    competencies.forEach((comp) => {
-      if (!rubrics[comp.id]) {
-        const emptyRubric: Rubric = {
-          competencyId: comp.id,
-          questions: [],
-          criteria: [],
-        };
-        dispatch(setRubric(emptyRubric));
-      }
-    });
-  }, [competencies, dispatch, rubrics]);
+  const rubric = useSelector(selectRubrics);
+
+  console.log(rubric, "rubric");
 
   const handleNext = () =>
     setStepIndex((prev) => Math.min(prev + 1, competencies.length - 1));
   const handlePrev = () => setStepIndex((prev) => Math.max(prev - 1, 0));
+
+  // const handleSaveAll = () => {
+  //   saveRubrics({
+  //     jobId: newJob.id,
+  //     rubrics: Object.values(rubricStore),
+  //   });
+  // };
+
+  const handleSave = (rubric: Rubric) => {
+    console.log(rubric);
+  };
 
   if (!current) return null;
 
@@ -43,9 +45,9 @@ const InterviewRubricPage: React.FC = () => {
         competencyName={current.name}
         onNext={handleNext}
         onPrev={handlePrev}
+        onSave={handleSave}
       />
       <RubricEditor competency={current} />
-      {/* TODO: Render rubric editor here for `current.id` */}
     </TrackerLayout>
   );
 };

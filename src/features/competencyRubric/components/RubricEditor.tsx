@@ -11,8 +11,13 @@ const RubricEditor = ({ competency }: { competency: Competency }) => {
 
   return (
     <Box>
-      <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Typography variant="h6">{competency.name}</Typography>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={2}
+      >
+        <Typography variant="h6">Interview Questions</Typography>
         <Button
           size="small"
           variant="text"
