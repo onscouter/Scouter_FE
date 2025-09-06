@@ -24,7 +24,11 @@ const rubricSlice = createSlice({
         criteria:
           rubric.criteria && rubric.criteria.length > 0
             ? rubric.criteria
-            : defaultEvaluationLevels.map((level) => ({ ...level })),
+            : defaultEvaluationLevels.map((level) => ({
+                ...level,
+                description: level.description ?? "",
+                indicators: level.indicators?.map((ind) => ({ ...ind })) ?? [],
+              })),
       };
     },
 

@@ -4,7 +4,7 @@ import TrackerLayout from "@/layout/TrackerLayout";
 import RubricHeader from "@/features/competencyRubric/components/RubricHeader";
 import RubricEditor from "@/features/competencyRubric/components/RubricEditor";
 import { selectSelectedCompetencies } from "@/store/newJobSlice";
-import type { Rubric } from "@/types/rubric";
+import type { Rubric, RubricState } from "@/types/rubric";
 import { selectRubrics } from "@/store/rubricSlice";
 
 const InterviewRubricPage: React.FC = () => {
@@ -14,10 +14,6 @@ const InterviewRubricPage: React.FC = () => {
   const [stepIndex, setStepIndex] = useState(0);
 
   const current = competencies[stepIndex];
-
-  const rubric = useSelector(selectRubrics);
-
-  console.log(rubric, "rubric");
 
   const handleNext = () =>
     setStepIndex((prev) => Math.min(prev + 1, competencies.length - 1));
@@ -30,7 +26,7 @@ const InterviewRubricPage: React.FC = () => {
   //   });
   // };
 
-  const handleSave = (rubric: Rubric) => {
+  const handleSave = (rubric: RubricState) => {
     console.log(rubric);
   };
 

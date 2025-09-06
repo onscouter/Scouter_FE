@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import EvaluationItem from "./EvaulationItem";
 import type { RootState } from "@/store";
 import {
@@ -30,51 +30,32 @@ const EvaluationCriteriaSection: React.FC<EvaluationCriteriaSectionProps> = ({
   };
 
   const handleDeleteIndicator = (levelKey: string, indicatorId: string) => {
-    dispatch(
-      deleteIndicator({
-        competencyId,
-        levelKey,
-        indicatorId,
-      })
-    );
+    dispatch(deleteIndicator({ competencyId, levelKey, indicatorId }));
   };
 
-  const onAddIndicator = (levelKey: string, indicatorText: string) => {
-    dispatch(
-      addIndicator({
-        competencyId,
-        levelKey,
-        indicator: indicatorText,
-      })
-    );
+  const handleAddIndicator = (levelKey: string, text: string) => {
+    dispatch(addIndicator({ competencyId, levelKey, indicator: text }));
   };
 
-  const onEditIndicator = (
+  const handleEditIndicator = (
     levelKey: string,
     indicatorId: string,
     newText: string
   ) => {
-    dispatch(
-      editIndicator({
-        competencyId,
-        levelKey,
-        indicatorId,
-        newText,
-      })
-    );
+    dispatch(editIndicator({ competencyId, levelKey, indicatorId, newText }));
   };
 
   return (
     <Box>
       {criteria.map((level, index) => (
         <EvaluationItem
-          key={level.levelKey}
+          key={`${competencyId}-${level.levelKey}`}
           level={level}
           editable={editable}
           onSave={(updated: EvaluationLevel) => handleSave(index, updated)}
-          onAddIndicator={onAddIndicator}
+          onAddIndicator={handleAddIndicator}
           handleDeleteIndicator={handleDeleteIndicator}
-          onEditIndicator={onEditIndicator}
+          onEditIndicator={handleEditIndicator}
         />
       ))}
     </Box>

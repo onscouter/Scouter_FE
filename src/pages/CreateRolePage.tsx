@@ -24,8 +24,8 @@ import {
   setDescription,
 } from "@/store/newJobSlice";
 import { setAppLoading } from "@/store/appSlice";
-import { nanoid } from "@reduxjs/toolkit";
 import { setRubric } from "@/store/rubricSlice";
+import { generateMockRubric } from "@/features/competencyRubric/mockInterviewQuestions";
 
 const CreateRolePage = () => {
   const theme = useTheme();
@@ -49,21 +49,14 @@ const CreateRolePage = () => {
   const handleOnClick = () => {
     dispatch(setAppLoading(true));
 
-    // Simulate AI call with setTimeout
     setTimeout(() => {
       selectedCompetencies.forEach((comp) => {
-        const mockRubric = {
-          id: nanoid(), // optional
-          competencyId: comp.id,
-          questions: [], // empty for now
-          criteria: [], // empty for now
-        };
-
-        dispatch(setRubric(mockRubric));
+        const rubric = generateMockRubric(comp.id);
+        dispatch(setRubric(rubric));
       });
 
-      dispatch(setAppLoading(false)); // hide loader
-      navigate(`/recruiter-home/create-role/competency-rubric`);
+      dispatch(setAppLoading(false));
+      navigate("/recruiter-home/create-role/competency-rubric");
     }, 1500);
   };
 

@@ -1,14 +1,14 @@
-import type { RootState } from "@/store";
 import { Box } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import QuestionItem from "./QuestionItem";
 import AddQuestionButton from "./AddQuestionButton";
-import { useDispatch } from "react-redux";
 import {
   removeQuestion,
   selectQuestions,
   updateQuestion,
 } from "@/store/rubricSlice";
+import type { RootState } from "@/store";
+import type { InterviewQuestion } from "@/types/rubric";
 
 interface InterviewQuestionsSectionProps {
   competencyId: string;
@@ -24,33 +24,38 @@ const InterviewQuestionsSection: React.FC<InterviewQuestionsSectionProps> = ({
     selectQuestions(state, competencyId)
   );
 
+  const handleSaveQuestion = (updated: InterviewQuestion) => {
+    dispatch(
+      updateQuestion({
+        competencyId,
+        questionId: updated.id,
+        newText: updated.text,
+      })
+    );
+  };
+
+  const handleDeleteQuestion = (questionId: string) => {
+    dispatch(removeQuestion({ competencyId, questionId }));
+  };
+
   return (
     <Box>
-      {questions.map((q, i) => (
+      {questions.map((question, index) => (
         <QuestionItem
-          key={q.id}
-          index={i + 1}
+          key={question.id}
+          index={index + 1}
           editable={editable}
-          question={q}
-          onSave={(updated) =>
-            dispatch(
-              updateQuestion({
-                competencyId,
-                questionId: updated.id,
-                newText: updated.text,
-              })
-            )
-          }
-          onDelete={() =>
-            dispatch(removeQuestion({ competencyId, questionId: q.id }))
-          }
+          question={question}
+          onSave={handleSaveQuestion}
+          onDelete={() => handleDeleteQuestion(question.id)}
         />
       ))}
-
-      <AddQuestionButton
-        competencyId={competencyId}
-        index={questions.length + 1}
-      />
+      {editable && (
+        <AddQuestionButton
+          competencyId={competencyId}
+          index={questions.length + 1}
+        />
+      )}
     </Box>
   );
 };

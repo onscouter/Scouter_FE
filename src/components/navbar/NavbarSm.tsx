@@ -4,19 +4,17 @@ import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { Link } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
-import NavLinkButton from "./NavLinkButton";
+import AppButton from "@/components/AppButton";
 
 type NavbarSmProps = {
   handleLogOut: () => void;
   handleLogin: () => void;
-  handleSignUp: () => void;
   isAuthenticated?: boolean;
 };
 
 const NavbarSm: React.FC<NavbarSmProps> = ({
   handleLogOut,
   handleLogin,
-  handleSignUp,
   isAuthenticated,
 }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -109,36 +107,29 @@ const NavbarSm: React.FC<NavbarSmProps> = ({
           <Box>
             <Divider sx={{ mb: 2 }} />
             {isAuthenticated ? (
-              <NavLinkButton
-                label="Logout"
-                onClick={() => {
-                  toggleDrawer(false)();
-                  handleLogOut();
-                }}
-              />
+              <AppButton
+                type="submit"
+                colorVariant="primary"
+                onClick={handleLogOut}
+              >
+                Logout
+              </AppButton>
             ) : (
               <Box
                 sx={{
                   display: "flex",
                   flexDirection: "row",
                   gap: 1,
-                  justifyContent: "space-around",
+                  justifyContent: "flex-start",
                 }}
               >
-                <NavLinkButton
-                  label="Login"
-                  onClick={() => {
-                    toggleDrawer(false)();
-                    handleLogin();
-                  }}
-                />
-                <NavLinkButton
-                  label="Sign Up"
-                  onClick={() => {
-                    toggleDrawer(false)();
-                    handleSignUp();
-                  }}
-                />
+                <AppButton
+                  type="submit"
+                  colorVariant="primary"
+                  onClick={handleLogin}
+                >
+                  Login
+                </AppButton>
               </Box>
             )}
           </Box>

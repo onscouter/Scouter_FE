@@ -58,6 +58,10 @@ export const {
   setDescription,
 } = newJobSlice.actions;
 
+export const selectNewJob = (state: RootState) => {
+  const { title, description, selected } = state.newJob;
+  return { title, description, selected };
+};
 export const selectTitle = (state: RootState) => state.newJob.title;
 export const selectDescription = (state: RootState) => state.newJob.description;
 export const selectSuggestedCompetencies = (state: RootState) =>

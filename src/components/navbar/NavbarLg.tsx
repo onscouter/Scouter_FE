@@ -1,18 +1,15 @@
 import { Box } from "@mui/material";
-import NavLinkButton from "./NavLinkButton";
-// import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import AnimatedButton from "@/components/AnimatedButton";
 
 type NavbarLgProps = {
   handleLogOut: () => void;
   handleLogin: () => void;
-  handleSignUp: () => void;
   isAuthenticated?: boolean;
 };
 
 const NavbarLg: React.FC<NavbarLgProps> = ({
   handleLogOut,
   handleLogin,
-  handleSignUp,
   isAuthenticated,
 }) => {
   return (
@@ -28,27 +25,11 @@ const NavbarLg: React.FC<NavbarLgProps> = ({
     >
       {isAuthenticated ? (
         <>
-          <NavLinkButton key={"Logout"} label="Logout" onClick={handleLogOut} />
-          {/* <NavLinkButton
-            key={"Profile"}
-            label="Profile"
-            onClick={handleSignUp}
-          />  profile section?*/}
+          <AnimatedButton label="Logout" onClick={handleLogOut} />
         </>
       ) : (
         <>
-          <NavLinkButton
-            hideBg={true}
-            key={"Login"}
-            label="Login"
-            onClick={handleLogin}
-          />
-          <NavLinkButton
-            hideBg={false}
-            key={"Sign Up"}
-            label="Sign Up"
-            onClick={handleSignUp}
-          />
+          <AnimatedButton label="Login" onClick={handleLogin} />
         </>
       )}
     </Box>

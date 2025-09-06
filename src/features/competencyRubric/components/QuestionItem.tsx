@@ -9,7 +9,7 @@ import {
   Chip,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pencil, Trash2, Check, X, ChevronDown } from "lucide-react";
 import { type InterviewQuestion } from "@/types/rubric";
 
@@ -41,6 +41,8 @@ const getChipColors = (theme: Theme, type: InterviewQuestion["type"]) => {
   };
 };
 
+const QUESTION_TYPES = ["Behavioral", "Technical", "Situational"];
+
 const QuestionItem: React.FC<QuestionItemProps> = ({
   index,
   question,
@@ -57,6 +59,13 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
     question?.type ?? "behavioral"
   );
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
+
+  useEffect(() => {
+    if (question) {
+      setText(question.text);
+      setType(question.type);
+    }
+  }, [question]);
 
   const handleSave = () => {
     if (!text.trim()) return;
@@ -241,7 +250,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
                 },
               }}
             >
-              {["Behavioral", "Technical", "Situational"].map((label) => (
+              {QUESTION_TYPES.map((label) => (
                 <MenuItem
                   key={label}
                   onClick={() => {

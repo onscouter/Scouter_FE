@@ -8,7 +8,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { Pencil, Plus, Trash2 } from "lucide-react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import type { EvaluationLevel } from "@/types/rubric";
 
 interface EvaluationItemProps {
@@ -37,6 +37,11 @@ const EvaluationItem: React.FC<EvaluationItemProps> = ({
   );
   const [editingText, setEditingText] = useState("");
 
+  useEffect(() => {
+    setLabel(level.label);
+    setDescription(level.description);
+  }, [level]);
+
   const paletteKey = level.levelKey === "none" ? "doesNotMeet" : level.levelKey;
   const backgroundColor = theme.palette.evaluationType[paletteKey];
   const textColor =
@@ -54,9 +59,8 @@ const EvaluationItem: React.FC<EvaluationItemProps> = ({
   };
 
   const handleIndicatorEditSave = () => {
-    if (editingIndicatorId && editingText.trim()) {
-      onEditIndicator(level.levelKey, editingIndicatorId, editingText.trim());
-    }
+    if (!editingIndicatorId || !editingText.trim()) return;
+    onEditIndicator(level.levelKey, editingIndicatorId, editingText.trim());
     setEditingIndicatorId(null);
     setEditingText("");
   };

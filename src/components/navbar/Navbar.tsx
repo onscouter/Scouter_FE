@@ -55,13 +55,6 @@ const Navbar: React.FC<NavbarProps> = () => {
     });
   };
 
-  const handleSignUp = async () => {
-    await loginWithRedirect({
-      appState: { returnTo: "/access-gate" },
-      authorizationParams: { screen_hint: "signup" },
-    });
-  };
-
   const handleLogOut = () => {
     dispatch(clearUser());
     dispatch(setAppLoading(false));
@@ -135,14 +128,12 @@ const Navbar: React.FC<NavbarProps> = () => {
               <NavbarSm
                 handleLogOut={handleLogOut}
                 handleLogin={handleLogin}
-                handleSignUp={handleSignUp}
                 isAuthenticated={isAuthenticated}
               />
             ) : (
               <NavbarLg
                 handleLogOut={handleLogOut}
                 handleLogin={handleLogin}
-                handleSignUp={handleSignUp}
                 isAuthenticated={isAuthenticated}
               />
             )}

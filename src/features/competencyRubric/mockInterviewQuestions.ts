@@ -15,3 +15,29 @@ export const mockInterviewQuestions = [
     type: "behavioral",
   },
 ];
+
+import { nanoid } from "nanoid";
+import { defaultEvaluationLevels } from "@/features/competencyRubric/rubricConstants";
+import type { Rubric, EvaluationLevel } from "@/types/rubric";
+
+export const generateMockRubric = (competencyId: string): Rubric => {
+  const criteria: EvaluationLevel[] = defaultEvaluationLevels.map((level) => ({
+    ...level,
+    description: level.description ?? "",
+
+    indicators: [
+      {
+        id: nanoid(),
+        competencyId,
+        text: `Example indicator for ${level.label}`,
+      },
+    ],
+  }));
+
+  return {
+    id: nanoid(),
+    competencyId,
+    questions: [],
+    criteria,
+  };
+};
