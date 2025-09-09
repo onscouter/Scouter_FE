@@ -1,24 +1,23 @@
 import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
-import { useAuth0 } from "@auth0/auth0-react";
 import { useDispatch, useSelector } from "react-redux";
 import useIsMobile from "@/hooks/useIsMobile";
 import React from "react";
 import { Search } from "lucide-react";
-import { clearUser } from "@/store/authSlice";
-import { setAppLoading } from "@/store/appSlice";
+import { clearUser, selectIsAuthenticated } from "@/store/authSlice";
 import NavbarLg from "./NavbarLg";
 import NavbarSm from "./NavbarSm";
 import { useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { selectUser } from "@/store/authSlice";
+import apiClient from "@/api";
 
 type NavbarProps = {
   onCartClick?: () => void;
 };
 
 const Navbar: React.FC<NavbarProps> = () => {
-  const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
   const dispatch = useDispatch();
+  const isAuthenticated = useSelector(selectIsAuthenticated);
   const user = useSelector(selectUser);
   const theme = useTheme();
   const navigate = useNavigate();
@@ -49,16 +48,14 @@ const Navbar: React.FC<NavbarProps> = () => {
   };
 
   const handleLogin = async () => {
-    await loginWithRedirect({
-      appState: { returnTo: "/access-gate" },
-      authorizationParams: { prompt: "login" },
-    });
+    navigate("/login");
   };
 
-  const handleLogOut = () => {
+  const handleLogOut = async () => {
+    await apiClient.post("/auth/logout");
+    localStorage.removeItem("token");
     dispatch(clearUser());
-    dispatch(setAppLoading(false));
-    logout();
+    navigate("/login");
   };
 
   const isMobile = useIsMobile();

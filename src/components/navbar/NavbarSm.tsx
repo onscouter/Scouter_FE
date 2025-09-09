@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Box, Divider, Drawer, IconButton, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { Link } from "react-router-dom";
+// import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+// import { Link } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import AppButton from "@/components/AppButton";
 
@@ -80,7 +80,7 @@ const NavbarSm: React.FC<NavbarSmProps> = ({
             </Box>
             <Divider sx={{ mb: 2 }} />
 
-            {isAuthenticated && (
+            {/* {isAuthenticated && (
               <Box
                 component={Link}
                 to="/profile"
@@ -101,7 +101,7 @@ const NavbarSm: React.FC<NavbarSmProps> = ({
                 <AccountCircleIcon />
                 <Typography variant="body1">Profile</Typography>
               </Box>
-            )}
+            )} */}
           </Box>
 
           <Box>

@@ -88,7 +88,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-const AnimatedButton = ({ label, onClick }: AnimatedButtonProps) => {
+const AnimatedButton: React.FC<AnimatedButtonProps> = ({ label, onClick }) => {
   return (
     <StyledButton onClick={onClick}>
       {label}

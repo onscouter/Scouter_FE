@@ -6,7 +6,6 @@ import { Routes, Route } from "react-router-dom";
 import RecruiterPage from "@/pages/RecruiterPage";
 import LandingPage from "@/pages/LandingPage";
 import NotFoundPage from "@/pages/NotFoundPage";
-import AccessGatePage from "@/pages/AccessGatePage";
 import { ToastContainer } from "react-toastify";
 import useIsMobile from "@/hooks/useIsMobile";
 import AuthenticationGuard from "@/guards/AuthenticationGuard";
@@ -17,6 +16,7 @@ import InterviewRubricPage from "@/pages/InterviewRubricPage";
 import Loader from "@/components/LoaderOverlay";
 import { useSelector } from "react-redux";
 import { selectAppLoading } from "@/store/appSlice";
+import LoginPage from "@/pages/LoginPage";
 
 const AppRoutes = () => {
   const isMobile = useIsMobile();
@@ -44,10 +44,6 @@ const AppRoutes = () => {
         <Route path="/" element={<LandingPage />} />
         <Route path="*" element={<NotFoundPage />} />
         <Route
-          path="/access-gate"
-          element={<AuthenticationGuard component={AccessGatePage} />}
-        />
-        <Route
           path="/recruiter-home"
           element={<AuthenticationGuard component={RecruiterPage} />}
         />
@@ -67,6 +63,7 @@ const AppRoutes = () => {
           path="/recruiter-home/create-role/competency-rubric"
           element={<AuthenticationGuard component={InterviewRubricPage} />}
         />
+        <Route path="/login" element={<LoginPage />} />
         {/* <Route
           path="/recruiter/create-role"
           element={<AuthenticationGuard component={CreateRolePage} />}

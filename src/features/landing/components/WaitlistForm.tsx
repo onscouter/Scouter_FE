@@ -77,7 +77,7 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({
             },
           })}
         />
-        <AppButton type="submit" colorVariant="secondary" sx={{ width: "50%" }}>
+        <AppButton type="submit" colorVariant="secondary" sx={{ width: "55%" }}>
           Join the Waitlist
         </AppButton>
       </Box>

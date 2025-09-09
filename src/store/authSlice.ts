@@ -9,11 +9,13 @@ import type { RootState } from "@/store";
 
 interface AuthState {
   user: Employee | null;
+  isAuthenticated?: boolean;
   error: string | null;
 }
 
 const initialState: AuthState = {
   user: null,
+  isAuthenticated: false,
   error: null,
 };
 
@@ -38,10 +40,12 @@ const authSlice = createSlice({
   reducers: {
     clearUser(state) {
       state.user = null;
+      state.isAuthenticated = false;
       state.error = null;
     },
     setUser(state, action: PayloadAction<Employee | null>) {
       state.user = action.payload;
+      state.isAuthenticated = true;
       state.error = null;
     },
   },
@@ -62,6 +66,8 @@ const authSlice = createSlice({
 
 export const { clearUser, setUser } = authSlice.actions;
 
+export const selectIsAuthenticated = (state: RootState) =>
+  state.auth.isAuthenticated;
 export const selectUser = (state: RootState) => state.auth.user;
 export const selectRole = (state: RootState) => state.auth.user?.role;
 export const selectCompany = (state: RootState) => state.auth.user?.company;

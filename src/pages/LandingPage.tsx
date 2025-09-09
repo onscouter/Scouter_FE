@@ -7,82 +7,21 @@ import LandingHeading from "@/features/landing/components/LandingHeading";
 import WaitlistForm from "@/features/landing/components/WaitlistForm";
 import WaitlistSuccess from "@/features/landing/components/WaitlistSuccess";
 import { useAuth0 } from "@auth0/auth0-react";
-import useIsMobile from "@/hooks/useIsMobile";
+// import useIsMobile from "@/hooks/useIsMobile";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { clearUser, selectUser, setUser } from "@/store/authSlice";
-import apiClient from "@/api";
-import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
 
 const LandingPage = () => {
-  const { logout } = useAuth0();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const user = useSelector(selectUser);
+  // const dispatch = useDispatch();
   const [email, setEmail] = React.useState("");
   const [isEmailValid, setIsEmailValid] = React.useState(true);
   const [isSubmitted, setIsSubmitted] = React.useState(false);
-  const { loginWithRedirect, isAuthenticated } = useAuth0();
 
-  const isMobile = useIsMobile();
+  console.log(email, isEmailValid);
 
   const handleLogin = async () => {
-    if (!isAuthenticated) {
-      await loginWithRedirect({
-        appState: { returnTo: "/access-gate" },
-        authorizationParams: { prompt: "login" },
-      });
-      return;
-    }
-
-    try {
-      const res = await apiClient.get("/user/access-gate/verify");
-      const user = res.data;
-
-      if (!user.success) {
-        dispatch(clearUser());
-
-        toast.warning("User verification failed. Please log in again.", {
-          onClose: () =>
-            logout({ logoutParams: { returnTo: window.location.origin } }),
-          autoClose: 2000,
-        });
-      }
-
-      const role = user.role as
-        | "admin"
-        | "recruiter"
-        | "interviewer"
-        | undefined;
-
-      const redirectMap: Record<"admin" | "recruiter" | "interviewer", string> =
-        {
-          admin: "/admin-dashboard",
-          recruiter: "/recruiter-home",
-          interviewer: "/interviewer-dashboard",
-        };
-
-      if (role && role in redirectMap) {
-        dispatch(setUser(user));
-        navigate(redirectMap[role], { replace: true });
-      } else {
-        dispatch(clearUser());
-
-        toast.warning("User has no valid role. Redirecting to access gate.", {
-          onClose: () =>
-            logout({ logoutParams: { returnTo: window.location.origin } }),
-          autoClose: 2000,
-        });
-      }
-    } catch (error) {
-      console.error("Login flow failed:", error);
-
-      toast.error("Authentication failed. Logging out...", {
-        onClose: () =>
-          logout({ logoutParams: { returnTo: window.location.origin } }),
-        autoClose: 2000,
-      });
-    }
+    navigate("/login");
   };
 
   return (

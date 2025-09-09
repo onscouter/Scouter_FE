@@ -1,10 +1,9 @@
 import React from "react";
 import { Box } from "@mui/material";
-import AccessGateIcon from "@/features/accessGate/components/AccessGateIcon";
-import AccessGateHeader from "@/features/accessGate/components/AccessGateHeader";
-import AccessGateForm from "@/features/accessGate/components/AccessGateForm";
+import LoginHeader from "@/features/login/components/LoginHeader";
+import LoginForm from "@/features/login/components/LoginForm";
 
-const AccessGatePage: React.FC = () => {
+const LoginPage: React.FC = () => {
   return (
     <Box
       sx={{
@@ -26,14 +25,14 @@ const AccessGatePage: React.FC = () => {
           maxWidth: 448,
           width: "100%",
           textAlign: "center",
+          gap: 2,
         }}
       >
-        <AccessGateIcon />
-        <AccessGateHeader />
-        <AccessGateForm />
+        <LoginHeader />
+        <LoginForm />
       </Box>
     </Box>
   );
 };
 
-export default AccessGatePage;
+export default LoginPage;

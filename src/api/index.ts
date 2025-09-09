@@ -3,29 +3,44 @@ import axios from "axios";
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   timeout: 10000,
+  withCredentials: true,
 });
 
-// We'll override this with a setter so we can get the token at runtime
-let getToken: (() => Promise<string | null>) | null = null;
-
-export const setAccessTokenGetter = (getter: () => Promise<string | null>) => {
-  getToken = getter;
-};
-
-// Request interceptor to inject access token
-apiClient.interceptors.request.use(async (config) => {
-  const token = getToken && (await getToken());
+// Request interceptor (optional: logging, etc.)
+apiClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
 
-// Global error handling
+// Response interceptor for global error handling
 apiClient.interceptors.response.use(
   (response) => response,
-  (error) => {
-    console.error("API error:", error.response?.data || error.message);
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        const res = await axios.post(
+          "/api/auth/refresh",
+          {},
+          { withCredentials: true }
+        );
+        const newToken = res.data.access_token;
+        localStorage.setItem("token", newToken);
+        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        return apiClient(originalRequest);
+      } catch (refreshError) {
+        localStorage.removeItem("token");
+        window.location.href = "/login";
+        return Promise.reject(refreshError);
+      }
+    }
+
     return Promise.reject(error);
   }
 );
