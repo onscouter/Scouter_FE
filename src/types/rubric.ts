@@ -4,16 +4,7 @@ export const QuestionType = {
   Situational: "situational",
 } as const;
 
-export const LevelKey = {
-  Exceeds: "exceeds",
-  Above: "above",
-  Meets: "meets",
-  Below: "below",
-  None: "none",
-} as const;
-
 export type QuestionType = (typeof QuestionType)[keyof typeof QuestionType];
-export type LevelKey = (typeof LevelKey)[keyof typeof LevelKey];
 
 export interface InterviewQuestion {
   id: string;
@@ -28,8 +19,6 @@ export interface Indicator {
 }
 
 export interface EvaluationLevel {
-  label: string;
-  levelKey: LevelKey;
   score: number;
   description: string;
   indicators: Indicator[];
@@ -37,11 +26,19 @@ export interface EvaluationLevel {
 
 export interface Rubric {
   id: string;
+  description: string;
   competencyId: string;
+  competencyName: string;
   questions: InterviewQuestion[];
   criteria: EvaluationLevel[];
 }
 
 export interface RubricState {
   rubrics: Record<string, Rubric>;
+}
+
+export interface RoleCreatePayload {
+  title: string;
+  description: string;
+  rubric: Rubric[];
 }

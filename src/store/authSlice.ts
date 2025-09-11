@@ -73,9 +73,6 @@ export const selectRole = (state: RootState) => state.auth.user?.role;
 export const selectCompany = (state: RootState) => state.auth.user?.company;
 export const selectPhoneNumber = (state: RootState) =>
   state.auth.user?.phone_number;
-export const selectIsOnboarded = (state: RootState) =>
-  !!state.auth.user?.auth0_id;
-
 export const selectUserError = (state: RootState) => state.auth.error;
 
 export default authSlice.reducer;

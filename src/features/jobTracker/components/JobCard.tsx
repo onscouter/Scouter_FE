@@ -124,7 +124,7 @@ const JobCard: React.FC<JobCardProps> = ({
         }}
       >
         <ActionMenu
-          jobId={job.public_id}
+          jobId={job.job_position_public_id}
           onEdit={onEdit}
           onDelete={onDelete}
           onViewCandidates={onViewCandidates}

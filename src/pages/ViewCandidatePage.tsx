@@ -4,12 +4,13 @@ import ViewCandidateToolBar from "@/features/viewCandidate/components/ViewCandid
 import { useCandidateFilter } from "@/features/viewCandidate/useCandidateFilter";
 import EmptyState from "@/features/jobTracker/components/EmptyState";
 import ViewCandidateHeader from "@/features/viewCandidate/components/ViewCandidateHeader";
-import CandidateList from "@/features/viewCandidate/components/ListView";
+// import CandidateList from "@/features/viewCandidate/components/ListView";
 import { useJobCandidate } from "@/features/viewCandidate/useApplication";
 import { useParams } from "react-router-dom";
 import { setAppLoading } from "@/store/appSlice";
 import { useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
+import type { ApplicationOut } from "@/features/viewCandidate/api";
 
 const CandidateViewPage = () => {
   const dispatch = useDispatch();
@@ -32,7 +33,7 @@ const CandidateViewPage = () => {
   } = useCandidateFilter();
 
   const { data, isLoading } = useJobCandidate({
-    public_id: jobId ?? "",
+    job_position_public_id: jobId ?? "",
     page,
     limit: rowsPerPage,
     search: searchText,
@@ -52,14 +53,12 @@ const CandidateViewPage = () => {
     [total]
   );
 
-  const handleRequestSort = (property: string) => {
+  const handleRequestSort = (property: keyof ApplicationOut) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
     setPage(1);
   };
-
-  console.log(data, "data");
 
   const shouldShowEmptyState = !isLoading && candidates.length === 0;
 
@@ -81,8 +80,12 @@ const CandidateViewPage = () => {
           description="Try adjusting your filters or search query."
         />
       ) : viewMode === "list" ? (
-        <CandidateList candidates={candidates} />
+        <EmptyState
+          title="List view is under construction"
+          description="Please use the table view for now."
+        />
       ) : (
+        // <CandidateList candidates={candidates} />
         <CandidateTable
           candidates={candidates}
           total={total}

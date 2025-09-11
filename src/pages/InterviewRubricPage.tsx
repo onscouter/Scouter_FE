@@ -3,14 +3,23 @@ import { useSelector } from "react-redux";
 import TrackerLayout from "@/layout/TrackerLayout";
 import RubricHeader from "@/features/competencyRubric/components/RubricHeader";
 import RubricEditor from "@/features/competencyRubric/components/RubricEditor";
-import { selectSelectedCompetencies } from "@/store/newJobSlice";
-import type { Rubric, RubricState } from "@/types/rubric";
+import { buildPayload } from "@/features/createRole/buildPayload";
 import { selectRubrics } from "@/store/rubricSlice";
+import { selectNewJob } from "@/store/newJobSlice";
+
+// const { mutate: saveRubrics, isPending } = useSaveAllRubrics();
 
 const InterviewRubricPage: React.FC = () => {
-  // const { mutate: saveRubrics, isPending } = useSaveAllRubrics();
+  const rubricMap = useSelector(selectRubrics);
+  const newJob = useSelector(selectNewJob);
+  console.log(rubricMap, "rubricMap");
+  const competencyIds = Object.keys(rubricMap);
+  const competencies = competencyIds.map((id) => ({
+    id,
+    name: rubricMap[id].competencyName,
+    description: rubricMap[id].description,
+  }));
 
-  const competencies = useSelector(selectSelectedCompetencies);
   const [stepIndex, setStepIndex] = useState(0);
 
   const current = competencies[stepIndex];
@@ -26,8 +35,14 @@ const InterviewRubricPage: React.FC = () => {
   //   });
   // };
 
-  const handleSave = (rubric: RubricState) => {
-    console.log(rubric);
+  // const { mutate: createRole, isPending, isSuccess, error } = useCreateRole();
+
+  const handleSave = () => {
+    console.log(rubricMap);
+    const payload = buildPayload(newJob, rubricMap);
+    console.log(payload, "payload");
+    // createRole({ rubric, newRole });
+    // createRole({ name: "Hiring Manager", permissions: ["read", "write"] });
   };
 
   if (!current) return null;

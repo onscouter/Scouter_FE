@@ -16,7 +16,7 @@ import type { Job } from "@/types/job";
 const JobTrackerPage = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
-  const companyId = user?.company?.public_id ?? "";
+  const companyId = user?.company?.company_public_id ?? "";
 
   const {
     viewMode,

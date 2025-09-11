@@ -1,4 +1,6 @@
 import { useState } from "react";
+import type { ApplicationOut } from "@/features/viewCandidate/api";
+import type { Order } from "@/types/job";
 
 export function useCandidateFilter() {
   const [viewMode, setViewMode] = useState<"table" | "list">("table");
@@ -6,8 +8,8 @@ export function useCandidateFilter() {
   const [searchInput, setSearchInput] = useState("");
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [order, setOrder] = useState<"asc" | "desc">("asc");
-  const [orderBy, setOrderBy] = useState("full_name");
+  const [order, setOrder] = useState<Order>("asc");
+  const [orderBy, setOrderBy] = useState<keyof ApplicationOut>("created_at");
 
   return {
     viewMode,

@@ -9,49 +9,39 @@ import { type Competency } from "@/types/competency";
 import SelectedCompetencies from "@/features/createRole/components/SelectedCompetencies";
 import CreateRoleFooter from "@/features/createRole/components/CreateRoleFooter";
 import CustomCompetencyForm from "@/features/createRole/components/CreateCustomCompetency";
-import { useSuggestCompetencies } from "@/features/createRole/useSuggestCompetencies";
 import { useNavigate } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  setSuggestedCompetencies,
-  toggleSelectedCompetency,
-  clearSelectedCompetencies,
-  addSelectedCompetency,
-  removeSelectedCompetency,
-  selectSuggestedCompetencies,
-  selectSelectedCompetencies,
-  setTitle,
-  setDescription,
-} from "@/store/newJobSlice";
+import { useDispatch } from "react-redux";
+import { setTitle, setDescription } from "@/store/newJobSlice";
 import { setAppLoading } from "@/store/appSlice";
 import { setRubric } from "@/store/rubricSlice";
 import { generateMockRubric } from "@/features/competencyRubric/mockInterviewQuestions";
+import { useSuggestCompetencies } from "@/features/createRole/useSuggestCompetencies";
 
 const CreateRolePage = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(clearSelectedCompetencies());
-  }, [dispatch]);
+  // const selectedCompetencies = useSelector(selectSelectedCompetencies);
 
-  const suggestedCompetencies = useSelector(selectSuggestedCompetencies);
-  const selectedCompetencies = useSelector(selectSelectedCompetencies);
+  const { mutate: test, isPending } = useSuggestCompetencies();
 
-  const { mutate: suggestCompetencies, isPending } = useSuggestCompetencies();
-
+  const suggestedCompetencies = mockCompetencies;
   const [newTitle, setNewTitle] = useState("");
   const [newDescription, setNewDescription] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [selectedCompetencies, setSelectedCompetencies] = useState<
+    Competency[]
+  >([]);
 
   const handleOnClick = () => {
     dispatch(setAppLoading(true));
-
+    dispatch(setTitle(newTitle));
+    dispatch(setDescription(newDescription));
     setTimeout(() => {
       selectedCompetencies.forEach((comp) => {
-        const rubric = generateMockRubric(comp.id);
+        const rubric = generateMockRubric(comp);
         dispatch(setRubric(rubric));
       });
 
@@ -60,11 +50,32 @@ const CreateRolePage = () => {
     }, 1500);
   };
 
+  const handleAdd = (competency: Competency) => {
+    setSelectedCompetencies((prev) =>
+      prev.some((c) => c.id === competency.id) ? prev : [...prev, competency]
+    );
+  };
+
+  const handleRemove = (competency: Competency) => {
+    setSelectedCompetencies((prev) =>
+      prev.filter((c) => c.id !== competency.id)
+    );
+  };
+
+  const handleToggle = (competency: Competency) => {
+    setSelectedCompetencies((prev) =>
+      prev.some((c) => c.id === competency.id)
+        ? prev.filter((c) => c.id !== competency.id)
+        : [...prev, competency]
+    );
+  };
+
+  const clearSelectedCompetencies = () => {
+    setSelectedCompetencies([]);
+  };
+
   const handleSuggestClick = async () => {
     setShowSuggestions(false);
-
-    dispatch(setTitle(newTitle));
-    dispatch(setDescription(newDescription));
 
     // need to replace with API call
     // if (newTitle && newDescription) {
@@ -73,21 +84,8 @@ const CreateRolePage = () => {
     //     description: newDescription,
     //   });
 
-    dispatch(setSuggestedCompetencies(mockCompetencies));
     setShowSuggestions(true);
     // }
-  };
-
-  const handleAdd = (comp: Competency) => {
-    dispatch(addSelectedCompetency(comp));
-  };
-
-  const handleRemove = (comp: Competency) => {
-    dispatch(removeSelectedCompetency(comp));
-  };
-
-  const handleToggle = (comp: Competency) => {
-    dispatch(toggleSelectedCompetency(comp));
   };
 
   return (

@@ -25,9 +25,9 @@ const rubricSlice = createSlice({
           rubric.criteria && rubric.criteria.length > 0
             ? rubric.criteria
             : defaultEvaluationLevels.map((level) => ({
-                ...level,
+                score: level.score,
                 description: level.description ?? "",
-                indicators: level.indicators?.map((ind) => ({ ...ind })) ?? [],
+                indicators: (level.indicators || []).map((ind) => ({ ...ind })),
               })),
       };
     },
@@ -36,16 +36,16 @@ const rubricSlice = createSlice({
       state,
       action: PayloadAction<{
         competencyId: string;
-        levelKey: string;
+        score: number;
         indicator: string;
       }>
     ) {
-      const { competencyId, levelKey, indicator } = action.payload;
+      const { competencyId, score, indicator } = action.payload;
       const rubric = state.rubrics[competencyId];
 
       if (!rubric || !indicator.trim()) return;
 
-      const level = rubric.criteria.find((lvl) => lvl.levelKey === levelKey);
+      const level = rubric.criteria.find((lvl) => lvl.score === score);
       if (!level) return;
 
       level.indicators.push({
@@ -59,15 +59,15 @@ const rubricSlice = createSlice({
       state,
       action: PayloadAction<{
         competencyId: string;
-        levelKey: string;
+        score: number;
         indicatorId: string;
         newText: string;
       }>
     ) {
-      const { competencyId, levelKey, indicatorId, newText } = action.payload;
+      const { competencyId, score, indicatorId, newText } = action.payload;
       const rubric = state.rubrics[competencyId];
       if (!rubric) return;
-      const level = rubric.criteria.find((lvl) => lvl.levelKey === levelKey);
+      const level = rubric.criteria.find((lvl) => lvl.score === score);
       if (!level) return;
       const indicator = level.indicators.find((i) => i.id === indicatorId);
       if (indicator) {
@@ -79,15 +79,15 @@ const rubricSlice = createSlice({
       state,
       action: PayloadAction<{
         competencyId: string;
-        levelKey: string;
+        score: number;
         indicatorId: string;
       }>
     ) {
-      const { competencyId, levelKey, indicatorId } = action.payload;
+      const { competencyId, score, indicatorId } = action.payload;
       const rubric = state.rubrics[competencyId];
       if (!rubric) return;
 
-      const level = rubric.criteria.find((lvl) => lvl.levelKey === levelKey);
+      const level = rubric.criteria.find((lvl) => lvl.score === score);
       if (!level) return;
 
       level.indicators = level.indicators.filter(

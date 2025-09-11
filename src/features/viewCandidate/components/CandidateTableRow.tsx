@@ -48,7 +48,7 @@ const CandidateTableRow: React.FC<CandidateTableRowProps> = ({
       {headCells.map((cell) => {
         const { id, sticky, width, align = "left" } = cell;
 
-        if (id === "full_name") {
+        if (id === "name") {
           return (
             <StyledTableCell
               key={id}
@@ -58,7 +58,9 @@ const CandidateTableRow: React.FC<CandidateTableRowProps> = ({
               sx={{ minWidth: width }}
             >
               <Typography fontWeight={600} fontSize="0.95rem" gutterBottom>
-                {candidate.candidate.full_name}
+                {candidate.candidate.first_name +
+                  " " +
+                  candidate.candidate.last_name}
               </Typography>
 
               <Typography variant="body2" color="text.secondary">

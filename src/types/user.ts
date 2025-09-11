@@ -4,22 +4,21 @@ export interface PhoneNumber {
 }
 
 export interface Company {
-  public_id: string;
+  company_public_id: string;
   name: string;
   is_active: boolean;
   created_at: string;
 }
 
 export interface Employee {
-  public_id: string;
-  full_name: string;
+  employee_public_id: string;
+  first_name: string;
+  last_name: string;
   email: string;
-  auth0_id: string;
   role: "admin" | "recruiter" | "interviewer";
   company: Company;
   job_position_id: number;
   created_at: string;
-  is_onboarding: boolean;
   phone_number: PhoneNumber;
 }
 
@@ -31,8 +30,9 @@ export interface Evaluation {
 }
 
 export interface Candidate {
-  id: string;
-  name: string;
+  candidate_public_id: string;
+  first_name: string;
+  last_name: string;
   email: string;
   appliedDate: string;
   evaluations: Evaluation[];

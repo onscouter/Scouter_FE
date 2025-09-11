@@ -1,15 +1,5 @@
 export interface Job {
-  public_id: string;
-  title: string;
-  status: JobStatus;
-  description: string;
-  created_at: string;
-  job_applications: number;
-  competencies: number;
-}
-
-export interface JobTableSearch {
-  public_id: string;
+  job_position_public_id: string;
   title: string;
   status: JobStatus;
   description: string;

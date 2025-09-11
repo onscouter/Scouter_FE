@@ -36,7 +36,7 @@ const CandidateCard = ({ candidate }: { candidate: Candidate }) => {
         {/* Name and status */}
         <Box display="flex" alignItems="center" mb={1} flexWrap="wrap">
           <Typography variant="h6" fontWeight={600} sx={{ mr: 1 }}>
-            {candidate.name}
+            {candidate.first_name + " " + candidate.last_name}
           </Typography>
           <Chip
             label={candidate.decision}

@@ -15,10 +15,18 @@ interface EvaluationItemProps {
   editable: boolean;
   level: EvaluationLevel;
   onSave: (level: EvaluationLevel) => void;
-  onAddIndicator: (levelKey: string, text: string) => void;
-  handleDeleteIndicator: (levelKey: string, id: string) => void;
-  onEditIndicator: (levelKey: string, id: string, newText: string) => void;
+  onAddIndicator: (score: number, text: string) => void;
+  handleDeleteIndicator: (score: number, id: string) => void;
+  onEditIndicator: (score: number, id: string, newText: string) => void;
 }
+
+const LABEL: Record<number, string> = {
+  1: "Does Not Meet Expectations",
+  2: "Needs Improvement",
+  3: "Meets Expectations",
+  4: "Above Average",
+  5: "Exceeds Expectations",
+};
 
 const EvaluationItem: React.FC<EvaluationItemProps> = ({
   editable,
@@ -29,8 +37,18 @@ const EvaluationItem: React.FC<EvaluationItemProps> = ({
   onEditIndicator,
 }) => {
   const theme = useTheme();
+  const PALETTE_KEYS: Record<
+    number,
+    keyof typeof theme.palette.evaluationType
+  > = {
+    1: "doesNotMeet",
+    2: "below",
+    3: "meets",
+    4: "above",
+    5: "exceeds",
+  };
+
   const [isEditing, setIsEditing] = useState(false);
-  const [label, setLabel] = useState(level.label);
   const [description, setDescription] = useState(level.description);
   const [editingIndicatorId, setEditingIndicatorId] = useState<string | null>(
     null
@@ -38,11 +56,10 @@ const EvaluationItem: React.FC<EvaluationItemProps> = ({
   const [editingText, setEditingText] = useState("");
 
   useEffect(() => {
-    setLabel(level.label);
     setDescription(level.description);
   }, [level]);
 
-  const paletteKey = level.levelKey === "none" ? "doesNotMeet" : level.levelKey;
+  const paletteKey = PALETTE_KEYS[level.score];
   const backgroundColor = theme.palette.evaluationType[paletteKey];
   const textColor =
     theme.palette.evaluationType[
@@ -53,6 +70,8 @@ const EvaluationItem: React.FC<EvaluationItemProps> = ({
       `${paletteKey}Border` as keyof typeof theme.palette.evaluationType
     ];
 
+  const label = LABEL[level.score];
+
   const handleIndicatorEditStart = (id: string, text: string) => {
     setEditingIndicatorId(id);
     setEditingText(text);
@@ -60,7 +79,7 @@ const EvaluationItem: React.FC<EvaluationItemProps> = ({
 
   const handleIndicatorEditSave = () => {
     if (!editingIndicatorId || !editingText.trim()) return;
-    onEditIndicator(level.levelKey, editingIndicatorId, editingText.trim());
+    onEditIndicator(level.score, editingIndicatorId, editingText.trim());
     setEditingIndicatorId(null);
     setEditingText("");
   };
@@ -75,40 +94,16 @@ const EvaluationItem: React.FC<EvaluationItemProps> = ({
         mb: 3,
       }}
     >
-      {/* Header Row */}
+      {/* Header */}
       <Box
         display="flex"
         justifyContent="space-between"
         alignItems="flex-start"
       >
         <Box display="flex" alignItems="center" gap={1} flex={1}>
-          {isEditing ? (
-            <TextField
-              value={label}
-              onChange={(e) => setLabel(e.target.value)}
-              variant="standard"
-              fullWidth
-              slotProps={{
-                input: {
-                  style: {
-                    padding: "4px 8px",
-                    fontWeight: 700,
-                    fontSize: "1rem",
-                    color: textColor,
-                  },
-                },
-              }}
-              sx={{
-                maxWidth: "90%",
-                mt: 1,
-                mb: 1,
-              }}
-            />
-          ) : (
-            <Typography fontWeight={700} color={textColor}>
-              {label}
-            </Typography>
-          )}
+          <Typography fontWeight={700} color={textColor}>
+            {label}
+          </Typography>
           {editable && !isEditing && (
             <IconButton size="small" onClick={() => setIsEditing(true)}>
               <Pencil size={16} />
@@ -146,7 +141,7 @@ const EvaluationItem: React.FC<EvaluationItemProps> = ({
         )}
       </Box>
 
-      {/* Key Indicators */}
+      {/* Indicators */}
       <Box mt={2}>
         <Box
           display="flex"
@@ -162,7 +157,7 @@ const EvaluationItem: React.FC<EvaluationItemProps> = ({
               size="small"
               variant="text"
               startIcon={<Plus size={14} />}
-              onClick={() => onAddIndicator(level.levelKey, "New Indicator...")}
+              onClick={() => onAddIndicator(level.score, "New Indicator...")}
               sx={{
                 textTransform: "none",
                 color: textColor,
@@ -181,9 +176,9 @@ const EvaluationItem: React.FC<EvaluationItemProps> = ({
         </Box>
 
         <Box component="ul" sx={{ pl: 2, m: 0 }}>
-          {level.indicators.map((indicatorObj) => (
+          {level.indicators.map((indicator) => (
             <Box
-              key={indicatorObj.id}
+              key={indicator.id}
               component="li"
               sx={{
                 display: "flex",
@@ -192,7 +187,7 @@ const EvaluationItem: React.FC<EvaluationItemProps> = ({
                 mb: 1,
               }}
             >
-              {editingIndicatorId === indicatorObj.id ? (
+              {editingIndicatorId === indicator.id ? (
                 <TextField
                   value={editingText}
                   onChange={(e) => setEditingText(e.target.value)}
@@ -207,7 +202,7 @@ const EvaluationItem: React.FC<EvaluationItemProps> = ({
                 />
               ) : (
                 <Typography variant="body2" sx={{ flex: 1 }}>
-                  {indicatorObj.text}
+                  {indicator.text}
                 </Typography>
               )}
 
@@ -216,10 +211,7 @@ const EvaluationItem: React.FC<EvaluationItemProps> = ({
                   <IconButton
                     size="small"
                     onClick={() =>
-                      handleIndicatorEditStart(
-                        indicatorObj.id,
-                        indicatorObj.text
-                      )
+                      handleIndicatorEditStart(indicator.id, indicator.text)
                     }
                   >
                     <Pencil size={14} />
@@ -227,7 +219,7 @@ const EvaluationItem: React.FC<EvaluationItemProps> = ({
                   <IconButton
                     size="small"
                     onClick={() =>
-                      handleDeleteIndicator(level.levelKey, indicatorObj.id)
+                      handleDeleteIndicator(level.score, indicator.id)
                     }
                   >
                     <Trash2 size={14} />
@@ -239,7 +231,7 @@ const EvaluationItem: React.FC<EvaluationItemProps> = ({
         </Box>
       </Box>
 
-      {/* Save/Cancel */}
+      {/* Save/Cancel buttons */}
       {isEditing && (
         <Box display="flex" gap={1} mt={2}>
           <Button
@@ -248,7 +240,6 @@ const EvaluationItem: React.FC<EvaluationItemProps> = ({
             onClick={() => {
               onSave({
                 ...level,
-                label: label.trim(),
                 description: description.trim(),
               });
               setIsEditing(false);
@@ -259,7 +250,6 @@ const EvaluationItem: React.FC<EvaluationItemProps> = ({
           <Button
             variant="outlined"
             onClick={() => {
-              setLabel(level.label);
               setDescription(level.description);
               setIsEditing(false);
             }}

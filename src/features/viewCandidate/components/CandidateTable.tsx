@@ -10,10 +10,10 @@ interface CandidateTableProps {
   page: number;
   rowsPerPage: number;
   order: Order;
-  orderBy: string;
+  orderBy: keyof ApplicationOut;
   onPageChange: (page: number) => void;
   onRowsPerPageChange: (rowsPerPage: number) => void;
-  onRequestSort: (property: string) => void;
+  onRequestSort: (property: keyof ApplicationOut) => void;
   rowsPerPageOptions: number[];
 }
 
@@ -29,7 +29,7 @@ function generateCandidateHeadCells(candidates: ApplicationOut[]): HeadCell[] {
   const visibleEvaluations = evaluationNames.slice(0, 10);
 
   return [
-    { id: "full_name", label: "Candidate", sticky: "left", width: "240px" },
+    { id: "name", label: "Candidate", sticky: "left", width: "240px" },
     ...visibleEvaluations.map((name) => ({
       id: `eval:${name}`,
       label: name,
@@ -69,7 +69,6 @@ const CandidateTable: React.FC<CandidateTableProps> = ({
   rowsPerPageOptions,
 }) => {
   const headCells = generateCandidateHeadCells(candidates);
-  console.log(candidates, "here");
   return (
     <TableView
       total={total}
@@ -80,12 +79,12 @@ const CandidateTable: React.FC<CandidateTableProps> = ({
       onPageChange={onPageChange}
       onRowsPerPageChange={onRowsPerPageChange}
       order={order}
-      orderBy={orderBy as keyof ApplicationOut}
+      orderBy={orderBy}
       onRequestSort={onRequestSort}
       rowsPerPageOptions={rowsPerPageOptions}
       renderRow={(candidate) => (
         <CandidateTableRow
-          key={candidate.public_id}
+          key={candidate.job_application_public_id}
           candidate={candidate}
           headCells={headCells}
         />

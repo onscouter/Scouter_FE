@@ -45,11 +45,8 @@ const LoginForm: React.FC = () => {
   };
 
   const onSubmit = (data: FormData) => {
-    console.log("Submitting login with data:", data);
     submitLogin(data, {
       onSuccess: (response) => {
-        console.log("Login response:", response);
-
         localStorage.setItem("token", response.data.access_token);
 
         const employee = response.data.employee;

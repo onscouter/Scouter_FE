@@ -15,6 +15,7 @@ export const fetchJobs = async (filters: JobFilters): Promise<JobsResponse> => {
     const response = await apiClient.get(
       `/recruiter/jobs?${params.toString()}`
     );
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Error in fetchJobs:", error);

@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { selectUser } from "@/store/authSlice";
 import LoaderOverlay from "@/components/LoaderOverlay";
-import { useAuthGuard } from "@/guards/useAuthGuard";
+import { useAuthGuard } from "@/hooks/useAuthGuard";
 
 type AuthenticationGuardProps = {
   component: React.ComponentType;

@@ -24,7 +24,7 @@ interface TableViewProps<T> {
   rowsPerPageOptions: number[];
 }
 
-function TableView<T extends { public_id: string | number }>({
+function TableView<T>({
   total,
   rows,
   headCells,

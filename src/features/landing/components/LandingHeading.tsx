@@ -26,7 +26,7 @@ const LandingHeading: React.FC = () => (
         mb: 1,
       }}
     >
-      Wake Up{" "}
+      Wake Up
       <Box component="span" sx={{ color: "primary.main", fontWeight: 500 }}>
         Excited
       </Box>

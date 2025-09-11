@@ -1,12 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
-import { useDispatch } from "react-redux";
-import { setSuggestedCompetencies } from "@/store/newJobSlice";
 import { type Competency } from "@/types/competency";
 import apiClient from "@/api";
 
 export const useSuggestCompetencies = () => {
-  const dispatch = useDispatch();
-
   return useMutation({
     mutationFn: async ({
       title,
@@ -22,7 +18,7 @@ export const useSuggestCompetencies = () => {
       return response.data.competencies;
     },
     onSuccess: (data) => {
-      dispatch(setSuggestedCompetencies(data));
+      return data;
     },
   });
 };

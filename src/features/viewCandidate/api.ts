@@ -1,8 +1,9 @@
 import apiClient from "@/api";
 
 export interface CandidateOut {
-  public_id: string;
-  full_name: string;
+  candidate_public_id: string;
+  first_name: string;
+  last_name: string;
   email: string;
   phone_number: {
     number: string;
@@ -11,12 +12,12 @@ export interface CandidateOut {
 }
 
 export interface CompetencyMinimal {
-  public_id: string;
+  competency_public_id: string;
   name: string;
 }
 
 export interface InterviewOut {
-  public_id: string;
+  interview_public_id: string;
   interview_datetime: string;
   interview_status: string;
   score: number | null;
@@ -25,16 +26,17 @@ export interface InterviewOut {
 }
 
 export interface ApplicationOut {
-  public_id: string;
+  job_application_public_id: string;
   candidate: CandidateOut;
   created_at: string;
   status: string;
   interviews: InterviewOut[];
   job_position_title: string;
+  job_position_public_id: string;
 }
 
 export interface ApplicationFilter {
-  public_id: string;
+  job_position_public_id: string;
   page?: number;
   limit?: number;
   search?: string;
@@ -54,7 +56,6 @@ export const fetchApplications = async (
   filters: ApplicationFilter
 ): Promise<ApplicationResponse> => {
   const params = new URLSearchParams();
-  params.append("public_id", filters.public_id);
   params.append("page", String(filters.page ?? 1));
   params.append("limit", String(filters.limit ?? 10));
   if (filters.search) params.append("search", filters.search);
@@ -63,9 +64,8 @@ export const fetchApplications = async (
 
   try {
     const response = await apiClient.get(
-      `/application/${filters.public_id}?${params.toString()}`
+      `/recruiter/${filters.job_position_public_id}?${params.toString()}`
     );
-
     return response.data;
   } catch (error) {
     console.error("Error in fetchApplications:", error);

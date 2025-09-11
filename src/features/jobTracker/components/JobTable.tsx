@@ -56,7 +56,7 @@ const JobTable: React.FC<JobTableProps> = ({
     rowsPerPageOptions={rowsPerPageOptions}
     renderRow={(job) => (
       <JobTableRow
-        key={job.public_id}
+        key={job.job_position_public_id}
         job={job}
         onEdit={onEdit}
         onDelete={onDelete}

@@ -1,26 +1,9 @@
-export const mockInterviewQuestions = [
-  {
-    id: "q1",
-    text: "Describe your experience with professional communication in a real-world context.",
-    type: "behavioral",
-  },
-  {
-    id: "q2",
-    text: "How do you approach developing your skills in professional communication?",
-    type: "behavioral",
-  },
-  {
-    id: "q3",
-    text: "Give me an example of when you successfully demonstrated professional communication.",
-    type: "behavioral",
-  },
-];
-
 import { nanoid } from "nanoid";
 import { defaultEvaluationLevels } from "@/features/competencyRubric/rubricConstants";
 import type { Rubric, EvaluationLevel } from "@/types/rubric";
+import type { Competency } from "@/types/competency";
 
-export const generateMockRubric = (competencyId: string): Rubric => {
+export const generateMockRubric = (comp: Competency): Rubric => {
   const criteria: EvaluationLevel[] = defaultEvaluationLevels.map((level) => ({
     ...level,
     description: level.description ?? "",
@@ -28,15 +11,17 @@ export const generateMockRubric = (competencyId: string): Rubric => {
     indicators: [
       {
         id: nanoid(),
-        competencyId,
-        text: `Example indicator for ${level.label}`,
+        competencyId: comp.id,
+        text: `Example indicator`,
       },
     ],
   }));
 
   return {
     id: nanoid(),
-    competencyId,
+    description: comp.description || "",
+    competencyId: comp.id,
+    competencyName: comp.name,
     questions: [],
     criteria,
   };

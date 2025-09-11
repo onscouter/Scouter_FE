@@ -40,7 +40,7 @@ const JobTableRow: React.FC<JobTableRowProps> = ({
 
       <StyledTableCell align="right" noEllipsis sx={{ pr: 2 }}>
         <ActionMenu
-          jobId={job.public_id}
+          jobId={job.job_position_public_id}
           onEdit={onEdit}
           onDelete={onDelete}
           onViewCandidates={onViewCandidates}

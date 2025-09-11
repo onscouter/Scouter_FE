@@ -29,27 +29,27 @@ const EvaluationCriteriaSection: React.FC<EvaluationCriteriaSectionProps> = ({
     dispatch(updateEvaluationLevel({ competencyId, levelIndex, updatedLevel }));
   };
 
-  const handleDeleteIndicator = (levelKey: string, indicatorId: string) => {
-    dispatch(deleteIndicator({ competencyId, levelKey, indicatorId }));
+  const handleDeleteIndicator = (score: number, indicatorId: string) => {
+    dispatch(deleteIndicator({ competencyId, score, indicatorId }));
   };
 
-  const handleAddIndicator = (levelKey: string, text: string) => {
-    dispatch(addIndicator({ competencyId, levelKey, indicator: text }));
+  const handleAddIndicator = (score: number, text: string) => {
+    dispatch(addIndicator({ competencyId, score, indicator: text }));
   };
 
   const handleEditIndicator = (
-    levelKey: string,
+    score: number,
     indicatorId: string,
     newText: string
   ) => {
-    dispatch(editIndicator({ competencyId, levelKey, indicatorId, newText }));
+    dispatch(editIndicator({ competencyId, score, indicatorId, newText }));
   };
 
   return (
     <Box>
       {criteria.map((level, index) => (
         <EvaluationItem
-          key={`${competencyId}-${level.levelKey}`}
+          key={`${competencyId}-${level.score}`}
           level={level}
           editable={editable}
           onSave={(updated: EvaluationLevel) => handleSave(index, updated)}

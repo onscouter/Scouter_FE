@@ -9,7 +9,7 @@ export const useJobCandidate = (filters: ApplicationFilter) => {
   return useQuery<ApplicationResponse>({
     queryKey: ["jobCandidate", filters],
     queryFn: () => fetchApplications(filters),
-    enabled: !!filters.public_id,
+    enabled: !!filters.job_position_public_id,
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
     retry: 1,
