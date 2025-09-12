@@ -1,6 +1,5 @@
 import LandingLayout from "@/layout/LandingLayout";
 import { Box } from "@mui/material";
-import { useAuth0 } from "@auth0/auth0-react";
 import useIsMobile from "@/hooks/useIsMobile";
 import Options from "@/features/recruiter/components/Options";
 import { Search, Plus } from "lucide-react";
@@ -9,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 
 const RecruiterPage = () => {
   const navigate = useNavigate();
-  const { loginWithRedirect } = useAuth0();
   const isMobile = useIsMobile();
 
   return (

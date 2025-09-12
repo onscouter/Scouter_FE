@@ -2,7 +2,7 @@ import TrackerLayout from "@/layout/TrackerLayout";
 import CandidateTable from "@/features/viewCandidate/components/CandidateTable";
 import ViewCandidateToolBar from "@/features/viewCandidate/components/ViewCandidateToolBar";
 import { useCandidateFilter } from "@/features/viewCandidate/useCandidateFilter";
-import EmptyState from "@/features/jobTracker/components/EmptyState";
+import EmptyState from "@/components/EmptyState";
 import ViewCandidateHeader from "@/features/viewCandidate/components/ViewCandidateHeader";
 // import CandidateList from "@/features/viewCandidate/components/ListView";
 import { useJobCandidate } from "@/features/viewCandidate/useApplication";

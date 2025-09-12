@@ -1,8 +1,4 @@
 import { Routes, Route } from "react-router-dom";
-// import LoginPage from "../pages/Login";
-// import SignupPage from "../pages/Signup";
-// import DashboardPage from "../pages/Dashboard";
-// import ProtectedRoute from "./ProtectedRoute";
 import RecruiterPage from "@/pages/RecruiterPage";
 import LandingPage from "@/pages/LandingPage";
 import NotFoundPage from "@/pages/NotFoundPage";
@@ -17,6 +13,7 @@ import Loader from "@/components/LoaderOverlay";
 import { useSelector } from "react-redux";
 import { selectAppLoading } from "@/store/appSlice";
 import LoginPage from "@/pages/LoginPage";
+import InterviewTrackerPage from "@/pages/InterviewTrackerPage";
 
 const AppRoutes = () => {
   const isMobile = useIsMobile();
@@ -43,6 +40,7 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="*" element={<NotFoundPage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route
           path="/recruiter-home"
           element={<AuthenticationGuard component={RecruiterPage} />}
@@ -63,11 +61,10 @@ const AppRoutes = () => {
           path="/recruiter-home/create-role/competency-rubric"
           element={<AuthenticationGuard component={InterviewRubricPage} />}
         />
-        <Route path="/login" element={<LoginPage />} />
-        {/* <Route
-          path="/recruiter/create-role"
-          element={<AuthenticationGuard component={CreateRolePage} />}
-        /> */}
+        <Route
+          path="/interviewer-home"
+          element={<AuthenticationGuard component={InterviewTrackerPage} />}
+        />
       </Routes>
     </>
   );

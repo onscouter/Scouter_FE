@@ -22,3 +22,12 @@ export const fetchJobs = async (filters: JobFilters): Promise<JobsResponse> => {
     throw error;
   }
 };
+
+export const deleteJobApi = async (jobId: string): Promise<void> => {
+  try {
+    await apiClient.delete(`/recruiter/jobs/${jobId}`);
+  } catch (error) {
+    console.error("Error in deleteJobApi:", error);
+    throw error;
+  }
+};

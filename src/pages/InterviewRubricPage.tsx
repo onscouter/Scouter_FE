@@ -1,18 +1,22 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+// import { toast } from "react-toastify";
 import TrackerLayout from "@/layout/TrackerLayout";
 import RubricHeader from "@/features/competencyRubric/components/RubricHeader";
 import RubricEditor from "@/features/competencyRubric/components/RubricEditor";
 import { buildPayload } from "@/features/createRole/buildPayload";
 import { selectRubrics } from "@/store/rubricSlice";
 import { selectNewJob } from "@/store/newJobSlice";
-
-// const { mutate: saveRubrics, isPending } = useSaveAllRubrics();
+import { setAppLoading } from "@/store/appSlice";
+import { useCreateRole } from "@/features/createRole/useCreateRole";
 
 const InterviewRubricPage: React.FC = () => {
   const rubricMap = useSelector(selectRubrics);
   const newJob = useSelector(selectNewJob);
-  console.log(rubricMap, "rubricMap");
+  const dispatch = useDispatch();
+
+  const { mutateAsync: createRole } = useCreateRole();
+
   const competencyIds = Object.keys(rubricMap);
   const competencies = competencyIds.map((id) => ({
     id,
@@ -21,28 +25,17 @@ const InterviewRubricPage: React.FC = () => {
   }));
 
   const [stepIndex, setStepIndex] = useState(0);
-
   const current = competencies[stepIndex];
 
   const handleNext = () =>
     setStepIndex((prev) => Math.min(prev + 1, competencies.length - 1));
   const handlePrev = () => setStepIndex((prev) => Math.max(prev - 1, 0));
 
-  // const handleSaveAll = () => {
-  //   saveRubrics({
-  //     jobId: newJob.id,
-  //     rubrics: Object.values(rubricStore),
-  //   });
-  // };
-
-  // const { mutate: createRole, isPending, isSuccess, error } = useCreateRole();
-
   const handleSave = () => {
-    console.log(rubricMap);
+    dispatch(setAppLoading(true));
+    // toast.info("Creating New Role...");
     const payload = buildPayload(newJob, rubricMap);
-    console.log(payload, "payload");
-    // createRole({ rubric, newRole });
-    // createRole({ name: "Hiring Manager", permissions: ["read", "write"] });
+    createRole(payload);
   };
 
   if (!current) return null;

@@ -4,7 +4,7 @@ import JobTrackerHeader from "@/features/jobTracker/components/JobTrackerHeader"
 import JobToolBar from "@/features/jobTracker/components/JobToolBar";
 import JobList from "@/features/jobTracker/components/JobList";
 import JobTable from "@/features/jobTracker/components/JobTable";
-import EmptyState from "@/features/jobTracker/components/EmptyState";
+import EmptyState from "@/components/EmptyState";
 import { useJobTracker } from "@/features/jobTracker/useJobTracker";
 import { useJobs } from "@/features/jobTracker/useJobs";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,9 +12,12 @@ import { useEffect, useMemo } from "react";
 import { selectUser } from "@/store/authSlice";
 import { setAppLoading } from "@/store/appSlice";
 import type { Job } from "@/types/job";
+import { useNavigate } from "react-router-dom";
+import { useDeleteJob } from "@/features/jobTracker/useDeleteJob";
 
 const JobTrackerPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector(selectUser);
   const companyId = user?.company?.company_public_id ?? "";
 
@@ -47,6 +50,8 @@ const JobTrackerPage = () => {
     order,
   });
 
+  const { mutate: deleteJob } = useDeleteJob();
+
   const jobs = useMemo(() => data?.jobs ?? [], [data]);
   const total = data?.total ?? 0;
 
@@ -67,7 +72,7 @@ const JobTrackerPage = () => {
   };
 
   const onDelete = (jobId: string) => {
-    console.log("Delete job", jobId);
+    deleteJob(jobId);
   };
 
   const onEdit = (jobId: string) => {
@@ -75,7 +80,11 @@ const JobTrackerPage = () => {
   };
 
   const onViewCandidates = (jobId: string) => {
-    console.log("View candidates", jobId);
+    navigate(`/recruiter-home/jobs/${jobId}`);
+  };
+
+  const onNewRole = () => {
+    navigate("/recruiter-home/create-role");
   };
 
   const shouldShowEmptyState = !isLoading && jobs.length === 0;
@@ -86,6 +95,7 @@ const JobTrackerPage = () => {
         searchInput={searchInput}
         setSearchInput={setSearchInput}
         setSearchText={setSearchText}
+        onNewRole={onNewRole}
       />
 
       <JobToolBar

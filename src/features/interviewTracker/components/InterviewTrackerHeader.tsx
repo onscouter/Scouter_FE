@@ -1,25 +1,20 @@
-import {
-  Box,
-  Button,
-  InputAdornment,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { Search as SearchIcon, Plus } from "lucide-react";
+import { selectUser } from "@/store/authSlice";
+import { Box, InputAdornment, TextField, Typography } from "@mui/material";
+import { Search as SearchIcon } from "lucide-react";
+import { useSelector } from "react-redux";
 
-interface JobTrackerHeaderProps {
+interface InterviewTrackerHeaderProps {
   setSearchText: (text: string) => void;
   searchInput: string;
   setSearchInput: (text: string) => void;
-  onNewRole: () => void;
 }
 
-const JobTrackerHeader: React.FC<JobTrackerHeaderProps> = ({
+const InterviewTrackerHeader: React.FC<InterviewTrackerHeaderProps> = ({
   setSearchText,
   searchInput,
   setSearchInput,
-  onNewRole,
 }) => {
+  const employee = useSelector(selectUser);
   return (
     <Box
       sx={{
@@ -34,18 +29,29 @@ const JobTrackerHeader: React.FC<JobTrackerHeaderProps> = ({
       }}
     >
       {/* Title */}
-      <Typography
-        variant="h5"
-        sx={{
-          fontWeight: 700,
-          color: "text.primary",
-          flexShrink: 0,
-          mr: { md: "auto" },
-        }}
-      >
-        Candidate Tracker
-      </Typography>
-
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+        <Typography
+          variant="h5"
+          sx={{
+            fontWeight: 700,
+            color: "text.primary",
+            flexShrink: 0,
+            mr: { md: "auto" },
+          }}
+        >
+          Welcome, {employee?.first_name} {employee?.last_name}
+        </Typography>
+        <Typography
+          variant="subtitle1"
+          sx={{
+            color: "text.secondary",
+            flexShrink: 0,
+            mr: { md: "auto" },
+          }}
+        >
+          Here's your interview schedule for today.
+        </Typography>
+      </Box>
       {/* Search + Button */}
       <Box
         sx={{
@@ -100,36 +106,9 @@ const JobTrackerHeader: React.FC<JobTrackerHeaderProps> = ({
             },
           }}
         />
-        <Button
-          startIcon={<Plus size={18} />}
-          variant="contained"
-          onClick={onNewRole}
-          sx={{
-            px: 2.5,
-            py: 1.2,
-            textTransform: "none",
-            fontWeight: 600,
-            borderRadius: 2,
-            backgroundColor: "primary.main",
-            color: "primary.contrastText",
-            boxShadow: "0 2px 6px rgba(229,193,0,0.25)",
-            transition: "all 0.2s ease-in-out",
-            "&:hover": {
-              backgroundColor: "primary.dark",
-              transform: "translateY(-1px)",
-              boxShadow: "0 4px 12px rgba(229,193,0,0.35)",
-            },
-            "&:active": {
-              backgroundColor: "primary.dark",
-              transform: "translateY(0)",
-            },
-          }}
-        >
-          New Role
-        </Button>
       </Box>
     </Box>
   );
 };
 
-export default JobTrackerHeader;
+export default InterviewTrackerHeader;

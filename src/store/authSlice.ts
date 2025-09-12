@@ -1,9 +1,9 @@
 import {
   createSlice,
-  createAsyncThunk,
+  // createAsyncThunk,
   type PayloadAction,
 } from "@reduxjs/toolkit";
-import apiClient from "@/api";
+// import apiClient from "@/api";
 import { type Employee } from "@/types/user";
 import type { RootState } from "@/store";
 
@@ -19,20 +19,20 @@ const initialState: AuthState = {
   error: null,
 };
 
-export const fetchBackendUser = createAsyncThunk<
-  Employee,
-  void,
-  { rejectValue: string }
->("auth/fetchUser", async (_, { rejectWithValue }) => {
-  try {
-    const res = await apiClient.get<Employee>("/user/me");
-    return res.data;
-  } catch (error) {
-    const message =
-      error instanceof Error ? error.message : "Failed to fetch user";
-    return rejectWithValue(message);
-  }
-});
+// export const fetchBackendUser = createAsyncThunk<
+//   Employee,
+//   void,
+//   { rejectValue: string }
+// >("auth/fetchUser", async (_, { rejectWithValue }) => {
+//   try {
+//     const res = await apiClient.get<Employee>("/user/me");
+//     return res.data;
+//   } catch (error) {
+//     const message =
+//       error instanceof Error ? error.message : "Failed to fetch user";
+//     return rejectWithValue(message);
+//   }
+// });
 
 const authSlice = createSlice({
   name: "auth",
@@ -49,19 +49,19 @@ const authSlice = createSlice({
       state.error = null;
     },
   },
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchBackendUser.pending, (state) => {
-        state.error = null;
-      })
-      .addCase(fetchBackendUser.fulfilled, (state, action) => {
-        state.user = action.payload;
-      })
-      .addCase(fetchBackendUser.rejected, (state, action) => {
-        state.user = null;
-        state.error = action.payload ?? "Failed to fetch user";
-      });
-  },
+  // extraReducers: (builder) => {
+  //   builder
+  //     .addCase(fetchBackendUser.pending, (state) => {
+  //       state.error = null;
+  //     })
+  //     .addCase(fetchBackendUser.fulfilled, (state, action) => {
+  //       state.user = action.payload;
+  //     })
+  //     .addCase(fetchBackendUser.rejected, (state, action) => {
+  //       state.user = null;
+  //       state.error = action.payload ?? "Failed to fetch user";
+  //     });
+  // },
 });
 
 export const { clearUser, setUser } = authSlice.actions;

@@ -6,18 +6,18 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import { Edit, Delete, Info } from "lucide-react";
+import { FileText, Eye } from "lucide-react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 interface ActionMenuProps {
-  jobId: string;
-  onEdit: (jobId: string) => void;
-  onDelete: (jobId: string) => void;
-  onViewCandidates: (jobId: string) => void;
+  interviewId: string;
+  onEdit: (interviewId: string) => void;
+  onDelete: (interviewId: string) => void;
+  onViewCandidates: (interviewId: string) => void;
 }
 
 const ActionMenu: React.FC<ActionMenuProps> = ({
-  jobId,
+  interviewId,
   onEdit,
   onDelete,
   onViewCandidates,
@@ -98,37 +98,26 @@ const ActionMenu: React.FC<ActionMenuProps> = ({
       >
         <MenuItem
           onClick={() => {
-            onViewCandidates(jobId);
+            // onViewCandidates(jobId);
             handleClose();
           }}
         >
           <ListItemIcon>
-            <Info size={18} />
+            <FileText size={18} />
           </ListItemIcon>
-          <ListItemText>View Candidates</ListItemText>
+          <ListItemText>View Resume</ListItemText>
         </MenuItem>
 
         <MenuItem
           onClick={() => {
-            onEdit(jobId);
+            // onEdit(jobId);
             handleClose();
           }}
         >
           <ListItemIcon>
-            <Edit size={18} />
+            <Eye size={18} />
           </ListItemIcon>
-          <ListItemText>Edit Role</ListItemText>
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            onDelete(jobId);
-            handleClose();
-          }}
-        >
-          <ListItemIcon>
-            <Delete size={18} />
-          </ListItemIcon>
-          <ListItemText>Delete</ListItemText>
+          <ListItemText>Access Rubric</ListItemText>
         </MenuItem>
       </Menu>
     </>
