@@ -42,3 +42,10 @@ export interface RoleCreatePayload {
   description: string;
   rubric: Rubric[];
 }
+
+export interface GetRoleResponse {
+  job_position_public_id: string;
+  title: string;
+  description: string;
+  rubric: Rubric[];
+}

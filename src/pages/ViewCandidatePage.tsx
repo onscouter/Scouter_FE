@@ -42,8 +42,8 @@ const CandidateViewPage = () => {
   });
 
   useEffect(() => {
-    dispatch(setAppLoading(!data));
-  }, [isLoading, data, dispatch]);
+    dispatch(setAppLoading(isLoading));
+  }, [isLoading, dispatch]);
 
   const candidates = data?.applications ?? [];
   const total = candidates.length ?? 0;

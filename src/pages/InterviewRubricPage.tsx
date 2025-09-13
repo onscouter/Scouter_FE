@@ -19,8 +19,8 @@ const InterviewRubricPage: React.FC = () => {
 
   const competencyIds = Object.keys(rubricMap);
   const competencies = competencyIds.map((id) => ({
-    id,
-    name: rubricMap[id].competencyName,
+    competencyId: id,
+    competencyName: rubricMap[id].competencyName,
     description: rubricMap[id].description,
   }));
 
@@ -35,6 +35,7 @@ const InterviewRubricPage: React.FC = () => {
     dispatch(setAppLoading(true));
     // toast.info("Creating New Role...");
     const payload = buildPayload(newJob, rubricMap);
+    console.log(payload);
     createRole(payload);
   };
 
@@ -45,8 +46,8 @@ const InterviewRubricPage: React.FC = () => {
       <RubricHeader
         stepIndex={stepIndex}
         total={competencies.length}
-        competencyId={current.id}
-        competencyName={current.name}
+        competencyId={current.competencyId}
+        competencyName={current.competencyName}
         onNext={handleNext}
         onPrev={handlePrev}
         onSave={handleSave}

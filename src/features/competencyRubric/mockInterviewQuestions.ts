@@ -11,7 +11,7 @@ export const generateMockRubric = (comp: Competency): Rubric => {
     indicators: [
       {
         id: nanoid(),
-        competencyId: comp.id,
+        competencyId: comp.competencyId,
         text: `Example indicator`,
       },
     ],
@@ -20,8 +20,8 @@ export const generateMockRubric = (comp: Competency): Rubric => {
   return {
     id: nanoid(),
     description: comp.description || "",
-    competencyId: comp.id,
-    competencyName: comp.name,
+    competencyId: comp.competencyId,
+    competencyName: comp.competencyName,
     questions: [],
     criteria,
   };

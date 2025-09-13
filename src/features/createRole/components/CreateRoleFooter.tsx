@@ -5,11 +5,13 @@ import { type Competency } from "@/types/competency";
 interface CreateRoleFooterProps {
   selected: Competency[];
   handleOnClick?: () => void;
+  mode: "create" | "edit";
 }
 
 const CreateRoleFooter: React.FC<CreateRoleFooterProps> = ({
   selected,
   handleOnClick,
+  mode,
 }) => {
   return (
     <Stack direction="row" spacing={2} justifyContent="flex-end">
@@ -35,7 +37,9 @@ const CreateRoleFooter: React.FC<CreateRoleFooterProps> = ({
           fontWeight: 600,
         }}
       >
-        Continue with Selected Competencies
+        {mode === "edit"
+          ? "Update Role"
+          : "Continue with Selected Competencies"}
       </Button>
     </Stack>
   );

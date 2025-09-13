@@ -43,8 +43,8 @@ const SelectedCompetencies: React.FC<SelectedCompetenciesProps> = ({
       <Box display="flex" flexWrap="wrap" gap={1}>
         {selected.map((comp) => (
           <Chip
-            key={comp.id}
-            label={comp.name}
+            key={comp.competencyId}
+            label={comp.competencyName}
             onDelete={() => onRemove(comp)}
             sx={{
               backgroundColor: "primary.light",

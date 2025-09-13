@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import { selectAppLoading } from "@/store/appSlice";
 import LoginPage from "@/pages/LoginPage";
 import InterviewTrackerPage from "@/pages/InterviewTrackerPage";
+import EditJobPage from "@/pages/EditJobPage";
 
 const AppRoutes = () => {
   const isMobile = useIsMobile();
@@ -59,6 +60,14 @@ const AppRoutes = () => {
         />
         <Route
           path="/recruiter-home/create-role/competency-rubric"
+          element={<AuthenticationGuard component={InterviewRubricPage} />}
+        />
+        <Route
+          path="/recruiter-home/edit-job/:jobId"
+          element={<AuthenticationGuard component={EditJobPage} />}
+        />
+        <Route
+          path="/recruiter-home/edit-job/competency-rubric"
           element={<AuthenticationGuard component={InterviewRubricPage} />}
         />
         <Route

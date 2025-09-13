@@ -27,7 +27,7 @@ const SuggestedCompetencies: React.FC<SuggestedCompetenciesProps> = ({
       <Stack spacing={2}>
         {competencies.map((c) => (
           <Card
-            key={c.name}
+            key={c.competencyId}
             variant="outlined"
             sx={{
               p: 2,
@@ -48,7 +48,7 @@ const SuggestedCompetencies: React.FC<SuggestedCompetenciesProps> = ({
           >
             <Box>
               <Typography variant="body1" fontWeight={600}>
-                {c.name}
+                {c.competencyName}
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 {c.description}
@@ -57,7 +57,7 @@ const SuggestedCompetencies: React.FC<SuggestedCompetenciesProps> = ({
 
             <Checkbox
               checked={selectedCompetencies.some(
-                (comp) => comp.name === c.name
+                (comp) => comp.competencyName === c.competencyName
               )}
               onChange={(e) => {
                 e.stopPropagation();

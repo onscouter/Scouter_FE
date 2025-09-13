@@ -38,7 +38,7 @@ const RubricEditor = ({ competency }: { competency: Competency }) => {
       </Box>
 
       <InterviewQuestionsSection
-        competencyId={competency.id}
+        competencyId={competency.competencyId}
         editable={editingQuestions}
       />
       <Box
@@ -68,7 +68,7 @@ const RubricEditor = ({ competency }: { competency: Competency }) => {
         </Button>
       </Box>
       <EvaluationCriteriaSection
-        competencyId={competency.id}
+        competencyId={competency.competencyId}
         editable={editingCriteria}
       />
     </Box>

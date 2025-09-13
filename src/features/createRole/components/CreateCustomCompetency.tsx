@@ -26,7 +26,11 @@ const CustomCompetencyForm: React.FC<CustomCompetencyFormProps> = ({
 
   const handleSubmit = () => {
     if (!name.trim()) return;
-    onAdd({ id: nanoid(), name: name.trim(), description: description.trim() });
+    onAdd({
+      competencyId: nanoid(),
+      competencyName: name.trim(),
+      description: description.trim(),
+    });
     resetForm();
   };
 

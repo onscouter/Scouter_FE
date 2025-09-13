@@ -1,6 +1,6 @@
 export interface Competency {
-  id: string;
-  name: string;
+  competencyId: string;
+  competencyName: string;
   description?: string;
 }
 

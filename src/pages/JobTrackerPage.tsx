@@ -61,9 +61,8 @@ const JobTrackerPage = () => {
   );
 
   useEffect(() => {
-    dispatch(setAppLoading(!(data && Array.isArray(jobs))));
-  }, [isLoading, data, dispatch, jobs]);
-
+    dispatch(setAppLoading(isLoading));
+  }, [isLoading, dispatch]);
   const handleRequestSort = (property: keyof Job) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -76,7 +75,7 @@ const JobTrackerPage = () => {
   };
 
   const onEdit = (jobId: string) => {
-    console.log("Edit job", jobId);
+    navigate(`/recruiter-home/edit-job/${jobId}`);
   };
 
   const onViewCandidates = (jobId: string) => {
@@ -87,7 +86,7 @@ const JobTrackerPage = () => {
     navigate("/recruiter-home/create-role");
   };
 
-  const shouldShowEmptyState = !isLoading && jobs.length === 0;
+  const shouldShowEmptyState = total === 0;
 
   return (
     <TrackerLayout>

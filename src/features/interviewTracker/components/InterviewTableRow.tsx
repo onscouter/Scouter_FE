@@ -4,23 +4,21 @@ import {
 } from "@/features/shared/table/StyledTable";
 import { format } from "date-fns";
 import { Chip, Stack, Typography, Button, Link } from "@mui/material";
-import type { Job } from "@/types/job";
+import ActionMenu from "./ActionMenu";
+import type { Interview } from "@/types/job";
 
 interface InterviewTableRowProps {
-  job: Job;
-  onAccessRubric: (jobId: string) => void;
+  interview: Interview;
+  // onAccessRubric: (jobId: string) => void;
 }
 
-const InterviewTableRow: React.FC<InterviewTableRowProps> = ({
-  job,
-  onAccessRubric,
-}) => {
-  const interviewDate = job.interview_datetime
-    ? new Date(job.interview_datetime)
+const InterviewTableRow: React.FC<InterviewTableRowProps> = ({ interview }) => {
+  const interviewDate = interview.interview_datetime
+    ? new Date(interview.interview_datetime)
     : null;
 
   const formattedDate = interviewDate
-    ? format(interviewDate, "EEEE, MMMM d, yyyy")
+    ? format(interviewDate, "MM/d/yyyy")
     : "—";
 
   const formattedTime = interviewDate ? format(interviewDate, "h:mm a") : "";
@@ -30,9 +28,11 @@ const InterviewTableRow: React.FC<InterviewTableRowProps> = ({
       {/* Candidate */}
       <StyledTableCell>
         <Stack spacing={0.5}>
-          <Typography fontWeight={600}>{job.candidate_name}</Typography>
+          <Typography fontWeight={600}>
+            {interview.candidate.first_name} {interview.candidate.last_name}
+          </Typography>
           <Typography variant="body2" color="text.secondary">
-            {job.candidate_email}
+            {interview.candidate.email}
           </Typography>
         </Stack>
       </StyledTableCell>
@@ -40,60 +40,47 @@ const InterviewTableRow: React.FC<InterviewTableRowProps> = ({
       {/* Role */}
       <StyledTableCell>
         <Chip
-          label={job.title}
+          label={interview.job_position.title}
           size="small"
           color="warning"
-          variant="soft"
+          variant="filled"
           sx={{ fontWeight: 500 }}
         />
       </StyledTableCell>
 
       {/* Competency */}
       <StyledTableCell>
-        <Typography>{job.competency}</Typography>
+        <Typography>{interview.competency.name}</Typography>
       </StyledTableCell>
 
       {/* Interview Date */}
       <StyledTableCell>
         <Stack>
           <Typography>{formattedDate}</Typography>
-          <Typography variant="body2">{formattedTime}</Typography>
+          <Typography variant="body2" color="text.secondary">
+            {formattedTime}
+          </Typography>
         </Stack>
-      </StyledTableCell>
-
-      {/* Resume */}
-      <StyledTableCell>
-        <Link
-          href={job.resume_url}
-          target="_blank"
-          rel="noopener noreferrer"
-          underline="hover"
-          download
-        >
-          Download
-        </Link>
       </StyledTableCell>
 
       {/* Status */}
       <StyledTableCell>
         <Chip
-          label={job.status}
+          label={interview.interview_status}
           size="small"
-          color={job.status === "UPCOMING" ? "info" : "default"}
+          color={interview.interview_status === "UPCOMING" ? "info" : "default"}
           variant="soft"
         />
       </StyledTableCell>
 
       {/* Action */}
-      <StyledTableCell>
-        <Button
-          variant="contained"
-          color="warning"
-          size="small"
-          onClick={() => onAccessRubric(job.job_position_public_id)}
-        >
-          Access Rubric
-        </Button>
+      <StyledTableCell align="right" noEllipsis sx={{ pr: 2 }}>
+        <ActionMenu
+          interviewId={interview.job_interview_public_id}
+          // onEdit={onEdit}
+          // onDelete={onDelete}
+          // onViewCandidates={onViewCandidates}
+        />
       </StyledTableCell>
     </StyledTableRow>
   );

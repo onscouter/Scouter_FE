@@ -22,6 +22,8 @@ const ActionMenu: React.FC<ActionMenuProps> = ({
   onDelete,
   onViewCandidates,
 }) => {
+  console.log(jobId);
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 

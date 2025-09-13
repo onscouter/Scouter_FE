@@ -29,8 +29,50 @@ export interface JobFilters {
   order?: "asc" | "desc";
 }
 
+export interface InterviewFilters {
+  employee_id: string;
+  page?: number;
+  limit?: number;
+  search?: string;
+  orderBy?: string;
+  order?: "asc" | "desc";
+}
+
 export type JobsResponse = {
   jobs: Job[];
+  total: number;
+  page: number;
+  limit: number;
+};
+
+export type CompetencyMinimal = {
+  competency_public_id: string;
+  name: string;
+};
+
+export type CandidateMinimal = {
+  candidate_public_id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+};
+export type JobPositionMinimal = {
+  job_position_public_id: string;
+  title: string;
+  status: JobStatus;
+};
+
+export type Interview = {
+  job_interview_public_id: string;
+  interview_status: string;
+  interview_datetime: string;
+  competency: CompetencyMinimal;
+  candidate: CandidateMinimal;
+  job_position: JobPositionMinimal;
+};
+
+export type InterviewResponse = {
+  interviews: Interview[];
   total: number;
   page: number;
   limit: number;

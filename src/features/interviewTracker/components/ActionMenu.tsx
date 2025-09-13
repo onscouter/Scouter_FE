@@ -6,24 +6,25 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import { FileText, Eye } from "lucide-react";
+import { FileText, Eye, Delete } from "lucide-react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 interface ActionMenuProps {
   interviewId: string;
-  onEdit: (interviewId: string) => void;
-  onDelete: (interviewId: string) => void;
-  onViewCandidates: (interviewId: string) => void;
+  // onEdit: (interviewId: string) => void;
+  // onDelete: (interviewId: string) => void;
+  // onViewCandidates: (interviewId: string) => void;
 }
 
 const ActionMenu: React.FC<ActionMenuProps> = ({
   interviewId,
-  onEdit,
-  onDelete,
-  onViewCandidates,
+  // onEdit,
+  // onDelete,
+  // onViewCandidates,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  console.log(interviewId);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -118,6 +119,17 @@ const ActionMenu: React.FC<ActionMenuProps> = ({
             <Eye size={18} />
           </ListItemIcon>
           <ListItemText>Access Rubric</ListItemText>
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            // onDelete(jobId);
+            handleClose();
+          }}
+        >
+          <ListItemIcon>
+            <Delete size={18} />
+          </ListItemIcon>
+          <ListItemText>Delete</ListItemText>
         </MenuItem>
       </Menu>
     </>

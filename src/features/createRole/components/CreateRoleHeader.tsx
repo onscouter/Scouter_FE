@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { LightbulbIcon } from "lucide-react";
 
-interface JobTrackerHeaderProps {
+interface CreateRoleHeaderProps {
   title: string;
   setTitle: (val: string) => void;
   description: string;
@@ -16,7 +16,7 @@ interface JobTrackerHeaderProps {
   handleSuggestClick: () => void;
 }
 
-const JobTrackerHeader: React.FC<JobTrackerHeaderProps> = ({
+const CreateRoleHeader: React.FC<CreateRoleHeaderProps> = ({
   title,
   setTitle,
   description,
@@ -137,4 +137,4 @@ const JobTrackerHeader: React.FC<JobTrackerHeaderProps> = ({
   );
 };
 
-export default JobTrackerHeader;
+export default CreateRoleHeader;
