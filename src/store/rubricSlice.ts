@@ -31,7 +31,30 @@ const rubricSlice = createSlice({
               })),
       };
     },
+    addRubricIfNotExists(state, action: PayloadAction<Rubric>) {
+      const incomingRubric = action.payload;
 
+      // Check if a rubric with the same competencyName already exists
+      const alreadyExists = Object.values(state.rubrics).some(
+        (rubric) => rubric.competencyName === incomingRubric.competencyName
+      );
+
+      if (!alreadyExists) {
+        state.rubrics[incomingRubric.competencyId] = {
+          ...incomingRubric,
+          criteria:
+            incomingRubric.criteria && incomingRubric.criteria.length > 0
+              ? incomingRubric.criteria
+              : defaultEvaluationLevels.map((level) => ({
+                  score: level.score,
+                  description: level.description ?? "",
+                  indicators: (level.indicators || []).map((ind) => ({
+                    ...ind,
+                  })),
+                })),
+        };
+      }
+    },
     addIndicator(
       state,
       action: PayloadAction<{
@@ -184,6 +207,7 @@ export const {
   addEvaluationLevel,
   updateEvaluationLevel,
   clearRubrics,
+  addRubricIfNotExists,
 } = rubricSlice.actions;
 
 export default rubricSlice.reducer;

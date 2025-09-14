@@ -3,7 +3,11 @@ import { useNavigate, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { setTitle, setDescription } from "@/store/newJobSlice";
 import { setAppLoading } from "@/store/appSlice";
-import { selectRubrics, setRubric } from "@/store/rubricSlice";
+import {
+  addRubricIfNotExists,
+  selectRubrics,
+  setRubric,
+} from "@/store/rubricSlice";
 import JobFormPage from "@/pages/JobFormPage";
 import { useEffect } from "react";
 import { useGetRole } from "@/features/editRole/useGetRole";
@@ -14,13 +18,14 @@ const EditJobPage = () => {
   const { jobId } = useParams<{ jobId: string }>();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  console.log(useSelector(selectRubrics));
 
   console.log(jobId);
   const { data, isLoading } = useGetRole(jobId ?? "");
   console.log(data);
   useEffect(() => {
-    dispatch(setAppLoading(isLoading));
-  }, [isLoading, dispatch]);
+    dispatch(setAppLoading(isLoading && !data));
+  }, [isLoading, dispatch, data]);
 
   useEffect(() => {
     // Only set Redux state when data is fully ready
@@ -54,11 +59,12 @@ const EditJobPage = () => {
 
     competencies.forEach((comp) => {
       const rubric = generateMockRubric(comp);
-      dispatch(setRubric(rubric));
+      dispatch(addRubricIfNotExists(rubric));
     });
+
     setTimeout(() => {
       dispatch(setAppLoading(false));
-      navigate("/recruiter-home/edit-job/competency-rubric");
+      navigate(`/recruiter-home/edit-job/competency-rubric/${jobId}`);
     }, 50);
   };
 

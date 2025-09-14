@@ -8,13 +8,14 @@ import AuthenticationGuard from "@/guards/AuthenticationGuard";
 import JobTrackerPage from "@/pages/JobTrackerPage";
 import ViewCandidatePage from "@/pages/ViewCandidatePage";
 import CreateRolePage from "@/pages/CreateRolePage";
-import InterviewRubricPage from "@/pages/InterviewRubricPage";
 import Loader from "@/components/LoaderOverlay";
 import { useSelector } from "react-redux";
 import { selectAppLoading } from "@/store/appSlice";
 import LoginPage from "@/pages/LoginPage";
 import InterviewTrackerPage from "@/pages/InterviewTrackerPage";
 import EditJobPage from "@/pages/EditJobPage";
+import CreateRubricPage from "@/pages/CreateRubricPage";
+import EditRubricPage from "@/pages/EditRubricPage";
 
 const AppRoutes = () => {
   const isMobile = useIsMobile();
@@ -60,15 +61,15 @@ const AppRoutes = () => {
         />
         <Route
           path="/recruiter-home/create-role/competency-rubric"
-          element={<AuthenticationGuard component={InterviewRubricPage} />}
+          element={<AuthenticationGuard component={CreateRubricPage} />}
         />
         <Route
           path="/recruiter-home/edit-job/:jobId"
           element={<AuthenticationGuard component={EditJobPage} />}
         />
         <Route
-          path="/recruiter-home/edit-job/competency-rubric"
-          element={<AuthenticationGuard component={InterviewRubricPage} />}
+          path="/recruiter-home/edit-job/competency-rubric/:jobId"
+          element={<AuthenticationGuard component={EditRubricPage} />}
         />
         <Route
           path="/interviewer-home"

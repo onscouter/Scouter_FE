@@ -8,13 +8,15 @@ import ViewCandidateHeader from "@/features/viewCandidate/components/ViewCandida
 import { useJobCandidate } from "@/features/viewCandidate/useApplication";
 import { useParams } from "react-router-dom";
 import { setAppLoading } from "@/store/appSlice";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import type { ApplicationOut } from "@/features/viewCandidate/api";
+import CreateCandidateModal from "../features/viewCandidate/components/CreateCandidatePage";
 
 const CandidateViewPage = () => {
   const dispatch = useDispatch();
   const { jobId } = useParams<{ jobId: string }>();
+  const [open, setOpen] = useState(false);
   const {
     viewMode,
     setViewMode,
@@ -32,7 +34,7 @@ const CandidateViewPage = () => {
     setOrderBy,
   } = useCandidateFilter();
 
-  const { data, isLoading } = useJobCandidate({
+  const { data, isLoading, refetch } = useJobCandidate({
     job_position_public_id: jobId ?? "",
     page,
     limit: rowsPerPage,
@@ -60,12 +62,31 @@ const CandidateViewPage = () => {
     setPage(1);
   };
 
-  const shouldShowEmptyState = !isLoading && candidates.length === 0;
+  const onCreateCandidate = () => {
+    setOpen(true);
+  };
 
+  const onClose = () => {
+    setOpen(false);
+  };
+
+  const onSuccess = () => {
+    refetch();
+    setOpen(false);
+  };
+
+  const shouldShowEmptyState = !isLoading && candidates.length === 0;
   return (
     <TrackerLayout>
+      <CreateCandidateModal
+        jobId={jobId}
+        open={open}
+        onClose={onClose}
+        onSuccess={onSuccess}
+      />
       <ViewCandidateHeader
         job_position_title={candidates[0]?.job_position_title}
+        onCreateCandidate={onCreateCandidate}
       />
       <ViewCandidateToolBar
         searchInput={searchInput}

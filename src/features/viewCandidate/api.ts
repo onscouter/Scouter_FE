@@ -72,3 +72,16 @@ export const fetchApplications = async (
     throw error;
   }
 };
+
+export const createCandidate = async (data: FormData) => {
+  try {
+    const response = await apiClient.post(
+      `/recruiter/${data.get("jobId")}/new-candidate`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error in createCandidate:", error);
+    throw error;
+  }
+};

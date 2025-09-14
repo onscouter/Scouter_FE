@@ -3,10 +3,12 @@ import { Plus } from "lucide-react";
 
 interface ViewCandidateHeaderProps {
   job_position_title: string;
+  onCreateCandidate: () => void;
 }
 
 const ViewCandidateHeader: React.FC<ViewCandidateHeaderProps> = ({
   job_position_title,
+  onCreateCandidate,
 }) => {
   return (
     <Box
@@ -48,6 +50,7 @@ const ViewCandidateHeader: React.FC<ViewCandidateHeaderProps> = ({
         <Button
           startIcon={<Plus size={18} />}
           variant="contained"
+          onClick={onCreateCandidate}
           sx={{
             px: 2.5,
             py: 1.2,

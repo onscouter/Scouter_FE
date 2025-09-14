@@ -4,18 +4,21 @@ import { useSelector, useDispatch } from "react-redux";
 import TrackerLayout from "@/layout/TrackerLayout";
 import RubricHeader from "@/features/competencyRubric/components/RubricHeader";
 import RubricEditor from "@/features/competencyRubric/components/RubricEditor";
-import { buildPayload } from "@/features/createRole/buildPayload";
 import { selectRubrics } from "@/store/rubricSlice";
 import { selectNewJob } from "@/store/newJobSlice";
-import { setAppLoading } from "@/store/appSlice";
 import { useCreateRole } from "@/features/createRole/useCreateRole";
 
-const InterviewRubricPage: React.FC = () => {
-  const rubricMap = useSelector(selectRubrics);
-  const newJob = useSelector(selectNewJob);
-  const dispatch = useDispatch();
+interface InterviewRubricPageProps {
+  handleSave: () => void;
+}
 
-  const { mutateAsync: createRole } = useCreateRole();
+const InterviewRubricPage: React.FC<InterviewRubricPageProps> = ({
+  handleSave,
+}) => {
+  const rubricMap = useSelector(selectRubrics);
+
+  console.log(useSelector(selectRubrics));
+  console.log(useSelector(selectNewJob));
 
   const competencyIds = Object.keys(rubricMap);
   const competencies = competencyIds.map((id) => ({
@@ -30,14 +33,6 @@ const InterviewRubricPage: React.FC = () => {
   const handleNext = () =>
     setStepIndex((prev) => Math.min(prev + 1, competencies.length - 1));
   const handlePrev = () => setStepIndex((prev) => Math.max(prev - 1, 0));
-
-  const handleSave = () => {
-    dispatch(setAppLoading(true));
-    // toast.info("Creating New Role...");
-    const payload = buildPayload(newJob, rubricMap);
-    console.log(payload);
-    createRole(payload);
-  };
 
   if (!current) return null;
 
