@@ -3,7 +3,7 @@ import {
   StyledTableRow,
 } from "@/features/shared/table/StyledTable";
 import { format } from "date-fns";
-import { Chip, Stack, Typography, Button, Link } from "@mui/material";
+import { Chip, Stack, Typography } from "@mui/material";
 import ActionMenu from "./ActionMenu";
 import type { Interview } from "@/types/job";
 
@@ -69,7 +69,7 @@ const InterviewTableRow: React.FC<InterviewTableRowProps> = ({ interview }) => {
           label={interview.interview_status}
           size="small"
           color={interview.interview_status === "UPCOMING" ? "info" : "default"}
-          variant="soft"
+          variant="filled"
         />
       </StyledTableCell>
 

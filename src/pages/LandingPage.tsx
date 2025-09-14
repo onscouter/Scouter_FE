@@ -6,10 +6,8 @@ import HeroLogo from "@/features/landing/components/HeroLogo";
 import LandingHeading from "@/features/landing/components/LandingHeading";
 import WaitlistForm from "@/features/landing/components/WaitlistForm";
 import WaitlistSuccess from "@/features/landing/components/WaitlistSuccess";
-import { useAuth0 } from "@auth0/auth0-react";
 // import useIsMobile from "@/hooks/useIsMobile";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 
 const LandingPage = () => {
   const navigate = useNavigate();

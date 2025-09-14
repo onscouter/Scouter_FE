@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 // import { toast } from "react-toastify";
 import TrackerLayout from "@/layout/TrackerLayout";
 import RubricHeader from "@/features/competencyRubric/components/RubricHeader";
 import RubricEditor from "@/features/competencyRubric/components/RubricEditor";
 import { selectRubrics } from "@/store/rubricSlice";
 import { selectNewJob } from "@/store/newJobSlice";
-import { useCreateRole } from "@/features/createRole/useCreateRole";
 
 interface InterviewRubricPageProps {
   handleSave: () => void;

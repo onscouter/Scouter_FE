@@ -30,7 +30,7 @@ const JobFormPage: React.FC<JobFormPageProps> = ({
   initialCompetencies = [],
   onSubmit,
 }) => {
-  const { mutate, isPending } = useSuggestCompetencies();
+  const { isPending } = useSuggestCompetencies();
 
   const [newTitle, setNewTitle] = useState(initialTitle);
   const [newDescription, setNewDescription] = useState(initialDescription);

@@ -85,3 +85,15 @@ export const createCandidate = async (data: FormData) => {
     throw error;
   }
 };
+
+export const deleteCandidate = async (jobId: string, candidateId: string) => {
+  try {
+    const response = await apiClient.delete(
+      `/recruiter/${jobId}/${candidateId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error in deleteCandidate:", error);
+    throw error;
+  }
+};

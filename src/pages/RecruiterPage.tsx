@@ -1,6 +1,6 @@
 import LandingLayout from "@/layout/LandingLayout";
 import { Box } from "@mui/material";
-import useIsMobile from "@/hooks/useIsMobile";
+// import useIsMobile from "@/hooks/useIsMobile";
 import Options from "@/features/recruiter/components/Options";
 import { Search, Plus } from "lucide-react";
 import theme from "@/styles/theme";
@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 const RecruiterPage = () => {
   const navigate = useNavigate();
-  const isMobile = useIsMobile();
+  // const isMobile = useIsMobile();
 
   return (
     <LandingLayout>

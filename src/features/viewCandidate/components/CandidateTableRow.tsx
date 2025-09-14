@@ -1,4 +1,4 @@
-import { Chip, Typography } from "@mui/material";
+import { Box, Chip, Typography } from "@mui/material";
 import {
   StyledTableCell,
   StyledTableRow,
@@ -8,6 +8,7 @@ import type { ApplicationOut } from "../api";
 import theme from "@/styles/theme";
 import type React from "react";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
+import ActionMenu from "@/features/viewCandidate/components/ActionMenu";
 
 interface CandidateTableRowProps {
   candidate: ApplicationOut;
@@ -18,6 +19,8 @@ interface CandidateTableRowProps {
     width?: number | string;
     align?: "left" | "center" | "right";
   }[];
+  onEdit: (candidateId: string) => void;
+  onDelete: (candidateId: string) => void;
 }
 
 function formatPhoneNumberIntl(countryCode: string, number: string): string {
@@ -30,6 +33,8 @@ function formatPhoneNumberIntl(countryCode: string, number: string): string {
 const CandidateTableRow: React.FC<CandidateTableRowProps> = ({
   candidate,
   headCells,
+  onEdit,
+  onDelete,
 }: CandidateTableRowProps) => {
   const validScores = candidate.interviews
     .map((i) => i.score)
@@ -108,12 +113,12 @@ const CandidateTableRow: React.FC<CandidateTableRowProps> = ({
           return (
             <StyledTableCell
               key={id}
-              sticky={sticky}
               align={align}
               noEllipsis
               sx={{
                 minWidth: width,
-                right: 140,
+                // REMOVE sticky styling so it scrolls with the content
+                backgroundColor: "white", // optional
                 borderLeft: `1px solid ${theme.palette.divider}`,
               }}
             >
@@ -129,7 +134,6 @@ const CandidateTableRow: React.FC<CandidateTableRowProps> = ({
                       : averageScore >= 3
                       ? "#FBBF24"
                       : "#F87171",
-
                   color: "#fff",
                   fontWeight: 600,
                   px: 1.5,
@@ -145,10 +149,17 @@ const CandidateTableRow: React.FC<CandidateTableRowProps> = ({
           return (
             <StyledTableCell
               key={id}
-              sticky={sticky}
+              sticky="right"
               align={align}
               noEllipsis
-              sx={{ minWidth: width }}
+              sx={{
+                minWidth: width,
+                right: 50,
+                position: "sticky",
+                backgroundColor: "white",
+                zIndex: 1,
+                borderLeft: `1px solid ${theme.palette.divider}`,
+              }}
             >
               <Chip
                 label={candidate.status}
@@ -166,6 +177,41 @@ const CandidateTableRow: React.FC<CandidateTableRowProps> = ({
                   fontSize: "0.75rem",
                 }}
               />
+            </StyledTableCell>
+          );
+        }
+
+        if (id === "actions") {
+          return (
+            <StyledTableCell
+              key={id}
+              sticky="right"
+              align={align}
+              noEllipsis
+              sx={{
+                minWidth: width,
+                right: 0,
+                position: "sticky",
+                backgroundColor: "white",
+                zIndex: 2,
+                paddingY: 0,
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: "100%",
+                  minHeight: "40px",
+                }}
+              >
+                <ActionMenu
+                  candidateId={candidate.candidate.candidate_public_id}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                />
+              </Box>
             </StyledTableCell>
           );
         }

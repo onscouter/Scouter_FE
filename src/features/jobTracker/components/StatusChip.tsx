@@ -1,10 +1,11 @@
 import { useTheme } from "@mui/material/styles";
-import { Chip, useMediaQuery } from "@mui/material";
+import { Chip } from "@mui/material";
 import type { JobStatus } from "@/types/job";
+import useIsMobile from "@/hooks/useIsMobile";
 
 const StatusChip: React.FC<{ status: JobStatus }> = ({ status }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useIsMobile();
 
   return (
     <Chip

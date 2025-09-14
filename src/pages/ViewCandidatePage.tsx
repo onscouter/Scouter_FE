@@ -10,8 +10,9 @@ import { useParams } from "react-router-dom";
 import { setAppLoading } from "@/store/appSlice";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
-import type { ApplicationOut } from "@/features/viewCandidate/api";
+import { type ApplicationOut } from "@/features/viewCandidate/api";
 import CreateCandidateModal from "../features/viewCandidate/components/CreateCandidatePage";
+import { useDeleteCandidate } from "@/features/viewCandidate/useDeleteCandidate";
 
 const CandidateViewPage = () => {
   const dispatch = useDispatch();
@@ -43,6 +44,8 @@ const CandidateViewPage = () => {
     order,
   });
 
+  const { mutate: deleteCandidate } = useDeleteCandidate();
+
   useEffect(() => {
     dispatch(setAppLoading(isLoading));
   }, [isLoading, dispatch]);
@@ -73,6 +76,14 @@ const CandidateViewPage = () => {
   const onSuccess = () => {
     refetch();
     setOpen(false);
+  };
+
+  const onDelete = (candidateId: string) => {
+    deleteCandidate({ jobId: jobId ?? "", candidateId });
+  };
+
+  const onEdit = (candidateId: string) => {
+    console.log("Edit candidate:", candidateId);
   };
 
   const shouldShowEmptyState = !isLoading && candidates.length === 0;
@@ -121,6 +132,8 @@ const CandidateViewPage = () => {
           }}
           onRequestSort={handleRequestSort}
           rowsPerPageOptions={rowsPerPageOptions}
+          onEdit={onEdit}
+          onDelete={onDelete}
         />
       )}
     </TrackerLayout>

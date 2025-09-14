@@ -15,6 +15,8 @@ interface CandidateTableProps {
   onRowsPerPageChange: (rowsPerPage: number) => void;
   onRequestSort: (property: keyof ApplicationOut) => void;
   rowsPerPageOptions: number[];
+  onEdit: (candidateId: string) => void;
+  onDelete: (candidateId: string) => void;
 }
 
 function extractEvaluationNames(candidates: ApplicationOut[]): string[] {
@@ -29,7 +31,7 @@ function generateCandidateHeadCells(candidates: ApplicationOut[]): HeadCell[] {
   const visibleEvaluations = evaluationNames.slice(0, 10);
 
   return [
-    { id: "name", label: "Candidate", sticky: "left", width: "240px" },
+    { id: "name", label: "Candidate", sticky: "left", width: "230px" },
     ...visibleEvaluations.map((name) => ({
       id: `eval:${name}`,
       label: name,
@@ -40,7 +42,6 @@ function generateCandidateHeadCells(candidates: ApplicationOut[]): HeadCell[] {
     {
       id: "averageScore",
       label: "Avg. Score",
-      sticky: "right",
       width: "120px",
       align: "center",
       sortable: false,
@@ -50,7 +51,15 @@ function generateCandidateHeadCells(candidates: ApplicationOut[]): HeadCell[] {
       label: "Decision",
       sticky: "right",
       width: "140px",
-      align: "left",
+      align: "center",
+      sortable: false,
+    },
+    {
+      id: "actions",
+      label: "",
+      width: "50px",
+      align: "center",
+      sticky: "right",
       sortable: false,
     },
   ];
@@ -67,6 +76,8 @@ const CandidateTable: React.FC<CandidateTableProps> = ({
   onRowsPerPageChange,
   onRequestSort,
   rowsPerPageOptions,
+  onEdit,
+  onDelete,
 }) => {
   const headCells = generateCandidateHeadCells(candidates);
   return (
@@ -87,6 +98,8 @@ const CandidateTable: React.FC<CandidateTableProps> = ({
           key={candidate.job_application_public_id}
           candidate={candidate}
           headCells={headCells}
+          onEdit={onEdit}
+          onDelete={onDelete}
         />
       )}
     />

@@ -38,15 +38,17 @@ function TableHeader<T>({
             position: cell.sticky ? "sticky" : "static",
             right:
               cell.sticky === "right"
-                ? cell.id === "averageScore"
-                  ? 140
+                ? cell.id === "decision"
+                  ? 50
                   : 0
                 : undefined,
             left: cell.sticky === "left" ? 0 : undefined,
             zIndex: cell.sticky ? 3 : undefined,
             backgroundColor: (theme) => theme.palette.background.paper,
             borderLeft:
-              cell.id.startsWith("eval:") || cell.id === "averageScore"
+              cell.id.startsWith("eval:") ||
+              cell.id === "averageScore" ||
+              cell.id === "decision"
                 ? (theme) => `1px solid ${theme.palette.divider}`
                 : undefined,
           }}
