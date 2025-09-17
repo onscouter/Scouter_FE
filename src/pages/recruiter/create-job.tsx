@@ -5,9 +5,9 @@ import { setTitle, setDescription } from "@/store/newJobSlice";
 import { setAppLoading } from "@/store/appSlice";
 import { setRubric } from "@/store/rubricSlice";
 import { generateMockRubric } from "@/features/competencyRubric/mockInterviewQuestions";
-import JobFormPage from "@/pages/JobFormPage";
+import JobFormPage from "@/pages/recruiter/job-form";
 
-const CreateRolePage = () => {
+const CreateJobPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -38,4 +38,4 @@ const CreateRolePage = () => {
   return <JobFormPage mode="create" onSubmit={handleCreate} />;
 };
 
-export default CreateRolePage;
+export default CreateJobPage;

@@ -8,7 +8,7 @@ import {
   selectRubrics,
   setRubric,
 } from "@/store/rubricSlice";
-import JobFormPage from "@/pages/JobFormPage";
+import JobFormPage from "@/pages/recruiter/job-form";
 import { useEffect } from "react";
 import { useGetRole } from "@/features/editRole/useGetRole";
 import type { Rubric } from "@/types/rubric";

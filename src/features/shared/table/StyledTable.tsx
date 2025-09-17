@@ -1,11 +1,13 @@
 import { styled, TableCell, tableCellClasses, TableRow } from "@mui/material";
 
 export const StyledTableCell = styled(TableCell, {
-  shouldForwardProp: (prop) => prop !== "noEllipsis" && prop !== "sticky",
+  shouldForwardProp: (prop) =>
+    prop !== "noEllipsis" && prop !== "sticky" && prop !== "hoverable",
 })<{
   noEllipsis?: boolean;
   sticky?: "left" | "right";
-}>(({ theme, noEllipsis, sticky }) => ({
+  hoverable?: boolean;
+}>(({ theme, noEllipsis, sticky, hoverable }) => ({
   ...(noEllipsis
     ? {}
     : {
@@ -28,6 +30,13 @@ export const StyledTableCell = styled(TableCell, {
     fontSize: "0.875rem",
     padding: "14px 16px",
     verticalAlign: "middle",
+    ...(hoverable && {
+      transition: "background-color 0.2s ease",
+      "&:hover": {
+        backgroundColor: theme.palette.action.hover,
+        cursor: "pointer",
+      },
+    }),
   },
   ...(sticky === "left" && {
     position: "sticky",

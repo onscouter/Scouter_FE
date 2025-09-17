@@ -1,13 +1,13 @@
 import React from "react";
 import { useCreateRole } from "@/features/createRole/useCreateRole";
-import InterviewRubricPage from "@/pages/InterviewRubricPage";
+import CompetencyForm from "@/pages/recruiter/competency-form";
 import { buildPayload } from "@/features/createRole/buildPayload";
 import { useDispatch, useSelector } from "react-redux";
 import { selectRubrics } from "@/store/rubricSlice";
 import { setAppLoading } from "@/store/appSlice";
 import { selectNewJob } from "@/store/newJobSlice";
 
-const CreateRubricPage: React.FC = () => {
+const CreateCompetencyPage: React.FC = () => {
   const { mutateAsync: createRole } = useCreateRole();
   const dispatch = useDispatch();
   const rubricMap = useSelector(selectRubrics);
@@ -21,7 +21,7 @@ const CreateRubricPage: React.FC = () => {
     createRole(payload);
   };
 
-  return <InterviewRubricPage handleSave={handleSave} />;
+  return <CompetencyForm handleSave={handleSave} />;
 };
 
-export default CreateRubricPage;
+export default CreateCompetencyPage;

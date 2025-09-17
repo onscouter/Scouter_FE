@@ -6,7 +6,7 @@ import { Search, Plus } from "lucide-react";
 import theme from "@/styles/theme";
 import { useNavigate } from "react-router-dom";
 
-const RecruiterPage = () => {
+const RecruiterLandingpage = () => {
   const navigate = useNavigate();
   // const isMobile = useIsMobile();
 
@@ -55,4 +55,4 @@ const RecruiterPage = () => {
   );
 };
 
-export default RecruiterPage;
+export default RecruiterLandingpage;

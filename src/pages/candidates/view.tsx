@@ -11,7 +11,7 @@ import { setAppLoading } from "@/store/appSlice";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { type ApplicationOut } from "@/features/viewCandidate/api";
-import CreateCandidateModal from "../features/viewCandidate/components/CreateCandidatePage";
+import CreateCandidateModal from "../../features/viewCandidate/components/CreateCandidatePage";
 import { useDeleteCandidate } from "@/features/viewCandidate/useDeleteCandidate";
 
 const CandidateViewPage = () => {
@@ -76,6 +76,14 @@ const CandidateViewPage = () => {
   const onSuccess = () => {
     refetch();
     setOpen(false);
+  };
+
+  const onScheduleInterview = (candidateId: string) => {
+    console.log("Schedule interview for candidate:", candidateId);
+  };
+
+  const onViewInterview = (candidateId: string) => {
+    console.log("View interview for candidate:", candidateId);
   };
 
   const onDelete = (candidateId: string) => {

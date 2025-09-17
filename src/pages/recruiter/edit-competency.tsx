@@ -1,6 +1,6 @@
 import React from "react";
 import { useUpdateRole } from "@/features/editRole/useEditRole";
-import InterviewRubricPage from "@/pages/InterviewRubricPage";
+import InterviewRubricPage from "@/pages/recruiter/competency-form";
 import { useParams } from "react-router-dom";
 import { setAppLoading } from "@/store/appSlice";
 import { selectNewJob } from "@/store/newJobSlice";
@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectRubrics } from "@/store/rubricSlice";
 import { buildPayload } from "@/features/createRole/buildPayload";
 
-const EditRubricPage: React.FC = () => {
+const EditCompetencyPage: React.FC = () => {
   const dispatch = useDispatch();
   const rubricMap = useSelector(selectRubrics);
   const newJob = useSelector(selectNewJob);
@@ -25,4 +25,4 @@ const EditRubricPage: React.FC = () => {
   return <InterviewRubricPage handleSave={handleSave} />;
 };
 
-export default EditRubricPage;
+export default EditCompetencyPage;

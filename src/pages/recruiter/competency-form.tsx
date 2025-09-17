@@ -7,13 +7,11 @@ import RubricEditor from "@/features/competencyRubric/components/RubricEditor";
 import { selectRubrics } from "@/store/rubricSlice";
 import { selectNewJob } from "@/store/newJobSlice";
 
-interface InterviewRubricPageProps {
+interface CompetencyFormProps {
   handleSave: () => void;
 }
 
-const InterviewRubricPage: React.FC<InterviewRubricPageProps> = ({
-  handleSave,
-}) => {
+const CompetencyForm: React.FC<CompetencyFormProps> = ({ handleSave }) => {
   const rubricMap = useSelector(selectRubrics);
 
   console.log(useSelector(selectRubrics));
@@ -51,4 +49,4 @@ const InterviewRubricPage: React.FC<InterviewRubricPageProps> = ({
   );
 };
 
-export default InterviewRubricPage;
+export default CompetencyForm;

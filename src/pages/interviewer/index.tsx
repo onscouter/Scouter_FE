@@ -12,7 +12,7 @@ import InterviewTable from "@/features/interviewTracker/components/InterviewTabl
 import { useInterviews } from "@/features/interviewTracker/useInterviews";
 import type { Interview } from "@/types/job";
 
-const InterviewTrackerPage = () => {
+const InterviewerLandingPage = () => {
   const dispatch = useDispatch();
   // const navigate = useNavigate();
   const user = useSelector(selectUser);
@@ -115,4 +115,4 @@ const InterviewTrackerPage = () => {
   );
 };
 
-export default InterviewTrackerPage;
+export default InterviewerLandingPage;

@@ -11,11 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { selectUser } from "@/store/authSlice";
 import apiClient from "@/api";
 
-type NavbarProps = {
-  onCartClick?: () => void;
-};
-
-const Navbar: React.FC<NavbarProps> = () => {
+const Navbar: React.FC = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const user = useSelector(selectUser);
@@ -32,9 +28,9 @@ const Navbar: React.FC<NavbarProps> = () => {
 
       const redirectMap: Record<"admin" | "recruiter" | "interviewer", string> =
         {
-          admin: "/admin-dashboard",
-          recruiter: "/recruiter-home",
-          interviewer: "/interviewer-dashboard",
+          admin: "/admin",
+          recruiter: "/recruiter",
+          interviewer: "/interviewer",
         };
 
       if (role && redirectMap[role]) {
@@ -126,6 +122,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                 handleLogOut={handleLogOut}
                 handleLogin={handleLogin}
                 isAuthenticated={isAuthenticated}
+                role={user?.role as "admin" | "recruiter" | "interviewer"}
               />
             ) : (
               <NavbarLg

@@ -90,6 +90,7 @@ const CandidateTableRow: React.FC<CandidateTableRowProps> = ({
             <StyledTableCell
               key={id}
               sticky={sticky}
+              hoverable
               align={align}
               sx={{
                 minWidth: width,
@@ -117,7 +118,6 @@ const CandidateTableRow: React.FC<CandidateTableRowProps> = ({
               noEllipsis
               sx={{
                 minWidth: width,
-                // REMOVE sticky styling so it scrolls with the content
                 backgroundColor: "white", // optional
                 borderLeft: `1px solid ${theme.palette.divider}`,
               }}

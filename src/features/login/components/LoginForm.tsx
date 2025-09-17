@@ -56,9 +56,9 @@ const LoginForm: React.FC = () => {
         setLastToast(null);
 
         const redirectMap: Record<typeof employee.role, string> = {
-          admin: "/admin-dashboard",
-          recruiter: "/recruiter-home",
-          interviewer: "/interviewer-home",
+          admin: "/admin",
+          recruiter: "/recruiter",
+          interviewer: "/interviewer",
         };
 
         const redirectTo = redirectMap[employee.role];
