@@ -6,10 +6,10 @@ import { useEffect, useMemo } from "react";
 import { selectUser } from "@/store/authSlice";
 import { setAppLoading } from "@/store/appSlice";
 // import { useNavigate } from "react-router-dom";
-import InterviewTrackerHeader from "@/features/interviewTracker/components/InterviewTrackerHeader";
-import { useInterviewTracker } from "@/features/interviewTracker/useInterviewTracker";
-import InterviewTable from "@/features/interviewTracker/components/InterviewTable";
-import { useInterviews } from "@/features/interviewTracker/useInterviews";
+import InterviewTrackerHeader from "@/features/interviewer/interviewTracker/components/InterviewTrackerHeader";
+import { useInterviewTracker } from "@/features/interviewer/interviewTracker/useInterviewTracker";
+import InterviewTable from "@/features/interviewer/interviewTracker/components/InterviewTable";
+import { useInterviews } from "@/features/interviewer/interviewTracker/useInterviews";
 import type { Interview } from "@/types/job";
 
 const InterviewerLandingPage = () => {

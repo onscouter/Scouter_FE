@@ -1,10 +1,10 @@
-import { type Competency } from "@/types/competency";
+import { type CompetencyMinimal } from "@/types/competency";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { setTitle, setDescription } from "@/store/newJobSlice";
 import { setAppLoading } from "@/store/appSlice";
-import { setRubric } from "@/store/rubricSlice";
-import { generateMockRubric } from "@/features/competencyRubric/mockInterviewQuestions";
+import { setCompetency } from "@/store/newCompetencySlice";
+import { generateMockRubric } from "@/features/recruiter/competencyRubric/mockInterviewQuestions";
 import JobFormPage from "@/pages/recruiter/job-form";
 
 const CreateJobPage = () => {
@@ -18,7 +18,7 @@ const CreateJobPage = () => {
   }: {
     title: string;
     description: string;
-    competencies: Competency[];
+    competencies: CompetencyMinimal[];
   }) => {
     dispatch(setAppLoading(true));
     dispatch(setTitle(title));
@@ -27,11 +27,11 @@ const CreateJobPage = () => {
     setTimeout(() => {
       competencies.forEach((comp) => {
         const rubric = generateMockRubric(comp);
-        dispatch(setRubric(rubric));
+        dispatch(setCompetency(rubric));
       });
 
       dispatch(setAppLoading(false));
-      navigate("/recruiter-home/create-role/competency-rubric");
+      navigate("/recruiter/create-job/competency-rubric");
     }, 1500);
   };
 

@@ -1,51 +1,53 @@
-export const QuestionType = {
-  Behavioral: "behavioral",
-  Technical: "technical",
-  Situational: "situational",
-} as const;
-
-export type QuestionType = (typeof QuestionType)[keyof typeof QuestionType];
-
-export interface InterviewQuestion {
-  id: string;
-  text: string;
-  type: QuestionType;
-}
+import { type Theme } from "@mui/material/styles";
 
 export interface Indicator {
-  id: string;
-  competencyId: string;
-  text: string;
+  evaluation_indicator_public_id: string;
+  indicator_text: string;
 }
 
-export interface EvaluationLevel {
-  score: number;
+export interface RubricLevel {
+  rubric_level_public_id: string;
+  level: EvaluationLevelValue;
   description: string;
   indicators: Indicator[];
 }
 
-export interface Rubric {
-  id: string;
-  description: string;
-  competencyId: string;
-  competencyName: string;
-  questions: InterviewQuestion[];
-  criteria: EvaluationLevel[];
-}
+export type EvaluationLevelValue = 1 | 2 | 3 | 4 | 5;
 
-export interface RubricState {
-  rubrics: Record<string, Rubric>;
-}
-
-export interface RoleCreatePayload {
-  title: string;
-  description: string;
-  rubric: Rubric[];
-}
-
-export interface GetRoleResponse {
-  job_position_public_id: string;
-  title: string;
-  description: string;
-  rubric: Rubric[];
-}
+export const getEvaluationLevelOptions = (theme: Theme) => [
+  {
+    label: "Does Not Meet Expectations",
+    value: 1,
+    color: theme.palette.evaluationType.doesNotMeet,
+    textColor: theme.palette.evaluationType.doesNotMeetText,
+    borderColor: theme.palette.evaluationType.doesNotMeetBorder,
+  },
+  {
+    label: "Needs Improvement",
+    value: 2,
+    color: theme.palette.evaluationType.below,
+    textColor: theme.palette.evaluationType.belowText,
+    borderColor: theme.palette.evaluationType.belowBorder,
+  },
+  {
+    label: "Meets Expectations",
+    value: 3,
+    color: theme.palette.evaluationType.meets,
+    textColor: theme.palette.evaluationType.meetsText,
+    borderColor: theme.palette.evaluationType.meetsBorder,
+  },
+  {
+    label: "Above Average",
+    value: 4,
+    color: theme.palette.evaluationType.above,
+    textColor: theme.palette.evaluationType.aboveText,
+    borderColor: theme.palette.evaluationType.aboveBorder,
+  },
+  {
+    label: "Exceeds Expectations",
+    value: 5,
+    color: theme.palette.evaluationType.exceeds,
+    textColor: theme.palette.evaluationType.exceedsText,
+    borderColor: theme.palette.evaluationType.exceedsBorder,
+  },
+];

@@ -2,31 +2,29 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 // import { toast } from "react-toastify";
 import TrackerLayout from "@/layout/TrackerLayout";
-import RubricHeader from "@/features/competencyRubric/components/RubricHeader";
-import RubricEditor from "@/features/competencyRubric/components/RubricEditor";
-import { selectRubrics } from "@/store/rubricSlice";
-import { selectNewJob } from "@/store/newJobSlice";
+import RubricHeader from "@/features/recruiter/competencyRubric/components/RubricHeader";
+import RubricEditor from "@/features/recruiter/competencyRubric/components/RubricEditor";
+import { selectCompetencies } from "@/store/newCompetencySlice";
 
 interface CompetencyFormProps {
   handleSave: () => void;
 }
 
 const CompetencyForm: React.FC<CompetencyFormProps> = ({ handleSave }) => {
-  const rubricMap = useSelector(selectRubrics);
-
-  console.log(useSelector(selectRubrics));
-  console.log(useSelector(selectNewJob));
-
-  const competencyIds = Object.keys(rubricMap);
-  const competencies = competencyIds.map((id) => ({
-    competencyId: id,
-    competencyName: rubricMap[id].competencyName,
-    description: rubricMap[id].description,
+  const competencyMap = useSelector(selectCompetencies);
+  const competency_public_id = Object.keys(competencyMap);
+  const competencies = competency_public_id.map((id) => ({
+    competency_public_id: id,
+    competency_name: competencyMap[id].competency_name,
+    description: competencyMap[id].description,
+    questions: competencyMap[id].questions,
+    rubric_levels: competencyMap[id].rubric_levels,
   }));
 
   const [stepIndex, setStepIndex] = useState(0);
   const current = competencies[stepIndex];
 
+  console.log(current);
   const handleNext = () =>
     setStepIndex((prev) => Math.min(prev + 1, competencies.length - 1));
   const handlePrev = () => setStepIndex((prev) => Math.max(prev - 1, 0));
@@ -38,8 +36,8 @@ const CompetencyForm: React.FC<CompetencyFormProps> = ({ handleSave }) => {
       <RubricHeader
         stepIndex={stepIndex}
         total={competencies.length}
-        competencyId={current.competencyId}
-        competencyName={current.competencyName}
+        competency_public_id={current.competency_public_id}
+        competency_name={current.competency_name}
         onNext={handleNext}
         onPrev={handlePrev}
         onSave={handleSave}

@@ -1,15 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
 import appReducer from "@/store/appSlice";
 import authReducer from "@/store/authSlice";
-import rubricSlice from "@/store/rubricSlice";
-import newJobSlice from "./newJobSlice";
+import newJobSlice from "@/store/newJobSlice";
+import newCompetencySlice from "@/store/newCompetencySlice";
 
 export const store = configureStore({
   reducer: {
     app: appReducer,
     auth: authReducer,
-    rubric: rubricSlice,
     newJob: newJobSlice,
+    competencies: newCompetencySlice,
   },
 });
 

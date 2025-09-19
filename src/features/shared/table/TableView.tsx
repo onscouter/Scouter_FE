@@ -7,7 +7,7 @@ import {
   TablePagination,
 } from "@mui/material";
 import TableHeader, { type HeadCell } from "./TableHeader";
-import type { Order } from "@/types/job";
+import type { Order } from "@/types/filters";
 
 interface TableViewProps<T> {
   total: number;

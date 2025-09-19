@@ -11,7 +11,7 @@ const ReturnButton: React.FC = () => {
       startIcon={<ArrowLeft size={18} />}
       variant="text"
       disableElevation
-      onClick={() => navigate("/recruiter-home")}
+      onClick={() => navigate("/recruiter")}
       sx={{
         fontWeight: 600,
         fontSize: "0.95rem",

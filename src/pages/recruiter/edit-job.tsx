@@ -1,48 +1,40 @@
-import { type Competency } from "@/types/competency";
+import { type Competency, type CompetencyMinimal } from "@/types/competency";
 import { useNavigate, useParams } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setTitle, setDescription } from "@/store/newJobSlice";
 import { setAppLoading } from "@/store/appSlice";
-import {
-  addRubricIfNotExists,
-  selectRubrics,
-  setRubric,
-} from "@/store/rubricSlice";
 import JobFormPage from "@/pages/recruiter/job-form";
 import { useEffect } from "react";
-import { useGetRole } from "@/features/editRole/useGetRole";
-import type { Rubric } from "@/types/rubric";
-import { generateMockRubric } from "@/features/competencyRubric/mockInterviewQuestions";
+import { useGetJob } from "@/features/recruiter/editJob/useGetJob";
+import { setJob } from "@/store/newJobSlice";
+import { generateMockRubric } from "@/features/recruiter/competencyRubric/mockInterviewQuestions";
+import {
+  setCompetency,
+  addRubricIfNotExists,
+} from "@/store/newCompetencySlice";
 
 const EditJobPage = () => {
-  const { jobId } = useParams<{ jobId: string }>();
+  const { job_position_public_id } = useParams<{
+    job_position_public_id: string;
+  }>();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log(useSelector(selectRubrics));
 
-  console.log(jobId);
-  const { data, isLoading } = useGetRole(jobId ?? "");
-  console.log(data);
+  const { data: job, isLoading } = useGetJob(job_position_public_id ?? "");
   useEffect(() => {
-    dispatch(setAppLoading(isLoading && !data));
-  }, [isLoading, dispatch, data]);
+    dispatch(setAppLoading(isLoading || !job));
+  }, [isLoading, dispatch, job]);
 
   useEffect(() => {
-    // Only set Redux state when data is fully ready
-    if (data) {
-      dispatch(setTitle(data.title));
-      dispatch(setDescription(data.description));
-      data.rubric.forEach((rubricBlock: Rubric) => {
-        dispatch(setRubric(rubricBlock));
+    if (job) {
+      dispatch(setJob(job));
+      job.competencies.forEach((competency: Competency) => {
+        dispatch(setCompetency(competency));
       });
     }
-  }, [data, dispatch]);
+  }, [job, dispatch]);
 
-  const testing = useSelector(selectRubrics);
-  console.log(testing);
-  if (isLoading || !data) {
-    return null; // or a loading spinner
-  }
+  console.log("job", job);
 
   const handleEdit = ({
     title,
@@ -51,7 +43,7 @@ const EditJobPage = () => {
   }: {
     title: string;
     description: string;
-    competencies: Competency[];
+    competencies: CompetencyMinimal[];
   }) => {
     dispatch(setAppLoading(true));
     dispatch(setTitle(title));
@@ -64,16 +56,20 @@ const EditJobPage = () => {
 
     setTimeout(() => {
       dispatch(setAppLoading(false));
-      navigate(`/recruiter-home/edit-job/competency-rubric/${jobId}`);
+      navigate(
+        `/recruiter/edit-job/competency-rubric/${job_position_public_id}`
+      );
     }, 50);
   };
+
+  if (!job || isLoading) return null;
 
   return (
     <JobFormPage
       mode="edit"
-      initialTitle={data.title}
-      initialDescription={data.description}
-      initialCompetencies={data.rubric}
+      initialTitle={job.title}
+      initialDescription={job.description}
+      initialCompetencies={job.competencies}
       onSubmit={handleEdit}
     />
   );

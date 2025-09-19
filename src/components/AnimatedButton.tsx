@@ -3,7 +3,6 @@ import { Button, styled } from "@mui/material";
 type AnimatedButtonProps = {
   label: string;
   onClick?: () => void;
-  hideBg?: boolean;
 };
 
 const StyledButton = styled(Button)(({ theme }) => ({
@@ -16,15 +15,15 @@ const StyledButton = styled(Button)(({ theme }) => ({
   lineHeight: 1.2,
   height: 40,
   minWidth: "auto",
-  color: theme.palette.text.primary,
-  backgroundColor: "transparent",
   padding: "0.5rem 1.2rem",
+  backgroundColor: "transparent",
+  color: theme.palette.text.primary,
   border: "none",
 
-  "&::before, &::after": {
-    content: '""',
-    position: "absolute",
+  "&::before, &::after, .left-border, .right-border, .bottom-border": {
     backgroundColor: theme.palette.primary.main,
+    position: "absolute",
+    content: '""',
     transition: "all 0.3s ease",
   },
 
@@ -35,7 +34,6 @@ const StyledButton = styled(Button)(({ theme }) => ({
     width: 0,
     transitionDelay: "0.3s",
   },
-
   "&::after": {
     top: 0,
     right: 0,
@@ -44,29 +42,22 @@ const StyledButton = styled(Button)(({ theme }) => ({
     transitionDelay: "0.3s",
   },
 
+  // Bottom border
   "& .bottom-border": {
-    content: '""',
-    position: "absolute",
     bottom: 0,
     left: "50%",
     transform: "translateX(-50%)",
     height: "2px",
     width: 0,
-    backgroundColor: theme.palette.primary.main,
-    transition: "width 0.3s ease",
   },
 
+  // Side borders
   "& .left-border, & .right-border": {
-    content: '""',
-    position: "absolute",
     top: "100%",
     width: "2px",
     height: 0,
-    backgroundColor: theme.palette.primary.main,
-    transition: "all 0.3s ease",
     transitionDelay: "0.15s",
   },
-
   "& .left-border": { left: 0 },
   "& .right-border": { right: 0 },
 

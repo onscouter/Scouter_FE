@@ -1,11 +1,11 @@
 import LandingLayout from "@/layout/LandingLayout";
 import { Box } from "@mui/material";
 import React from "react";
-import AlreadyHaveAccess from "@/features/landing/components/AlreadyHaveAccess";
-import HeroLogo from "@/features/landing/components/HeroLogo";
-import LandingHeading from "@/features/landing/components/LandingHeading";
-import WaitlistForm from "@/features/landing/components/WaitlistForm";
-import WaitlistSuccess from "@/features/landing/components/WaitlistSuccess";
+import AlreadyHaveAccess from "@/features/main/home/components/AlreadyHaveAccess";
+import HeroLogo from "@/features/main/home/components/HeroLogo";
+import LandingHeading from "@/features/main/home/components/LandingHeading";
+import WaitlistForm from "@/features/main/home/components/WaitlistForm";
+import WaitlistSuccess from "@/features/main/home/components/WaitlistSuccess";
 // import useIsMobile from "@/hooks/useIsMobile";
 import { useNavigate } from "react-router-dom";
 

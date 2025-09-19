@@ -1,5 +1,5 @@
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
-import { fetchJobs } from "@/features/jobTracker/api";
+import { fetchJobs } from "@/features/recruiter/jobTracker/api";
 import type { JobFilters, JobsResponse } from "@/types/job";
 
 export const useTeam = (filters: JobFilters) => {

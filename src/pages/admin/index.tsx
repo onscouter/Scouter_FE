@@ -1,6 +1,6 @@
 import LandingLayout from "@/layout/LandingLayout";
 import { Box } from "@mui/material";
-import Options from "@/features/recruiter/components/Options";
+import Options from "@/features/recruiter/home/components/Options";
 import { BarChart3, Users, Briefcase } from "lucide-react";
 import theme from "@/styles/theme";
 import { useNavigate } from "react-router-dom";

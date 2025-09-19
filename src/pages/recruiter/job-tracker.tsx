@@ -1,25 +1,24 @@
-import TrackerLayout from "@/layout/TrackerLayout";
 import { Box } from "@mui/material";
-import JobTrackerHeader from "@/features/jobTracker/components/JobTrackerHeader";
-import JobToolBar from "@/features/jobTracker/components/JobToolBar";
-import JobList from "@/features/jobTracker/components/JobList";
-import JobTable from "@/features/jobTracker/components/JobTable";
+import JobTrackerHeader from "@/features/recruiter/jobTracker/components/JobTrackerHeader";
+import JobToolBar from "@/features/recruiter/jobTracker/components/JobToolBar";
+import JobList from "@/features/recruiter/jobTracker/components/JobList";
+import JobTable from "@/features/recruiter/jobTracker/components/JobTable";
 import EmptyState from "@/components/EmptyState";
-import { useJobTracker } from "@/features/jobTracker/useJobTracker";
-import { useJobs } from "@/features/jobTracker/useJobs";
+import { useJobTracker } from "@/features/recruiter/jobTracker/useJobTracker";
+import { useJobs } from "@/features/recruiter/jobTracker/useJobs";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo } from "react";
 import { selectUser } from "@/store/authSlice";
 import { setAppLoading } from "@/store/appSlice";
 import type { Job } from "@/types/job";
 import { useNavigate } from "react-router-dom";
-import { useDeleteJob } from "@/features/jobTracker/useDeleteJob";
+import { useDeleteJob } from "@/features/recruiter/jobTracker/useDeleteJob";
 
 const JobTrackerPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector(selectUser);
-  const companyId = user?.company?.company_public_id ?? "";
+  const company_public_id = user?.company?.company_public_id ?? "";
 
   const {
     viewMode,
@@ -41,7 +40,7 @@ const JobTrackerPage = () => {
   } = useJobTracker();
 
   const { data, isLoading } = useJobs({
-    company_id: companyId,
+    company_public_id: company_public_id,
     page,
     limit: rowsPerPage,
     search: searchText,
@@ -63,10 +62,16 @@ const JobTrackerPage = () => {
   useEffect(() => {
     dispatch(setAppLoading(isLoading));
   }, [isLoading, dispatch]);
+
   const handleRequestSort = (property: keyof Job) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
+    setPage(1);
+  };
+
+  const onRowsPerPageChange = (newRowsPerPage: number) => {
+    setRowsPerPage(newRowsPerPage);
     setPage(1);
   };
 
@@ -75,21 +80,21 @@ const JobTrackerPage = () => {
   };
 
   const onEdit = (jobId: string) => {
-    navigate(`/recruiter-home/edit-job/${jobId}`);
+    navigate(`/recruiter/edit-job/${jobId}`);
   };
 
   const onViewCandidates = (jobId: string) => {
-    navigate(`/recruiter-home/jobs/${jobId}`);
+    navigate(`/recruiter/jobs/${jobId}`);
   };
 
   const onNewRole = () => {
-    navigate("/recruiter-home/create-role");
+    navigate("/recruiter/create-job");
   };
 
   const shouldShowEmptyState = total === 0;
 
   return (
-    <TrackerLayout>
+    <>
       <JobTrackerHeader
         searchInput={searchInput}
         setSearchInput={setSearchInput}
@@ -144,10 +149,7 @@ const JobTrackerPage = () => {
             order={order}
             orderBy={orderBy}
             onPageChange={setPage}
-            onRowsPerPageChange={(limit) => {
-              setRowsPerPage(limit);
-              setPage(1);
-            }}
+            onRowsPerPageChange={onRowsPerPageChange}
             onRequestSort={handleRequestSort}
             rowsPerPageOptions={rowsPerPageOptions}
             onEdit={onEdit}
@@ -156,7 +158,7 @@ const JobTrackerPage = () => {
           />
         )}
       </Box>
-    </TrackerLayout>
+    </>
   );
 };
 

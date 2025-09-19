@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "@mui/material";
-import LoginHeader from "@/features/login/components/LoginHeader";
-import LoginForm from "@/features/login/components/LoginForm";
+import LoginHeader from "@/features/main/login/components/LoginHeader";
+import LoginForm from "@/features/main/login/components/LoginForm";
 
 const LoginPage: React.FC = () => {
   return (

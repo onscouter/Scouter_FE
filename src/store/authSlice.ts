@@ -4,7 +4,7 @@ import {
   type PayloadAction,
 } from "@reduxjs/toolkit";
 // import apiClient from "@/api";
-import { type Employee } from "@/types/user";
+import { type Employee } from "@/types/employee";
 import type { RootState } from "@/store";
 
 interface AuthState {

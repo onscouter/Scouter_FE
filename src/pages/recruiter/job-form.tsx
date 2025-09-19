@@ -1,13 +1,13 @@
-import CustomCompetencyForm from "@/features/createRole/components/CreateCustomCompetency";
-import CreateRoleFooter from "@/features/createRole/components/CreateRoleFooter";
-import CreateRoleHeader from "@/features/createRole/components/CreateRoleHeader";
-import SelectedCompetencies from "@/features/createRole/components/SelectedCompetencies";
-import SuggestedCompetencies from "@/features/createRole/components/SuggestedCompetencies";
-import { mockCompetencies } from "@/features/createRole/mockCompetencies";
-import { useSuggestCompetencies } from "@/features/createRole/useSuggestCompetencies";
+import CustomCompetencyForm from "@/features/recruiter/jobForm/components/CustomCompetency";
+import CreateRoleFooter from "@/features/recruiter/jobForm/components/JobFormFooter";
+import CreateRoleHeader from "@/features/recruiter/jobForm/components/JobFormHeader";
+import SelectedCompetencies from "@/features/recruiter/jobForm/components/SelectedCompetencies";
+import SuggestedCompetencies from "@/features/recruiter/jobForm/components/SuggestedCompetencies";
+import { mockCompetencies } from "@/features/recruiter/createJob/mockCompetencies";
+import { useSuggestCompetencies } from "@/features/recruiter/createJob/useSuggestCompetencies";
 import TrackerLayout from "@/layout/TrackerLayout";
 import { setAppLoading } from "@/store/appSlice";
-import type { Competency } from "@/types/competency";
+import type { CompetencyMinimal } from "@/types/competency";
 import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
 
@@ -15,11 +15,11 @@ interface JobFormPageProps {
   mode: "create" | "edit";
   initialTitle?: string;
   initialDescription?: string;
-  initialCompetencies?: Competency[];
+  initialCompetencies?: CompetencyMinimal[];
   onSubmit: (data: {
     title: string;
     description: string;
-    competencies: Competency[];
+    competencies: CompetencyMinimal[];
   }) => void;
 }
 
@@ -35,26 +35,28 @@ const JobFormPage: React.FC<JobFormPageProps> = ({
   const [newTitle, setNewTitle] = useState(initialTitle);
   const [newDescription, setNewDescription] = useState(initialDescription);
   const [selectedCompetencies, setSelectedCompetencies] =
-    useState<Competency[]>(initialCompetencies);
+    useState<CompetencyMinimal[]>(initialCompetencies);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [showForm, setShowForm] = useState(false);
 
-  const handleAdd = (c: Competency) => {
+  const handleAdd = (c: CompetencyMinimal) => {
     setSelectedCompetencies((prev) =>
-      prev.some((x) => x.competencyId === c.competencyId) ? prev : [...prev, c]
+      prev.some((x) => x.competency_public_id === c.competency_public_id)
+        ? prev
+        : [...prev, c]
     );
   };
 
-  const handleRemove = (c: Competency) => {
+  const handleRemove = (c: CompetencyMinimal) => {
     setSelectedCompetencies((prev) =>
-      prev.filter((x) => x.competencyId !== c.competencyId)
+      prev.filter((x) => x.competency_public_id !== c.competency_public_id)
     );
   };
 
-  const handleToggle = (c: Competency) => {
+  const handleToggle = (c: CompetencyMinimal) => {
     setSelectedCompetencies((prev) =>
-      prev.some((x) => x.competencyId === c.competencyId)
-        ? prev.filter((x) => x.competencyId !== c.competencyId)
+      prev.some((x) => x.competency_public_id === c.competency_public_id)
+        ? prev.filter((x) => x.competency_public_id !== c.competency_public_id)
         : [...prev, c]
     );
   };

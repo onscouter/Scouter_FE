@@ -1,7 +1,7 @@
 import LandingLayout from "@/layout/LandingLayout";
 import { Box } from "@mui/material";
 // import useIsMobile from "@/hooks/useIsMobile";
-import Options from "@/features/recruiter/components/Options";
+import Options from "@/features/recruiter/home/components/Options";
 import { Search, Plus } from "lucide-react";
 import theme from "@/styles/theme";
 import { useNavigate } from "react-router-dom";
@@ -39,14 +39,14 @@ const RecruiterLandingpage = () => {
         >
           <Options
             icon={<Search size={36} color={theme.palette.primary.main} />}
-            handleOnClick={() => navigate("/recruiter-home/jobs")}
+            handleOnClick={() => navigate("/recruiter/jobs")}
             title="Job Tracker"
             description="View and manage your current jobs"
           />
           <Options
             icon={<Plus size={36} color={theme.palette.primary.main} />}
-            handleOnClick={() => navigate("/recruiter-home/create-role")}
-            title="Create New Role"
+            handleOnClick={() => navigate("/recruiter/create-job")}
+            title="Create New Job"
             description="Construct your new interview process"
           />
         </Box>

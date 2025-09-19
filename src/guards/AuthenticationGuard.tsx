@@ -5,16 +5,17 @@ import LoaderOverlay from "@/components/LoaderOverlay";
 import { useAuthGuard } from "@/hooks/useAuthGuard";
 
 type AuthenticationGuardProps = {
-  component: React.ComponentType;
+  children: React.ReactNode;
 };
 
 const AuthenticationGuard: React.FC<AuthenticationGuardProps> = ({
-  component: Component,
+  children,
 }) => {
   const loading = useAuthGuard();
   const user = useSelector(selectUser);
   if (loading) return <LoaderOverlay />;
-  if (user) return <Component />;
+  if (user) return <>{children}</>;
+
   return null;
 };
 

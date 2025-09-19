@@ -1,22 +1,23 @@
-import TrackerLayout from "@/layout/TrackerLayout";
-import CandidateTable from "@/features/viewCandidate/components/CandidateTable";
-import ViewCandidateToolBar from "@/features/viewCandidate/components/ViewCandidateToolBar";
-import { useCandidateFilter } from "@/features/viewCandidate/useCandidateFilter";
+import CandidateTable from "@/features/recruiter/viewCandidate/components/CandidateTable";
+import ViewCandidateToolBar from "@/features/recruiter/viewCandidate/components/ViewCandidateToolBar";
+import { useCandidateFilter } from "@/features/recruiter/viewCandidate/useCandidateFilter";
 import EmptyState from "@/components/EmptyState";
-import ViewCandidateHeader from "@/features/viewCandidate/components/ViewCandidateHeader";
-// import CandidateList from "@/features/viewCandidate/components/ListView";
-import { useJobCandidate } from "@/features/viewCandidate/useApplication";
+import ViewCandidateHeader from "@/features/recruiter/viewCandidate/components/ViewCandidateHeader";
+// import CandidateList from "@/features/recruiter/viewCandidate/components/ListView";
+import { useJobCandidate } from "@/features/recruiter/viewCandidate/useApplication";
 import { useParams } from "react-router-dom";
 import { setAppLoading } from "@/store/appSlice";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
-import { type ApplicationOut } from "@/features/viewCandidate/api";
-import CreateCandidateModal from "../../features/viewCandidate/components/CreateCandidatePage";
-import { useDeleteCandidate } from "@/features/viewCandidate/useDeleteCandidate";
+import CreateCandidateModal from "../../features/recruiter/viewCandidate/components/CreateCandidatePage";
+import { useDeleteCandidate } from "@/features/recruiter/viewCandidate/useDeleteCandidate";
+import type { Application } from "@/types/applicaiton";
 
 const CandidateViewPage = () => {
   const dispatch = useDispatch();
-  const { jobId } = useParams<{ jobId: string }>();
+  const { job_position_public_id } = useParams<{
+    job_position_public_id: string;
+  }>();
   const [open, setOpen] = useState(false);
   const {
     viewMode,
@@ -36,7 +37,7 @@ const CandidateViewPage = () => {
   } = useCandidateFilter();
 
   const { data, isLoading, refetch } = useJobCandidate({
-    job_position_public_id: jobId ?? "",
+    job_position_public_id: job_position_public_id ?? "",
     page,
     limit: rowsPerPage,
     search: searchText,
@@ -44,13 +45,14 @@ const CandidateViewPage = () => {
     order,
   });
 
-  const { mutate: deleteCandidate } = useDeleteCandidate();
+  const { mutate: deleteCandidate, isPending } = useDeleteCandidate();
 
   useEffect(() => {
-    dispatch(setAppLoading(isLoading));
-  }, [isLoading, dispatch]);
+    dispatch(setAppLoading(isPending || isLoading));
+  }, [isLoading, dispatch, isPending]);
 
   const candidates = data?.applications ?? [];
+  const job = data?.job_position;
   const total = candidates.length ?? 0;
 
   const rowsPerPageOptions = useMemo(
@@ -58,7 +60,7 @@ const CandidateViewPage = () => {
     [total]
   );
 
-  const handleRequestSort = (property: keyof ApplicationOut) => {
+  const handleRequestSort = (property: keyof Application) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
@@ -78,16 +80,19 @@ const CandidateViewPage = () => {
     setOpen(false);
   };
 
-  const onScheduleInterview = (candidateId: string) => {
-    console.log("Schedule interview for candidate:", candidateId);
-  };
+  // const onScheduleInterview = (candidateId: string) => {
+  //   console.log("Schedule interview for candidate:", candidateId);
+  // };
 
-  const onViewInterview = (candidateId: string) => {
-    console.log("View interview for candidate:", candidateId);
-  };
+  // const onViewInterview = (candidateId: string) => {
+  //   console.log("View interview for candidate:", candidateId);
+  // };
 
   const onDelete = (candidateId: string) => {
-    deleteCandidate({ jobId: jobId ?? "", candidateId });
+    deleteCandidate({
+      job_position_public_id: job_position_public_id ?? "",
+      candidateId,
+    });
   };
 
   const onEdit = (candidateId: string) => {
@@ -96,15 +101,15 @@ const CandidateViewPage = () => {
 
   const shouldShowEmptyState = !isLoading && candidates.length === 0;
   return (
-    <TrackerLayout>
+    <>
       <CreateCandidateModal
-        jobId={jobId}
+        job_position_public_id={job_position_public_id}
         open={open}
         onClose={onClose}
         onSuccess={onSuccess}
       />
       <ViewCandidateHeader
-        job_position_title={candidates[0]?.job_position_title}
+        job_position_title={job?.title ?? ""}
         onCreateCandidate={onCreateCandidate}
       />
       <ViewCandidateToolBar
@@ -144,7 +149,7 @@ const CandidateViewPage = () => {
           onDelete={onDelete}
         />
       )}
-    </TrackerLayout>
+    </>
   );
 };
 

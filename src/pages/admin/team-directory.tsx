@@ -1,18 +1,18 @@
 import { Box } from "@mui/material";
-import JobTrackerHeader from "@/features/jobTracker/components/JobTrackerHeader";
-import JobToolBar from "@/features/jobTracker/components/JobToolBar";
-import JobList from "@/features/jobTracker/components/JobList";
-import JobTable from "@/features/jobTracker/components/JobTable";
+import JobTrackerHeader from "@/features/recruiter/jobTracker/components/JobTrackerHeader";
+import JobToolBar from "@/features/recruiter/jobTracker/components/JobToolBar";
+import JobList from "@/features/recruiter/jobTracker/components/JobList";
+import JobTable from "@/features/recruiter/jobTracker/components/JobTable";
 import EmptyState from "@/components/EmptyState";
-import { useJobTracker } from "@/features/jobTracker/useJobTracker";
-import { useJobs } from "@/features/jobTracker/useJobs";
+import { useJobTracker } from "@/features/recruiter/jobTracker/useJobTracker";
+import { useJobs } from "@/features/recruiter/jobTracker/useJobs";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo } from "react";
 import { selectUser } from "@/store/authSlice";
 import { setAppLoading } from "@/store/appSlice";
 import type { Job } from "@/types/job";
 import { useNavigate } from "react-router-dom";
-import { useDeleteJob } from "@/features/jobTracker/useDeleteJob";
+import { useDeleteJob } from "@/features/recruiter/jobTracker/useDeleteJob";
 
 const TeamDirectoryPage = () => {
   const dispatch = useDispatch();
@@ -74,15 +74,15 @@ const TeamDirectoryPage = () => {
   };
 
   const onEdit = (jobId: string) => {
-    navigate(`/recruiter-home/edit-job/${jobId}`);
+    navigate(`/recruiter/edit-job/${jobId}`);
   };
 
   const onViewCandidates = (jobId: string) => {
-    navigate(`/recruiter-home/jobs/${jobId}`);
+    navigate(`/recruiter/jobs/${jobId}`);
   };
 
   const onNewRole = () => {
-    navigate("/recruiter-home/create-role");
+    navigate("/recruiter/create-job");
   };
 
   const shouldShowEmptyState = total === 0;

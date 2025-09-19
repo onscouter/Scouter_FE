@@ -24,13 +24,9 @@ const NavbarLg: React.FC<NavbarLgProps> = ({
       }}
     >
       {isAuthenticated ? (
-        <>
-          <AnimatedButton label="Logout" onClick={handleLogOut} />
-        </>
+        <AnimatedButton label="Logout" onClick={handleLogOut} />
       ) : (
-        <>
-          <AnimatedButton label="Login" onClick={handleLogin} />
-        </>
+        <AnimatedButton label="Login" onClick={handleLogin} />
       )}
     </Box>
   );

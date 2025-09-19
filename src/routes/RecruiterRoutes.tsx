@@ -18,18 +18,28 @@ const RecruiterRoutes = () => {
 
       <Route
         path="/"
-        element={<AuthenticationGuard component={RecruiterLayout} />}
+        element={
+          <AuthenticationGuard>
+            <RecruiterLayout />
+          </AuthenticationGuard>
+        }
       >
         <Route path="jobs" element={<JobTrackerPage />} />
-        <Route path="jobs/:jobId" element={<ViewCandidatePage />} />
-        <Route path="create-role" element={<CreateRolePage />} />
         <Route
-          path="create-role/competency-rubric"
+          path="jobs/:job_position_public_id"
+          element={<ViewCandidatePage />}
+        />
+        <Route path="create-job" element={<CreateRolePage />} />
+        <Route
+          path="create-job/competency-rubric"
           element={<CreateRubricPage />}
         />
-        <Route path="edit-job/:jobId" element={<EditJobPage />} />
         <Route
-          path="edit-job/competency-rubric/:jobId"
+          path="edit-job/:job_position_public_id"
+          element={<EditJobPage />}
+        />
+        <Route
+          path="edit-job/competency-rubric/:job_position_public_id"
           element={<EditRubricPage />}
         />
       </Route>

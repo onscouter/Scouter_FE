@@ -11,7 +11,14 @@ const AdminRoutes = () => {
     <Routes>
       <Route path="/" element={<AdminLandingPage />} />
 
-      <Route path="/" element={<AuthenticationGuard component={AdminLayout} />}>
+      <Route
+        path="/"
+        element={
+          <AuthenticationGuard>
+            <AdminLayout />
+          </AuthenticationGuard>
+        }
+      >
         {/* <Route path="overview" element={<Overview />} /> */}
         <Route path="team-directory" element={<TeamDirectory />} />
         <Route path="active-roles" element={<ActiveRoles />} />
