@@ -5,6 +5,8 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import AppRoutes from "@/routes";
 import theme from "@/styles/theme";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import AuthBootstrap from "@/providers/AuthBootstrap";
 
 const queryClient = new QueryClient();
@@ -12,12 +14,14 @@ const queryClient = new QueryClient();
 const App: React.FC = () => (
   <Provider store={store}>
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <AuthBootstrap>
-          <AppRoutes />
-        </AuthBootstrap>
-      </ThemeProvider>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <AuthBootstrap>
+            <AppRoutes />
+          </AuthBootstrap>
+        </ThemeProvider>
+      </LocalizationProvider>
     </QueryClientProvider>
   </Provider>
 );

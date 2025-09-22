@@ -4,6 +4,7 @@ import type {
   ApplicationFilter,
   ApplicationResponse,
 } from "@/types/applicaiton";
+import type { InterviewWithMeta } from "@/types/interview";
 
 export const fetchApplications = async (
   filters: ApplicationFilter
@@ -16,7 +17,9 @@ export const fetchApplications = async (
   if (filters.order) params.append("order", filters.order);
   try {
     const response = await apiClient.get(
-      `/recruiter/${filters.job_position_public_id}?${params.toString()}`
+      `/recruiter/${
+        filters.job_position_public_id
+      }/applications?${params.toString()}`
     );
     return response.data;
   } catch (error) {
@@ -51,6 +54,20 @@ export const deleteCandidate = async (
     return response.data;
   } catch (error) {
     console.error("Error in deleteCandidate:", error);
+    throw error;
+  }
+};
+
+export const getInterviewMeta = async (
+  job_interview_public_id: string
+): Promise<InterviewWithMeta> => {
+  try {
+    const response = await apiClient.get(
+      `/recruiter/interviewer-meta/${job_interview_public_id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error in getInterviewMeta:", error);
     throw error;
   }
 };

@@ -56,3 +56,12 @@ export interface InterviewQuestion {
   question_text: string;
   type: QuestionType;
 }
+
+export interface InterviewWithMeta {
+  interviewer_name: string;
+  interviewer_role: string;
+  total_interviews_conducted: number;
+  scheduled_at: string;
+  candidate: CandidateMinimal;
+  competency: CompetencyMinimal;
+}

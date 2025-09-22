@@ -1,24 +1,22 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 import { setAppLoading } from "@/store/appSlice";
 import { toast } from "react-toastify";
 import { createCandidate } from "@/features/recruiter/viewCandidate/api";
 
-interface UseCreateCandidateProps {
-  onSuccess?: () => void;
-}
-
-export const useCreateCandidate = ({
-  onSuccess,
-}: UseCreateCandidateProps = {}) => {
+export const useCreateCandidate = () => {
   const dispatch = useDispatch();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: createCandidate,
     onSuccess: (res) => {
+      queryClient.invalidateQueries({
+        queryKey: ["jobCandidate"],
+        exact: false,
+      });
       if (res?.success) {
         toast.success(res.message || "Candidate created successfully.");
-        onSuccess?.();
       } else {
         toast.error("Unexpected error occurred.");
       }

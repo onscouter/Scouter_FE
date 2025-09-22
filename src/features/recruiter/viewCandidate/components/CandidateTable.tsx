@@ -17,6 +17,11 @@ interface CandidateTableProps {
   rowsPerPageOptions: number[];
   onEdit: (candidateId: string) => void;
   onDelete: (candidateId: string) => void;
+  onScheduleInterview: (
+    job_interview_public_id: string,
+    job_application_public_id: string
+  ) => void;
+  onViewInterview: (job_interview_public_id: string) => void;
 }
 
 function extractEvaluationNames(candidates: Application[]): string[] {
@@ -78,6 +83,8 @@ const CandidateTable: React.FC<CandidateTableProps> = ({
   rowsPerPageOptions,
   onEdit,
   onDelete,
+  onScheduleInterview,
+  onViewInterview,
 }) => {
   const headCells = generateCandidateHeadCells(candidates);
   return (
@@ -100,6 +107,8 @@ const CandidateTable: React.FC<CandidateTableProps> = ({
           headCells={headCells}
           onEdit={onEdit}
           onDelete={onDelete}
+          onScheduleInterview={onScheduleInterview}
+          onViewInterview={onViewInterview}
         />
       )}
     />

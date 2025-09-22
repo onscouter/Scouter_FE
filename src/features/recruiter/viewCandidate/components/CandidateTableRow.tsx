@@ -21,6 +21,11 @@ interface CandidateTableRowProps {
   }[];
   onEdit: (candidateId: string) => void;
   onDelete: (candidateId: string) => void;
+  onScheduleInterview: (
+    job_interview_public_id: string,
+    job_application_public_id: string
+  ) => void;
+  onViewInterview: (job_interview_public_id: string) => void;
 }
 
 function formatPhoneNumberIntl(countryCode: string, number: string): string {
@@ -35,6 +40,8 @@ const CandidateTableRow: React.FC<CandidateTableRowProps> = ({
   headCells,
   onEdit,
   onDelete,
+  onScheduleInterview,
+  onViewInterview,
 }: CandidateTableRowProps) => {
   const validScores = candidate.interviews
     .map((i) => i.score)
@@ -100,7 +107,14 @@ const CandidateTableRow: React.FC<CandidateTableRowProps> = ({
               }}
             >
               {evaluation ? (
-                <EvaluationCell evaluation={evaluation} />
+                <EvaluationCell
+                  onScheduleInterview={onScheduleInterview}
+                  onViewInterview={onViewInterview}
+                  evaluation={evaluation}
+                  job_application_public_id={
+                    candidate.job_application_public_id
+                  }
+                />
               ) : (
                 <Typography color="text.disabled" align="center">
                   —

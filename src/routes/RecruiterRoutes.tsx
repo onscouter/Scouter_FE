@@ -1,15 +1,14 @@
-// routes/RecruiterRoutes.tsx
 import { Routes, Route, Navigate } from "react-router-dom";
 import RecruiterLayout from "@/layout/RecruiterLayout";
 import AuthenticationGuard from "@/guards/AuthenticationGuard";
-
-import RecruiterPage from "@/pages/recruiter"; // index.tsx
+import RecruiterPage from "@/pages/recruiter";
 import JobTrackerPage from "@/pages/recruiter/job-tracker";
 import ViewCandidatePage from "@/pages/candidates/view";
 import CreateRolePage from "@/pages/recruiter/create-job";
 import CreateRubricPage from "@/pages/recruiter/create-competency";
 import EditJobPage from "@/pages/recruiter/edit-job";
 import EditRubricPage from "@/pages/recruiter/edit-competency";
+import ScheduleInterviewPage from "@/pages/candidates/schedule-interview";
 
 const RecruiterRoutes = () => {
   return (
@@ -41,6 +40,10 @@ const RecruiterRoutes = () => {
         <Route
           path="edit-job/competency-rubric/:job_position_public_id"
           element={<EditRubricPage />}
+        />
+        <Route
+          path="jobs/:job_position_public_id/schedule-interview"
+          element={<ScheduleInterviewPage />}
         />
       </Route>
 

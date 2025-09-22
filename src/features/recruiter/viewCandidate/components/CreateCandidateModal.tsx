@@ -20,14 +20,12 @@ interface CreateCandidateModalProps {
   job_position_public_id?: string;
   open: boolean;
   onClose: () => void;
-  onSuccess: () => void;
 }
 
 const CreateCandidateModal: React.FC<CreateCandidateModalProps> = ({
   job_position_public_id,
   open,
   onClose,
-  onSuccess,
 }) => {
   const dispatch = useDispatch();
   const [form, setForm] = useState({
@@ -56,9 +54,7 @@ const CreateCandidateModal: React.FC<CreateCandidateModalProps> = ({
     }
   }, [job_position_public_id, open]);
 
-  const { mutate: createCandidate, isPending } = useCreateCandidate({
-    onSuccess,
-  });
+  const { mutate: createCandidate, isPending } = useCreateCandidate();
 
   useEffect(() => {
     dispatch(setAppLoading(isPending));
@@ -93,6 +89,7 @@ const CreateCandidateModal: React.FC<CreateCandidateModalProps> = ({
     // formData.append("resume", form.resume);
 
     createCandidate(formData);
+    onClose();
   };
 
   const isFormValid =

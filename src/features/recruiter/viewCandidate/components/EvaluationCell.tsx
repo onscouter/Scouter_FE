@@ -5,10 +5,21 @@ import { format } from "date-fns";
 import type { Interview } from "@/types/interview";
 
 interface EvaluationCellProps {
+  onScheduleInterview: (
+    job_interview_public_id: string,
+    job_application_public_id: string
+  ) => void;
+  onViewInterview: (job_interview_public_id: string) => void;
   evaluation: Interview;
+  job_application_public_id: string;
 }
 
-const EvaluationCell: React.FC<EvaluationCellProps> = ({ evaluation }) => {
+const EvaluationCell: React.FC<EvaluationCellProps> = ({
+  evaluation,
+  onScheduleInterview,
+  onViewInterview,
+  job_application_public_id,
+}) => {
   const { interview_status, score, interview_datetime } = evaluation;
 
   const interviewDate = evaluation.interview_datetime
@@ -58,6 +69,21 @@ const EvaluationCell: React.FC<EvaluationCellProps> = ({ evaluation }) => {
       flexDirection="column"
       alignItems="center"
       justifyContent="center"
+      onClick={() => {
+        console.log("Clicked evaluation with status:", normalizedStatus);
+        if (
+          normalizedStatus === "SCHEDULED" ||
+          normalizedStatus === "RESCHEDULED" ||
+          normalizedStatus === "COMPLETED"
+        ) {
+          onViewInterview(evaluation.job_interview_public_id);
+        } else if (normalizedStatus === "NOT_SCHEDULED") {
+          onScheduleInterview(
+            evaluation.job_interview_public_id,
+            job_application_public_id
+          );
+        }
+      }}
       sx={{ minHeight: 70 }}
     >
       <Box
