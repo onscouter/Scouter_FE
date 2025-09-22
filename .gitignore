@@ -1,3 +1,4 @@
+# Logs
 logs/
 *.log
 npm-debug.log*
@@ -6,39 +7,38 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependency directories
 node_modules/
 **/node_modules/
 .pnp.*
 .pnp.js
 
+# Build output
 dist/
 dist-ssr/
 build/
 **/dist/
 **/build/
+
+# Framework-specific
 .next/
 .turbo/
 
+# Env files
 .env
 .env.*
 .env.local
 .env.development.local
 .env.production.local
 .env.test.local
-**/.env
-**/.env.*
 
-vite.config.*
-next.config.js
-
-package-lock.json
-pnpm-lock.yaml
-turbo.json
-
+# IDE/editor
 .vscode/
 !.vscode/extensions.json
 .idea/
 .DS_Store
+
+# Misc
 *.suo
 *.ntvs*
 *.njsproj
