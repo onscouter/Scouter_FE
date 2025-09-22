@@ -41,7 +41,7 @@ const ActiveRolesPage = () => {
   } = useJobTracker();
 
   const { data, isLoading } = useJobs({
-    company_id: companyId,
+    company_public_id: companyId,
     page,
     limit: rowsPerPage,
     search: searchText,

@@ -1,11 +1,11 @@
 import apiClient from "@/api";
-import type { InterviewFilters, InterviewResponse } from "@/types/job";
+import type { InterviewFilters, InterviewResponse } from "@/types/interview";
 
 export const fetchInterviews = async (
   filters: InterviewFilters
 ): Promise<InterviewResponse> => {
   const params = new URLSearchParams();
-  params.append("employee_id", filters.employee_id || "");
+  params.append("employee_id", filters.employee_public_id || "");
   params.append("page", String(filters.page ?? 1));
   params.append("limit", String(filters.limit ?? 10));
   if (filters.search) params.append("search", filters.search);

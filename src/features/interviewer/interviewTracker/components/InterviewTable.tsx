@@ -1,6 +1,7 @@
 import TableView from "@/features/shared/table/TableView";
 import InterviewTableRow from "./InterviewTableRow";
-import type { Interview, Order } from "@/types/job";
+import type { Interview } from "@/types/interview";
+import type { Order } from "@/types/filters";
 
 const candidateInterviewHeadCells = [
   { id: "candidate", label: "Candidate", width: "21%" },

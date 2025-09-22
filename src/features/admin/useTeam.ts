@@ -6,7 +6,7 @@ export const useTeam = (filters: JobFilters) => {
   return useQuery<JobsResponse>({
     queryKey: ["team", filters],
     queryFn: () => fetchJobs(filters),
-    enabled: !!filters.company_id,
+    enabled: !!filters.company_public_id,
     staleTime: 1000 * 60 * 3,
     refetchOnWindowFocus: false,
     retry: 1,

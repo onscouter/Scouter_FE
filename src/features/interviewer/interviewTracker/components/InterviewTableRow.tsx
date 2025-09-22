@@ -5,7 +5,7 @@ import {
 import { format } from "date-fns";
 import { Chip, Stack, Typography } from "@mui/material";
 import ActionMenu from "./ActionMenu";
-import type { Interview } from "@/types/job";
+import type { Interview } from "@/types/interview";
 
 interface InterviewTableRowProps {
   interview: Interview;
@@ -25,7 +25,6 @@ const InterviewTableRow: React.FC<InterviewTableRowProps> = ({ interview }) => {
 
   return (
     <StyledTableRow hover>
-      {/* Candidate */}
       <StyledTableCell>
         <Stack spacing={0.5}>
           <Typography fontWeight={600}>
@@ -47,12 +46,10 @@ const InterviewTableRow: React.FC<InterviewTableRowProps> = ({ interview }) => {
         />
       </StyledTableCell>
 
-      {/* Competency */}
       <StyledTableCell>
-        <Typography>{interview.competency.name}</Typography>
+        <Typography>{interview.competency.competency_name}</Typography>
       </StyledTableCell>
 
-      {/* Interview Date */}
       <StyledTableCell>
         <Stack>
           <Typography>{formattedDate}</Typography>
@@ -62,7 +59,6 @@ const InterviewTableRow: React.FC<InterviewTableRowProps> = ({ interview }) => {
         </Stack>
       </StyledTableCell>
 
-      {/* Status */}
       <StyledTableCell>
         <Chip
           label={interview.interview_status}
@@ -72,7 +68,6 @@ const InterviewTableRow: React.FC<InterviewTableRowProps> = ({ interview }) => {
         />
       </StyledTableCell>
 
-      {/* Action */}
       <StyledTableCell align="right" noEllipsis sx={{ pr: 2 }}>
         <ActionMenu
           interviewId={interview.job_interview_public_id}

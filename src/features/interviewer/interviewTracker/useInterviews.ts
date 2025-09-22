@@ -1,12 +1,12 @@
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
-import type { InterviewResponse, InterviewFilters } from "@/types/job";
+import type { InterviewResponse, InterviewFilters } from "@/types/interview";
 import { fetchInterviews } from "@/features/interviewer/interviewTracker/api";
 
 export const useInterviews = (filters: InterviewFilters) => {
   return useQuery<InterviewResponse>({
     queryKey: ["interviews", filters],
     queryFn: () => fetchInterviews(filters),
-    enabled: !!filters.employee_id,
+    enabled: !!filters.employee_public_id,
     staleTime: 1000 * 60 * 3,
     refetchOnWindowFocus: false,
     retry: 1,

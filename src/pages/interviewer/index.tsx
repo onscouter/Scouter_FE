@@ -10,7 +10,7 @@ import InterviewTrackerHeader from "@/features/interviewer/interviewTracker/comp
 import { useInterviewTracker } from "@/features/interviewer/interviewTracker/useInterviewTracker";
 import InterviewTable from "@/features/interviewer/interviewTracker/components/InterviewTable";
 import { useInterviews } from "@/features/interviewer/interviewTracker/useInterviews";
-import type { Interview } from "@/types/job";
+import type { Interview } from "@/types/interview";
 
 const InterviewerLandingPage = () => {
   const dispatch = useDispatch();
@@ -34,7 +34,7 @@ const InterviewerLandingPage = () => {
   } = useInterviewTracker();
 
   const { data, isLoading } = useInterviews({
-    employee_id: employee_id,
+    employee_public_id: employee_id,
     page,
     limit: rowsPerPage,
     search: searchText,
