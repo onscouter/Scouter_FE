@@ -23,6 +23,7 @@ interface InterviewTableProps {
   orderBy: keyof Interview;
   onRequestSort: (property: keyof Interview) => void;
   rowsPerPageOptions: number[];
+  isFetching: boolean;
   // onEdit: (interviewId: string) => void;
   // onDelete: (interviewId: string) => void;
   // onViewCandidates: (interviewId: string) => void;
@@ -39,6 +40,7 @@ const InterviewTable: React.FC<InterviewTableProps> = ({
   orderBy,
   onRequestSort,
   rowsPerPageOptions,
+  isFetching,
   // onEdit,
   // onDelete,
   // onViewCandidates,
@@ -55,6 +57,7 @@ const InterviewTable: React.FC<InterviewTableProps> = ({
     orderBy={orderBy}
     onRequestSort={onRequestSort}
     rowsPerPageOptions={rowsPerPageOptions}
+    isFetching={isFetching}
     renderRow={(interview) => (
       <InterviewTableRow
         key={interview.job_interview_public_id}

@@ -5,8 +5,6 @@ export const updateJob = async (
   job_position_public_id: string,
   jobData: JobPayload
 ) => {
-  console.log("Updating job with ID:", job_position_public_id);
-  console.log("Job data:", jobData);
   const response = await apiClient.put(
     `/job/${job_position_public_id}`,
     jobData

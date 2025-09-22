@@ -24,7 +24,6 @@ const CompetencyForm: React.FC<CompetencyFormProps> = ({ handleSave }) => {
   const [stepIndex, setStepIndex] = useState(0);
   const current = competencies[stepIndex];
 
-  console.log(current);
   const handleNext = () =>
     setStepIndex((prev) => Math.min(prev + 1, competencies.length - 1));
   const handlePrev = () => setStepIndex((prev) => Math.max(prev - 1, 0));

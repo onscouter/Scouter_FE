@@ -41,7 +41,7 @@ const ScheduleInterviewPage = () => {
 
   console.log(searchText);
 
-  const { data, isLoading } = useGetInterviewers(
+  const { data, isLoading, isFetching } = useGetInterviewers(
     job_position_public_id ?? "",
     job_interview_public_id ?? "",
     job_application_public_id ?? ""
@@ -122,6 +122,7 @@ const ScheduleInterviewPage = () => {
           setRowsPerPage(limit);
           setPage(1);
         }}
+        isFetching={isFetching}
         onRequestSort={handleRequestSort}
         rowsPerPageOptions={rowsPerPageOptions}
         onSelectInterviewer={handleSelectInterviewer}

@@ -39,7 +39,7 @@ const JobTrackerPage = () => {
     setOrderBy,
   } = useJobTracker();
 
-  const { data, isLoading } = useJobs({
+  const { data, isLoading, isFetching } = useJobs({
     company_public_id: company_public_id,
     page,
     limit: rowsPerPage,
@@ -155,6 +155,7 @@ const JobTrackerPage = () => {
             onEdit={onEdit}
             onDelete={onDelete}
             onViewCandidates={onViewCandidates}
+            isFetching={isFetching}
           />
         )}
       </Box>

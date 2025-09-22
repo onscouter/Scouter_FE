@@ -20,8 +20,6 @@ const competencySlice = createSlice({
     setCompetency(state, action: PayloadAction<Competency>) {
       const competency = action.payload;
 
-      console.log(competency, "here in setCompetency");
-
       const fallbackRubricLevels = defaultRubricLevels.map((level) => ({
         rubric_level_public_id: level.rubric_level_public_id,
         level: level.level,

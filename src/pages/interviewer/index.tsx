@@ -33,7 +33,7 @@ const InterviewerLandingPage = () => {
     setOrderBy,
   } = useInterviewTracker();
 
-  const { data, isLoading } = useInterviews({
+  const { data, isLoading, isFetching } = useInterviews({
     employee_public_id: employee_id,
     page,
     limit: rowsPerPage,
@@ -50,6 +50,8 @@ const InterviewerLandingPage = () => {
 
   const interviews = useMemo(() => data?.interviews ?? [], [data]);
   const total = data?.total ?? 0;
+
+  console.log(data);
 
   const rowsPerPageOptions = useMemo(
     () => [5, 10, 25, 50].filter((size) => size <= total),
@@ -105,6 +107,7 @@ const InterviewerLandingPage = () => {
             }}
             onRequestSort={handleRequestSort}
             rowsPerPageOptions={rowsPerPageOptions}
+            isFetching={isFetching}
             // onEdit={onEdit}
             // onDelete={onDelete}
             // onViewCandidates={onViewCandidates}

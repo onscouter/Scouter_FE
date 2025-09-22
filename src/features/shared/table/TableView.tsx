@@ -5,9 +5,14 @@ import {
   TableContainer,
   TableHead,
   TablePagination,
+  Box,
+  TableCell,
+  TableRow,
 } from "@mui/material";
 import TableHeader, { type HeadCell } from "./TableHeader";
 import type { Order } from "@/types/filters";
+import { useTheme } from "@mui/material/styles";
+import PulseLoader from "react-spinners/PulseLoader";
 
 interface TableViewProps<T> {
   total: number;
@@ -22,6 +27,7 @@ interface TableViewProps<T> {
   orderBy: keyof T;
   onRequestSort: (property: keyof T) => void;
   rowsPerPageOptions: number[];
+  isFetching: boolean;
 }
 
 function TableView<T>({
@@ -37,7 +43,10 @@ function TableView<T>({
   orderBy,
   onRequestSort,
   rowsPerPageOptions,
+  isFetching = false,
 }: TableViewProps<T>) {
+  const theme = useTheme();
+
   return (
     <Paper
       elevation={0}
@@ -63,25 +72,48 @@ function TableView<T>({
               onRequestSort={(_, prop) => onRequestSort(prop)}
             />
           </TableHead>
-          <TableBody>{rows.map((row) => renderRow(row))}</TableBody>
+          <TableBody>
+            {isFetching ? (
+              <TableRow>
+                <TableCell
+                  colSpan={headCells.length}
+                  sx={{ height: `calc(${rowsPerPage} * 58px)` }}
+                >
+                  <Box
+                    sx={{
+                      height: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <PulseLoader size={20} color={theme.palette.primary.main} />
+                  </Box>
+                </TableCell>
+              </TableRow>
+            ) : (
+              rows.map((row) => renderRow(row))
+            )}
+          </TableBody>
         </Table>
       </TableContainer>
-
-      <TablePagination
-        component="div"
-        count={total}
-        page={page - 1}
-        rowsPerPage={rowsPerPage}
-        onPageChange={(_, newPage) => onPageChange(newPage + 1)}
-        onRowsPerPageChange={(e) => {
-          const newLimit = parseInt(e.target.value, 10);
-          onRowsPerPageChange(newLimit);
-          onPageChange(1);
-        }}
-        rowsPerPageOptions={
-          rowsPerPageOptions.length ? rowsPerPageOptions : [total || 5]
-        }
-      />
+      {!isFetching && (
+        <TablePagination
+          component="div"
+          count={total}
+          page={page - 1}
+          rowsPerPage={rowsPerPage}
+          onPageChange={(_, newPage) => onPageChange(newPage + 1)}
+          onRowsPerPageChange={(e) => {
+            const newLimit = parseInt(e.target.value, 10);
+            onRowsPerPageChange(newLimit);
+            onPageChange(1);
+          }}
+          rowsPerPageOptions={
+            rowsPerPageOptions.length ? rowsPerPageOptions : [total || 5]
+          }
+        />
+      )}
     </Paper>
   );
 }

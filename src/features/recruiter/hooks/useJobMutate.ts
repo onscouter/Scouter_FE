@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setAppLoading } from "@/store/appSlice";
@@ -19,12 +19,17 @@ export const useJobMutate = <TData>({
   successMessage = "Success!",
   errorMessage = "An error occurred.",
 }: useJobMutateOptions<TData>) => {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   return useMutation({
     mutationFn,
     onSuccess: (res) => {
+      queryClient.invalidateQueries({
+        queryKey: ["jobs"],
+        exact: false,
+      });
       if (res?.success) {
         toast.success(res.message || successMessage);
         if (onSuccessRedirect) navigate(onSuccessRedirect);

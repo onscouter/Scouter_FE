@@ -34,8 +34,6 @@ const EditJobPage = () => {
     }
   }, [job, dispatch]);
 
-  console.log("job", job);
-
   const handleEdit = ({
     title,
     description,

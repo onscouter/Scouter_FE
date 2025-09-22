@@ -26,6 +26,7 @@ interface JobTableProps {
   onEdit: (jobId: string) => void;
   onDelete: (jobId: string) => void;
   onViewCandidates: (jobId: string) => void;
+  isFetching: boolean;
 }
 
 const JobTable: React.FC<JobTableProps> = ({
@@ -42,11 +43,13 @@ const JobTable: React.FC<JobTableProps> = ({
   onEdit,
   onDelete,
   onViewCandidates,
+  isFetching,
 }) => (
   <TableView
     total={total}
     rows={jobs}
     headCells={jobHeadCells}
+    isFetching={isFetching}
     page={page}
     rowsPerPage={rowsPerPage}
     onPageChange={onPageChange}

@@ -25,7 +25,6 @@ const EditCompetencyPage: React.FC = () => {
   const handleSave = () => {
     dispatch(setAppLoading(true));
     const payload = buildPayload(newJob, competencyMap);
-    console.log(payload);
     updateRole(payload);
     dispatch(clearJob());
     dispatch(clearCompetencies());

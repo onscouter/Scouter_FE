@@ -16,6 +16,7 @@ interface InterviewerTableProps {
   rowsPerPageOptions: number[];
   onSelectInterviewer: (employee_public_id: string) => void;
   selectedInterviewerId: string | null;
+  isFetching: boolean;
 }
 
 const headCells = [
@@ -52,6 +53,7 @@ const InterviewerTable: React.FC<InterviewerTableProps> = ({
   rowsPerPageOptions,
   onSelectInterviewer,
   selectedInterviewerId,
+  isFetching,
 }) => {
   return (
     <TableView
@@ -66,6 +68,7 @@ const InterviewerTable: React.FC<InterviewerTableProps> = ({
       orderBy={orderBy}
       onRequestSort={onRequestSort}
       rowsPerPageOptions={rowsPerPageOptions}
+      isFetching={isFetching}
       renderRow={(interviewer) => (
         <InterviewerTableRow
           key={interviewer.employee_public_id}

@@ -16,7 +16,6 @@ export const fetchInterviews = async (
     const response = await apiClient.get(
       `/interviewer/interviews?${params.toString()}`
     );
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Error in fetchInterviews:", error);

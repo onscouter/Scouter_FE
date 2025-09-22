@@ -22,6 +22,7 @@ interface CandidateTableProps {
     job_application_public_id: string
   ) => void;
   onViewInterview: (job_interview_public_id: string) => void;
+  isFetching: boolean;
 }
 
 function extractEvaluationNames(candidates: Application[]): string[] {
@@ -85,6 +86,7 @@ const CandidateTable: React.FC<CandidateTableProps> = ({
   onDelete,
   onScheduleInterview,
   onViewInterview,
+  isFetching,
 }) => {
   const headCells = generateCandidateHeadCells(candidates);
   return (
@@ -100,6 +102,7 @@ const CandidateTable: React.FC<CandidateTableProps> = ({
       orderBy={orderBy}
       onRequestSort={onRequestSort}
       rowsPerPageOptions={rowsPerPageOptions}
+      isFetching={isFetching}
       renderRow={(candidate) => (
         <CandidateTableRow
           key={candidate.job_application_public_id}

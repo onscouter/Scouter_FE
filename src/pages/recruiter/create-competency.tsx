@@ -18,9 +18,7 @@ const CreateCompetencyPage: React.FC = () => {
 
   const handleSave = () => {
     dispatch(setAppLoading(true));
-    // toast.info("Creating New Job...");
     const payload = buildPayload(newJob, competencyMap);
-    console.log(payload, "payload");
     createJob(payload);
     dispatch(clearJob());
     dispatch(clearCompetencies());

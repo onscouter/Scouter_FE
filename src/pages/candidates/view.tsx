@@ -55,7 +55,11 @@ const CandidateViewPage = () => {
     setOrderBy,
   } = useCandidateFilter();
 
-  const { data, isLoading: isCandidatesLoading } = useJobCandidate({
+  const {
+    data,
+    isLoading: isCandidatesLoading,
+    isFetching: isCandidatesFetching,
+  } = useJobCandidate({
     job_position_public_id: job_position_public_id ?? "",
     page,
     limit: rowsPerPage,
@@ -178,6 +182,7 @@ const CandidateViewPage = () => {
             setRowsPerPage(limit);
             setPage(1);
           }}
+          isFetching={isCandidatesFetching}
           onRequestSort={handleRequestSort}
           rowsPerPageOptions={rowsPerPageOptions}
           onEdit={onEdit}
