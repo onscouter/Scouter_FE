@@ -47,6 +47,8 @@ const ScheduleInterviewPage = () => {
     job_application_public_id ?? ""
   );
 
+  console.log(data);
+
   const { mutate: addInterview, isPending } = useAddInterview({
     job_position_public_id: job_position_public_id ?? "",
   });

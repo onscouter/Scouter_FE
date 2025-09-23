@@ -14,10 +14,12 @@ export const fetchInterviewers = async (
   params.append("job_interview_public_id", filters.job_interview_public_id);
   params.append("job_application_public_id", filters.job_application_public_id);
 
+  console.log("Fetching interviewers with params:", params.toString());
   try {
     const response = await apiClient.get(
       `/recruiter/get-interviewers?${params.toString()}`
     );
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Error in fetchInterviewers:", error);
