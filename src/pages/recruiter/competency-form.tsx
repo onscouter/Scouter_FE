@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-// import { toast } from "react-toastify";
 import RubricHeader from "@/features/recruiter/competencyRubric/components/RubricHeader";
 import RubricEditor from "@/features/recruiter/competencyRubric/components/RubricEditor";
 import { selectCompetencies } from "@/store/newCompetencySlice";
@@ -19,6 +18,8 @@ const CompetencyForm: React.FC<CompetencyFormProps> = ({ handleSave }) => {
     questions: competencyMap[id].questions,
     rubric_levels: competencyMap[id].rubric_levels,
   }));
+
+  console.log("Competencies in form:", competencies);
 
   const [stepIndex, setStepIndex] = useState(0);
   const current = competencies[stepIndex];

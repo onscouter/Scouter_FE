@@ -38,8 +38,9 @@ const JobFormPage: React.FC<JobFormPageProps> = ({
   const [generatedCompetencies, setGeneratedCompetencies] = useState<
     CompetencyMinimal[]
   >([]);
-  const [lastSuggestedTitle, setLastSuggestedTitle] = useState("");
-  const [lastSuggestedDescription, setLastSuggestedDescription] = useState("");
+  const [lastSuggestedTitle, setLastSuggestedTitle] = useState(initialTitle);
+  const [lastSuggestedDescription, setLastSuggestedDescription] =
+    useState(initialDescription);
 
   const handleAdd = (c: CompetencyMinimal) => {
     setSelectedCompetencies((prev) =>
@@ -75,6 +76,9 @@ const JobFormPage: React.FC<JobFormPageProps> = ({
     !newTitle ||
     !newDescription ||
     (generatedCompetencies.length > 0 &&
+      newTitle === lastSuggestedTitle &&
+      newDescription === lastSuggestedDescription) ||
+    (mode === "edit" &&
       newTitle === lastSuggestedTitle &&
       newDescription === lastSuggestedDescription);
 

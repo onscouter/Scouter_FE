@@ -1,17 +1,18 @@
 import { type Competency, type CompetencyMinimal } from "@/types/competency";
 import { useNavigate, useParams } from "react-router";
 import { useDispatch } from "react-redux";
-import { setTitle, setDescription } from "@/store/newJobSlice";
+import { setTitle, setDescription, clearJob } from "@/store/newJobSlice";
 import { setAppLoading } from "@/store/appSlice";
 import JobFormPage from "@/pages/recruiter/job-form";
 import { useEffect } from "react";
 import { useGetJob } from "@/features/recruiter/editJob/useGetJob";
 import { setJob } from "@/store/newJobSlice";
-import { generateMockRubric } from "@/features/recruiter/competencyRubric/mockInterviewQuestions";
 import {
   setCompetency,
-  addRubricIfNotExists,
+  removeCompetency,
+  clearCompetencies,
 } from "@/store/newCompetencySlice";
+import { useGenerateRubric } from "@/features/recruiter/competencyRubric/useGenerateRubric";
 
 const EditJobPage = () => {
   const { job_position_public_id } = useParams<{
@@ -20,10 +21,18 @@ const EditJobPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { data: job, isLoading } = useGetJob(job_position_public_id ?? "");
   useEffect(() => {
-    dispatch(setAppLoading(isLoading || !job));
-  }, [isLoading, dispatch, job]);
+    dispatch(clearCompetencies());
+    dispatch(clearJob());
+  }, [dispatch]);
+
+  const { data: job, isLoading } = useGetJob(job_position_public_id ?? "");
+
+  const { mutate: generateRubric, isPending } = useGenerateRubric();
+
+  useEffect(() => {
+    dispatch(setAppLoading(isLoading || !job || isPending));
+  }, [isLoading, isPending, dispatch, job]);
 
   useEffect(() => {
     if (job) {
@@ -43,21 +52,54 @@ const EditJobPage = () => {
     description: string;
     competencies: CompetencyMinimal[];
   }) => {
-    dispatch(setAppLoading(true));
     dispatch(setTitle(title));
     dispatch(setDescription(description));
 
-    competencies.forEach((comp) => {
-      const rubric = generateMockRubric(comp);
-      dispatch(addRubricIfNotExists(rubric));
-    });
+    const existingIds = new Set(
+      job.competencies.map((c: Competency) => c.competency_public_id)
+    );
 
-    setTimeout(() => {
-      dispatch(setAppLoading(false));
+    const updatedIds = new Set(
+      competencies.map((c: CompetencyMinimal) => c.competency_public_id)
+    );
+
+    const newCompetencies = competencies.filter(
+      (c) => !existingIds.has(c.competency_public_id)
+    );
+
+    const removedCompetencies = job.competencies.filter(
+      (c: Competency) => !updatedIds.has(c.competency_public_id)
+    );
+
+    console.log("New:", newCompetencies);
+    console.log("Removed:", removedCompetencies);
+
+    dispatch(
+      removeCompetency(
+        removedCompetencies.map((c: Competency) => c.competency_public_id)
+      )
+    );
+
+    if (newCompetencies.length > 0) {
+      generateRubric(
+        { title, description, competencies: newCompetencies },
+        {
+          onSuccess: (data) => {
+            data.competencies.forEach((c: Competency) => {
+              dispatch(setCompetency(c));
+            });
+            navigate("/recruiter/create-job/competency-rubric");
+          },
+          onError: (error) => {
+            console.error("Failed to generate rubric:", error);
+          },
+        }
+      );
+    } else {
       navigate(
         `/recruiter/edit-job/competency-rubric/${job_position_public_id}`
       );
-    }, 50);
+    }
   };
 
   if (!job || isLoading) return null;

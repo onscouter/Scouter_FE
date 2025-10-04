@@ -9,7 +9,7 @@ import NavbarSm from "./NavbarSm";
 import { useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { selectUser } from "@/store/authSlice";
-import apiClient from "@/api";
+import { apiClient } from "@/api";
 
 const Navbar: React.FC = () => {
   const dispatch = useDispatch();

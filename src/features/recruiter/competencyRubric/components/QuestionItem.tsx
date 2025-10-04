@@ -4,13 +4,13 @@ import {
   IconButton,
   TextField,
   Button,
-  Menu,
-  MenuItem,
   Chip,
+  Stack,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useEffect, useState } from "react";
-import { Pencil, Trash2, Check, X, ChevronDown } from "lucide-react";
+import { Pencil, Trash2, Check, X } from "lucide-react";
+import QuestionTypeMenu from "@/features/recruiter/competencyRubric/components/QuestionTypeMenu";
 import {
   type InterviewQuestion,
   type QuestionType,
@@ -41,8 +41,6 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   const [type, setType] = useState<QuestionType>(
     question?.type ?? "BEHAVIORAL"
   );
-
-  const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
 
   const questionTypeOptions = getInterviewQuestionTypeOptions(theme);
   const selectedOption = questionTypeOptions.find(
@@ -86,8 +84,10 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
     <Box
       sx={{
         p: 2,
-        bgcolor: "grey.50",
+        bgcolor: "background.paper",
         borderRadius: 2,
+        border: "1px solid",
+        borderColor: "divider",
         mb: 1.5,
         display: "flex",
         justifyContent: "space-between",
@@ -95,21 +95,20 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
         flexWrap: "wrap",
       }}
     >
-      {/* Left Side: Index + Content */}
-      <Box sx={{ display: "flex", gap: 2, flex: 1 }}>
+      {/* Left Section: Index + Question Content */}
+      <Stack direction="row" spacing={2} flex={1} alignItems="flex-start">
         <Box
           sx={{
             width: 28,
             height: 28,
             borderRadius: "50%",
-            bgcolor: "primary.main",
+            bgcolor: theme.palette.primary.main,
             color: "black",
             fontWeight: 600,
             fontSize: "0.875rem",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            mt: 0.5,
             flexShrink: 0,
           }}
         >
@@ -127,13 +126,23 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
                 multiline
                 minRows={2}
                 sx={{
-                  borderRadius: 2,
                   "& .MuiOutlinedInput-root": {
-                    borderColor: "warning.main",
+                    fontSize: "0.9rem",
+                    fontWeight: 400,
+                    "& fieldset": {
+                      borderColor: "divider",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: theme.palette.primary.main,
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: theme.palette.primary.main,
+                    },
                   },
                 }}
               />
-              <Box sx={{ display: "flex", gap: 1, mt: 1 }}>
+
+              <Stack direction="row" spacing={1.5} mt={1}>
                 <Button
                   size="small"
                   variant="contained"
@@ -141,7 +150,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
                   onClick={handleSave}
                   disabled={!text.trim()}
                   startIcon={<Check size={14} />}
-                  sx={{ px: 2, minWidth: 0, fontWeight: 500 }}
+                  sx={{ fontWeight: 500 }}
                 >
                   Save
                 </Button>
@@ -152,11 +161,11 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
                   color="inherit"
                   onClick={handleCancel}
                   startIcon={<X size={14} />}
-                  sx={{ px: 2, minWidth: 0, fontWeight: 500 }}
+                  sx={{ fontWeight: 500 }}
                 >
                   Cancel
                 </Button>
-              </Box>
+              </Stack>
             </>
           ) : (
             <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
@@ -164,32 +173,33 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
                 sx={{
                   fontSize: "0.95rem",
                   lineHeight: 1.5,
-                  minHeight: 40,
                   wordBreak: "break-word",
+                  whiteSpace: "pre-line",
                 }}
               >
                 {question?.question_text}
               </Typography>
+
               <Chip
                 label={selectedOption?.label ?? type}
                 sx={{
                   backgroundColor: selectedOption?.color,
                   color: selectedOption?.textColor,
+                  border: `1.5px solid ${selectedOption?.textColor}`,
                   fontWeight: 500,
                   textTransform: "capitalize",
                   borderRadius: 2,
-                  width: "auto",
-                  maxWidth: "100%",
-                  height: "24px",
+                  height: 24,
+                  px: 1,
                   alignSelf: "flex-start",
                 }}
               />
             </Box>
           )}
         </Box>
-      </Box>
+      </Stack>
 
-      {/* Right Side: Dropdown or Icons */}
+      {/* Right Section: Actions or Menu */}
       <Box
         sx={{
           display: "flex",
@@ -201,82 +211,34 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
         }}
       >
         {isEditing ? (
-          <>
-            <Button
-              size="small"
-              onClick={(e) => setMenuAnchor(e.currentTarget)}
-              endIcon={<ChevronDown size={14} />}
-              sx={{
-                fontWeight: 500,
-                bgcolor: "primary.light",
-                color: "black",
-                px: 1.5,
-                minWidth: 0,
-                textTransform: "none",
-                "&:hover": {
-                  bgcolor: "primary.main",
-                  color: "white",
-                },
-              }}
-            >
-              {selectedOption?.label ?? type}
-            </Button>
-
-            <Menu
-              anchorEl={menuAnchor}
-              open={Boolean(menuAnchor)}
-              onClose={() => setMenuAnchor(null)}
-              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-              transformOrigin={{ vertical: "top", horizontal: "center" }}
-              slotProps={{
-                paper: {
-                  elevation: 3,
-                  sx: {
-                    mt: 1,
-                    minWidth: 180,
-                    backgroundColor: "background.paper",
-                    boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.08)",
-                  },
-                },
-              }}
-            >
-              {questionTypeOptions.map(({ label, value, color }) => (
-                <MenuItem
-                  key={value}
-                  onClick={() => {
-                    setType(value);
-                    setMenuAnchor(null);
-                  }}
-                  selected={type === value}
-                  sx={{
-                    px: 2.5,
-                    py: 1.25,
-                    fontSize: "0.95rem",
-                    fontWeight: 500,
-                    "&.Mui-selected": {
-                      backgroundColor: color,
-                      color: "white",
-                    },
-                    "&:hover": {
-                      backgroundColor: "grey.100",
-                    },
-                  }}
-                >
-                  {label}
-                </MenuItem>
-              ))}
-            </Menu>
-          </>
+          <QuestionTypeMenu
+            type={type}
+            setType={setType}
+            questionTypeOptions={questionTypeOptions}
+          />
         ) : (
           editable && (
-            <>
-              <IconButton onClick={() => setIsEditing(true)}>
+            <Stack direction="row" spacing={0.5}>
+              <IconButton
+                size="small"
+                onClick={() => setIsEditing(true)}
+                sx={{
+                  "&:hover": { color: theme.palette.primary.main },
+                }}
+              >
                 <Pencil size={16} />
               </IconButton>
-              <IconButton onClick={onDelete}>
+
+              <IconButton
+                size="small"
+                onClick={onDelete}
+                sx={{
+                  "&:hover": { color: theme.palette.error.main },
+                }}
+              >
                 <Trash2 size={16} />
               </IconButton>
-            </>
+            </Stack>
           )
         )}
       </Box>

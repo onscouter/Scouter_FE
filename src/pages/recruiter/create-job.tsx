@@ -1,14 +1,15 @@
 import { type Competency, type CompetencyMinimal } from "@/types/competency";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
-import { setTitle, setDescription } from "@/store/newJobSlice";
+import { setTitle, setDescription, clearJob } from "@/store/newJobSlice";
 import { setAppLoading } from "@/store/appSlice";
-import { setCompetency } from "@/store/newCompetencySlice";
+import { clearCompetencies, setCompetency } from "@/store/newCompetencySlice";
 import JobFormPage from "@/pages/recruiter/job-form";
 import { useGenerateRubric } from "@/features/recruiter/competencyRubric/useGenerateRubric";
 import { useEffect } from "react";
 
 const CreateJobPage = () => {
+  // const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -17,6 +18,18 @@ const CreateJobPage = () => {
   useEffect(() => {
     dispatch(setAppLoading(isPending));
   }, [isPending, dispatch]);
+
+  // useEffect(() => {
+  //   if (!location.state?.fromNextPage) {
+  //     dispatch(clearCompetencies());
+  //     dispatch(clearJob());
+  //   }
+  // }, [dispatch, location.state]);
+
+  useEffect(() => {
+    dispatch(clearCompetencies());
+    dispatch(clearJob());
+  }, [dispatch]);
 
   const handleCreate = ({
     title,
@@ -34,11 +47,13 @@ const CreateJobPage = () => {
       { title, description, competencies },
       {
         onSuccess: (data) => {
+          console.log(data);
           data.competencies.forEach((c: Competency) => {
             dispatch(setCompetency(c));
           });
-
-          navigate("/recruiter/create-job/competency-rubric");
+          navigate("/recruiter/create-job/competency-rubric", {
+            state: { fromNextPage: true },
+          });
         },
         onError: (error) => {
           console.error("Failed to generate rubric:", error);

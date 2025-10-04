@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import apiClient from "@/api";
+import { apiClient } from "@/api";
 import { clearUser, selectAccessToken, setUser } from "@/store/authSlice";
 import { setAppLoading } from "@/store/appSlice";
 
@@ -23,7 +23,6 @@ const AuthBootstrap: React.FC<AuthBootstrapProps> = ({ children }) => {
     apiClient
       .post("/auth/refresh")
       .then((res) => {
-        console.log("[AuthBootstrap] refresh success", res.data);
         dispatch(
           setUser({
             user: res.data.employee,

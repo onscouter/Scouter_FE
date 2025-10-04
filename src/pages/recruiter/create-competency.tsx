@@ -5,10 +5,7 @@ import { buildPayload } from "@/features/recruiter/createJob/buildPayload";
 import { useDispatch, useSelector } from "react-redux";
 import { setAppLoading } from "@/store/appSlice";
 import { selectNewJob } from "@/store/newJobSlice";
-import {
-  // clearCompetencies,
-  selectCompetencies,
-} from "@/store/newCompetencySlice";
+import { selectCompetencies } from "@/store/newCompetencySlice";
 
 const CreateCompetencyPage: React.FC = () => {
   const { mutateAsync: createJob, isPending } = useCreateJob();
@@ -24,8 +21,6 @@ const CreateCompetencyPage: React.FC = () => {
     const payload = buildPayload(newJob, competencyMap);
     console.log("Payload to be sent:", payload);
     createJob(payload);
-    // dispatch(clearJob());
-    // dispatch(clearCompetencies());
   };
 
   return <CompetencyForm handleSave={handleSave} />;

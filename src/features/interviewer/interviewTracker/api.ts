@@ -1,4 +1,4 @@
-import apiClient from "@/api";
+import { apiClient } from "@/api";
 import type { InterviewFilters, InterviewResponse } from "@/types/interview";
 
 export const fetchInterviews = async (

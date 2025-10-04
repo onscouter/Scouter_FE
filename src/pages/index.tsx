@@ -6,20 +6,34 @@ import HeroLogo from "@/features/main/home/components/HeroLogo";
 import LandingHeading from "@/features/main/home/components/LandingHeading";
 import WaitlistForm from "@/features/main/home/components/WaitlistForm";
 import WaitlistSuccess from "@/features/main/home/components/WaitlistSuccess";
-// import useIsMobile from "@/hooks/useIsMobile";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectUser } from "@/store/authSlice";
+import { toast } from "react-toastify";
 
 const LandingPage = () => {
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
   const [email, setEmail] = React.useState("");
   const [isEmailValid, setIsEmailValid] = React.useState(true);
   const [isSubmitted, setIsSubmitted] = React.useState(false);
-
+  const employee = useSelector(selectUser);
   console.log(email, isEmailValid);
 
   const handleLogin = async () => {
-    navigate("/login");
+    if (!employee) navigate("/login");
+    else {
+      const redirectMap: Record<typeof employee.role, string> = {
+        admin: "/admin",
+        recruiter: "/recruiter",
+        interviewer: "/interviewer",
+      };
+
+      const redirectTo = redirectMap[employee.role];
+      if (redirectTo) {
+        toast.success(`Welcome, ${employee.first_name} ${employee.last_name}`);
+        navigate(redirectTo, { replace: true });
+      }
+    }
   };
 
   return (

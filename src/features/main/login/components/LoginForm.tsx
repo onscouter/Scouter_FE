@@ -50,8 +50,6 @@ const LoginForm: React.FC = () => {
     submitLogin(data, {
       onSuccess: (data: LoginResponse) => {
         const { access_token, employee } = data;
-        console.log("Login successful:", employee);
-        console.log("Access Token:", access_token);
 
         dispatch(setUser({ user: employee, accessToken: access_token }));
 
@@ -63,7 +61,6 @@ const LoginForm: React.FC = () => {
             accessToken: data.access_token,
           })
         );
-        console.log("[Login] User set:", data.employee);
 
         const redirectMap: Record<typeof employee.role, string> = {
           admin: "/admin",

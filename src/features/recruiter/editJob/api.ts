@@ -1,4 +1,4 @@
-import apiClient from "@/api";
+import { apiClient } from "@/api";
 import type { JobPayload } from "@/types/job";
 
 export const updateJob = async (

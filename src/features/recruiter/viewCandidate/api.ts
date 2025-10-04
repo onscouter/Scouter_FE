@@ -1,4 +1,4 @@
-import apiClient from "@/api";
+import { apiClient } from "@/api";
 import type { SuccessResponse } from "@/types/api/success";
 import type {
   ApplicationFilter,

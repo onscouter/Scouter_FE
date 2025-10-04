@@ -1,4 +1,5 @@
-import apiClient from "@/api";
+import { apiClient, aiApiClient } from "@/api";
+
 import type { SuccessResponse } from "@/types/api/success";
 import type {
   JobPayload,
@@ -16,7 +17,7 @@ export const createJob = async (
 export const generateCompetencies = async (
   input: JobPromptInput
 ): Promise<SuggestCompetencies> => {
-  const response = await apiClient.post("/job/generate-competencies", input);
+  const response = await aiApiClient.post("/job/generate-competencies", input);
 
   return response.data;
 };

@@ -53,34 +53,8 @@ const competencySlice = createSlice({
         questions: hydratedQuestions,
       };
     },
-    addRubricIfNotExists(state, action: PayloadAction<Competency>) {
-      const incomingCompetency = action.payload;
-
-      // Check if a rubric with the same competency_name already exists
-      const alreadyExists = Object.values(state.competencies).some(
-        (rubric) =>
-          rubric.competency_name === incomingCompetency.competency_name
-      );
-
-      if (!alreadyExists) {
-        state.competencies[incomingCompetency.competency_public_id] = {
-          ...incomingCompetency,
-          rubric_levels:
-            incomingCompetency.rubric_levels &&
-            incomingCompetency.rubric_levels.length > 0
-              ? incomingCompetency.rubric_levels
-              : defaultRubricLevels.map((level) => ({
-                  rubric_level_public_id: level.rubric_level_public_id,
-                  level: level.level,
-                  description: level.description ?? "",
-                  indicators: (level.indicators || []).map(
-                    (ind: Indicator) => ({
-                      ...ind,
-                    })
-                  ),
-                })),
-        };
-      }
+    removeCompetency: (state, action: PayloadAction<string>) => {
+      delete state.competencies[action.payload];
     },
     addIndicator(
       state,
@@ -264,7 +238,7 @@ export const {
   addEvaluationLevel,
   updateEvaluationLevel,
   clearCompetencies,
-  addRubricIfNotExists,
+  removeCompetency,
 } = competencySlice.actions;
 
 export default competencySlice.reducer;
