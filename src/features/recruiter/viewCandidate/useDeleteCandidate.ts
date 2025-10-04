@@ -1,12 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
-import { setAppLoading } from "@/store/appSlice";
 import { deleteCandidate } from "@/features/recruiter/viewCandidate/api";
 
 export const useDeleteCandidate = () => {
   const queryClient = useQueryClient();
-  const dispatch = useDispatch();
 
   return useMutation({
     mutationFn: ({
@@ -22,9 +19,6 @@ export const useDeleteCandidate = () => {
     },
     onError: () => {
       toast.error("Failed to delete candidate");
-    },
-    onSettled: () => {
-      dispatch(setAppLoading(false));
     },
   });
 };

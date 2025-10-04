@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import useIsMobile from "@/hooks/useIsMobile";
 import React from "react";
 import { Search } from "lucide-react";
-import { clearUser, selectIsAuthenticated } from "@/store/authSlice";
+import { clearUser } from "@/store/authSlice";
 import NavbarLg from "./NavbarLg";
 import NavbarSm from "./NavbarSm";
 import { useTheme } from "@mui/material";
@@ -13,8 +13,8 @@ import apiClient from "@/api";
 
 const Navbar: React.FC = () => {
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector(selectIsAuthenticated);
   const user = useSelector(selectUser);
+  const isAuthenticated = Boolean(user);
   const theme = useTheme();
   const navigate = useNavigate();
 

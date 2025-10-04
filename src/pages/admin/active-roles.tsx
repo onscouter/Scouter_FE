@@ -1,4 +1,3 @@
-import TrackerLayout from "@/layout/TrackerLayout";
 import { Box } from "@mui/material";
 import JobTrackerHeader from "@/features/recruiter/jobTracker/components/JobTrackerHeader";
 import JobToolBar from "@/features/recruiter/jobTracker/components/JobToolBar";
@@ -89,7 +88,7 @@ const ActiveRolesPage = () => {
   const shouldShowEmptyState = total === 0;
 
   return (
-    <TrackerLayout>
+    <>
       <JobTrackerHeader
         searchInput={searchInput}
         setSearchInput={setSearchInput}
@@ -156,7 +155,7 @@ const ActiveRolesPage = () => {
           />
         )}
       </Box>
-    </TrackerLayout>
+    </>
   );
 };
 

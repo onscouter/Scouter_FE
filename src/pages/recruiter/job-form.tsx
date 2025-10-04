@@ -3,13 +3,10 @@ import CreateRoleFooter from "@/features/recruiter/jobForm/components/JobFormFoo
 import CreateRoleHeader from "@/features/recruiter/jobForm/components/JobFormHeader";
 import SelectedCompetencies from "@/features/recruiter/jobForm/components/SelectedCompetencies";
 import SuggestedCompetencies from "@/features/recruiter/jobForm/components/SuggestedCompetencies";
-import { mockCompetencies } from "@/features/recruiter/createJob/mockCompetencies";
 import { useSuggestCompetencies } from "@/features/recruiter/createJob/useSuggestCompetencies";
-import TrackerLayout from "@/layout/TrackerLayout";
-import { setAppLoading } from "@/store/appSlice";
 import type { CompetencyMinimal } from "@/types/competency";
 import { Box } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface JobFormPageProps {
   mode: "create" | "edit";
@@ -30,7 +27,7 @@ const JobFormPage: React.FC<JobFormPageProps> = ({
   initialCompetencies = [],
   onSubmit,
 }) => {
-  const { isPending } = useSuggestCompetencies();
+  const { mutate, isPending } = useSuggestCompetencies();
 
   const [newTitle, setNewTitle] = useState(initialTitle);
   const [newDescription, setNewDescription] = useState(initialDescription);
@@ -38,6 +35,11 @@ const JobFormPage: React.FC<JobFormPageProps> = ({
     useState<CompetencyMinimal[]>(initialCompetencies);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [generatedCompetencies, setGeneratedCompetencies] = useState<
+    CompetencyMinimal[]
+  >([]);
+  const [lastSuggestedTitle, setLastSuggestedTitle] = useState("");
+  const [lastSuggestedDescription, setLastSuggestedDescription] = useState("");
 
   const handleAdd = (c: CompetencyMinimal) => {
     setSelectedCompetencies((prev) =>
@@ -69,31 +71,48 @@ const JobFormPage: React.FC<JobFormPageProps> = ({
     });
   };
 
-  useEffect(() => {
-    setAppLoading(isPending);
-  }, [isPending]);
+  const isSuggestDisabled =
+    !newTitle ||
+    !newDescription ||
+    (generatedCompetencies.length > 0 &&
+      newTitle === lastSuggestedTitle &&
+      newDescription === lastSuggestedDescription);
 
   const handleSuggestClick = () => {
-    // Replace with API call
     setShowSuggestions(true);
+
+    mutate(
+      { job_title: newTitle, job_description: newDescription },
+      {
+        onSuccess: (data) => {
+          if (data?.competencies) {
+            setGeneratedCompetencies(data.competencies);
+            setLastSuggestedTitle(newTitle);
+            setLastSuggestedDescription(newDescription);
+          }
+        },
+      }
+    );
   };
 
   return (
-    <TrackerLayout maxWidth={800}>
+    <>
       <CreateRoleHeader
         title={newTitle}
         setTitle={setNewTitle}
         description={newDescription}
         setDescription={setNewDescription}
         handleSuggestClick={handleSuggestClick}
+        isSuggestDisabled={isSuggestDisabled}
       />
 
-      {showSuggestions && !isPending && (
+      {showSuggestions && (
         <SuggestedCompetencies
           title={newTitle}
-          competencies={mockCompetencies}
+          competencies={generatedCompetencies}
           selectedCompetencies={selectedCompetencies}
           handleToggle={handleToggle}
+          isPending={isPending}
         />
       )}
 
@@ -117,7 +136,7 @@ const JobFormPage: React.FC<JobFormPageProps> = ({
         selected={selectedCompetencies}
         handleOnClick={handleSubmit}
       />
-    </TrackerLayout>
+    </>
   );
 };
 

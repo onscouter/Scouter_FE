@@ -17,7 +17,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 type NavbarSmProps = {
   handleLogOut: () => void;
   handleLogin: () => void;
-  isAuthenticated?: boolean;
+  isAuthenticated: boolean;
   role: "admin" | "recruiter" | "interviewer";
 };
 

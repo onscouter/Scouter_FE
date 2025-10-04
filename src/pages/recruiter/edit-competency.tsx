@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useUpdateJob } from "@/features/recruiter/editJob/useEditJob";
 import InterviewRubricPage from "@/pages/recruiter/competency-form";
 import { useParams } from "react-router-dom";
@@ -18,9 +18,13 @@ const EditCompetencyPage: React.FC = () => {
   const { job_position_public_id } = useParams<{
     job_position_public_id: string;
   }>();
-  const { mutateAsync: updateRole } = useUpdateJob(
+  const { mutateAsync: updateRole, isPending } = useUpdateJob(
     job_position_public_id ?? ""
   );
+
+  useEffect(() => {
+    dispatch(setAppLoading(isPending));
+  }, [dispatch, isPending]);
 
   const handleSave = () => {
     dispatch(setAppLoading(true));

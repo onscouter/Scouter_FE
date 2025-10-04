@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-
+import React, { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import apiClient from "@/api";
-import { setUser } from "@/store/authSlice";
-import LoaderOverlay from "@/components/LoaderOverlay";
+import { clearUser, selectAccessToken, setUser } from "@/store/authSlice";
+import { setAppLoading } from "@/store/appSlice";
 
 interface AuthBootstrapProps {
   children: React.ReactNode;
@@ -12,27 +10,37 @@ interface AuthBootstrapProps {
 
 const AuthBootstrap: React.FC<AuthBootstrapProps> = ({ children }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
+  const hasBootstrapped = useRef(false);
+  const accessToken = useSelector(selectAccessToken);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      setLoading(false);
-      return;
-    }
+    if (hasBootstrapped.current || accessToken) return;
+    hasBootstrapped.current = true;
+
+    console.log("[AuthBootstrap] starting refresh...");
+    dispatch(setAppLoading(true));
 
     apiClient
-      .get("/auth/me")
-      .then((res) => dispatch(setUser(res.data)))
-      .catch(() => {
-        localStorage.removeItem("token");
-        navigate("/login");
+      .post("/auth/refresh")
+      .then((res) => {
+        console.log("[AuthBootstrap] refresh success", res.data);
+        dispatch(
+          setUser({
+            user: res.data.employee,
+            accessToken: res.data.access_token,
+          })
+        );
       })
-      .finally(() => setLoading(false));
-  }, [dispatch, navigate]);
+      .catch((err) => {
+        console.error("[AuthBootstrap] refresh failed", err);
+        dispatch(clearUser());
+      })
+      .finally(() => {
+        console.log("[AuthBootstrap] setting appLoading = false");
+        dispatch(setAppLoading(false));
+      });
+  }, [accessToken, dispatch]);
 
-  if (loading) return <LoaderOverlay />;
   return <>{children}</>;
 };
 

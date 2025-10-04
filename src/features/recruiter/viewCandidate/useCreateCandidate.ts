@@ -1,11 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useDispatch } from "react-redux";
-import { setAppLoading } from "@/store/appSlice";
 import { toast } from "react-toastify";
 import { createCandidate } from "@/features/recruiter/viewCandidate/api";
 
 export const useCreateCandidate = () => {
-  const dispatch = useDispatch();
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -23,9 +20,6 @@ export const useCreateCandidate = () => {
     },
     onError: (err: unknown) => {
       toast.error((err as Error).message || "Failed to create candidate.");
-    },
-    onSettled: () => {
-      dispatch(setAppLoading(false));
     },
   });
 };

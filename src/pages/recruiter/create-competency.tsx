@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useCreateJob } from "@/features/recruiter/createJob/useCreateJob";
 import CompetencyForm from "@/pages/recruiter/competency-form";
 import { buildPayload } from "@/features/recruiter/createJob/buildPayload";
@@ -11,13 +11,16 @@ import {
 } from "@/store/newCompetencySlice";
 
 const CreateCompetencyPage: React.FC = () => {
-  const { mutateAsync: createJob } = useCreateJob();
+  const { mutateAsync: createJob, isPending } = useCreateJob();
   const dispatch = useDispatch();
   const competencyMap = useSelector(selectCompetencies);
   const newJob = useSelector(selectNewJob);
 
+  useEffect(() => {
+    dispatch(setAppLoading(isPending));
+  }, [dispatch, isPending]);
+
   const handleSave = () => {
-    dispatch(setAppLoading(true));
     const payload = buildPayload(newJob, competencyMap);
     console.log("Payload to be sent:", payload);
     createJob(payload);

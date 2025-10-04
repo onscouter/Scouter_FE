@@ -1,4 +1,3 @@
-import TrackerLayout from "@/layout/TrackerLayout";
 import { Box } from "@mui/material";
 import RubricCard from "@/features/interviewer/interviewRubric/components/RubricCard";
 import ListView from "@/features/shared/list/ListView";
@@ -33,7 +32,7 @@ const ViewRubricPage = () => {
   }, [page, rowsPerPage]);
 
   return (
-    <TrackerLayout>
+    <>
       <Box px={{ xs: 2, sm: 3, md: 4 }} py={3}>
         <ListView
           total={total}
@@ -54,7 +53,7 @@ const ViewRubricPage = () => {
           )}
         />
       </Box>
-    </TrackerLayout>
+    </>
   );
 };
 

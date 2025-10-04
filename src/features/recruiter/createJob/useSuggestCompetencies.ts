@@ -1,24 +1,20 @@
 import { useMutation } from "@tanstack/react-query";
-import { type CompetencyMinimal } from "@/types/competency";
-import apiClient from "@/api";
+import { generateCompetencies } from "./api";
+import { toast } from "react-toastify";
 
 export const useSuggestCompetencies = () => {
   return useMutation({
-    mutationFn: async ({
-      title,
-      description,
-    }: {
-      title: string;
-      description: string;
-    }): Promise<CompetencyMinimal[]> => {
-      const response = await apiClient.post("/gpt/competency-suggestions", {
-        title,
-        description,
-      });
-      return response.data.competencies;
-    },
+    mutationFn: generateCompetencies,
     onSuccess: (data) => {
+      if (data?.competencies) {
+        toast.success("Competencies generated successfully.");
+      } else {
+        toast.error("Unexpected error occurred.");
+      }
       return data;
+    },
+    onError: (err: unknown) => {
+      toast.error((err as Error).message || "Failed to create candidate.");
     },
   });
 };

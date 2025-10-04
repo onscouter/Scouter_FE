@@ -1,7 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setAppLoading } from "@/store/appSlice";
 import type { SuccessResponse } from "@/types/api/success";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -21,7 +19,6 @@ export const useJobMutate = <TData>({
 }: useJobMutateOptions<TData>) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   return useMutation({
     mutationFn,
@@ -46,9 +43,6 @@ export const useJobMutate = <TData>({
           : errorMessage;
 
       toast.error(message);
-    },
-    onSettled: () => {
-      dispatch(setAppLoading(false));
     },
   });
 };

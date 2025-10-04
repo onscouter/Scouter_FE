@@ -1,4 +1,5 @@
 import { type Theme } from "@mui/material/styles";
+import type { CompetencyMinimal } from "./competency";
 
 export interface Indicator {
   evaluation_indicator_public_id: string;
@@ -10,6 +11,12 @@ export interface RubricLevel {
   level: EvaluationLevelValue;
   description: string;
   indicators: Indicator[];
+}
+
+export interface RubricPromptInput {
+  title: string;
+  description: string;
+  competencies: CompetencyMinimal[];
 }
 
 export type EvaluationLevelValue = 1 | 2 | 3 | 4 | 5;

@@ -1,10 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-import { setAppLoading } from "@/store/appSlice";
 import { addInterview } from "@/features/recruiter/scheduleInterview/api";
 import type { SuccessResponse } from "@/types/api/success";
 
@@ -17,7 +15,6 @@ export const useAddInterview = ({
 }: UseAddInterviewProps) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   return useMutation<
     SuccessResponse,
@@ -60,10 +57,6 @@ export const useAddInterview = ({
         message = err.message;
       }
       toast.error(message);
-    },
-
-    onSettled: () => {
-      dispatch(setAppLoading(false));
     },
   });
 };

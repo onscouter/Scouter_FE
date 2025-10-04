@@ -1,64 +1,103 @@
-// import { Breadcrumbs, Link, Typography } from "@mui/material";
-// import { useLocation, Link as RouterLink } from "react-router-dom";
+import React from "react";
+import { useLocation, Link as RouterLink } from "react-router-dom";
+import { Breadcrumbs, Typography, Link, Box } from "@mui/material";
 
-// const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
+const labelMap: Record<string, string> = {
+  recruiter: "Home",
+  admin: "Home",
+  interviewer: "Home",
+  "create-job": "Create Job",
+  "edit-job": "Edit Job",
+  "competency-rubric": "Competency Rubric",
+  "schedule-interview": "Schedule Interview",
+  jobs: "Jobs",
+  view: "Candidate",
+};
 
-// const AutoBreadcrumbs = () => {
-//   const location = useLocation();
-//   const pathnames = location.pathname.split("/").filter(Boolean);
+const getRoleRoot = (pathname: string) => {
+  if (pathname.startsWith("/admin")) return "/admin";
+  if (pathname.startsWith("/recruiter")) return "/recruiter";
+  if (pathname.startsWith("/interviewer")) return "/interviewer";
+  return null;
+};
 
-//   if (location.pathname === "/") return null;
+const isPublicId = (segment: string) => {
+  return (
+    /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(
+      segment
+    ) || /^[0-9]+$/.test(segment)
+  );
+};
 
-//   return (
-//     <Breadcrumbs
-//       separator=">"
-//       sx={{ my: 2, fontSize: "0.875rem", color: "text.secondary" }}
-//     >
-//       {location.pathname !== "/home" && (
-//         <Link
-//           component={RouterLink}
-//           underline="hover"
-//           color="inherit"
-//           to="/home"
-//           fontSize="0.875rem"
-//         >
-//           Home
-//         </Link>
-//       )}
+const formatSegment = (segment: string) => {
+  if (labelMap[segment]) return labelMap[segment];
+  return segment
+    .split("-")
+    .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
+    .join(" ");
+};
 
-//       {pathnames.map((segment, index) => {
-//         if (segment.toLowerCase() === "category") return null;
-//         const to = "/" + pathnames.slice(0, index + 1).join("/");
-//         const isLast = index === pathnames.length - 1;
+const BreadcrumbsNav: React.FC = () => {
+  const location = useLocation();
+  const pathname = location.pathname;
+  const pathnames = pathname.split("/").filter(Boolean);
+  const roleRoot = getRoleRoot(pathname);
 
-//         const isCategoryId = pathnames[index - 1] === "category";
-//         const isProductSlug = pathnames.length > 2 && index === 2;
+  if (roleRoot && pathname === roleRoot) {
+    return null;
+  }
 
-//         const displayText = isCategoryId
-//           ? CATEGORY_MAP[segment] ?? `Category ${segment}`
-//           : isProductSlug
-//           ? formatSlug(segment)
-//           : capitalize(segment);
+  return (
+    <Box sx={{ mb: 2, mt: 1 }}>
+      <Breadcrumbs
+        aria-label="breadcrumb"
+        sx={{
+          fontSize: "0.875rem",
+          color: "text.secondary",
+        }}
+      >
+        {roleRoot && (
+          <Link
+            underline="hover"
+            color="inherit"
+            component={RouterLink}
+            to={roleRoot}
+          >
+            {formatSegment(roleRoot.replace("/", ""))}
+          </Link>
+        )}
 
-//         return isLast ? (
-//           <Typography color="text.primary" fontSize="0.875rem" key={to}>
-//             {displayText}
-//           </Typography>
-//         ) : (
-//           <Link
-//             component={RouterLink}
-//             underline="hover"
-//             color="inherit"
-//             to={to}
-//             key={to}
-//             fontSize="0.875rem"
-//           >
-//             {displayText}
-//           </Link>
-//         );
-//       })}
-//     </Breadcrumbs>
-//   );
-// };
+        {pathnames.map((segment, index) => {
+          const to = "/" + pathnames.slice(0, index + 1).join("/");
+          const isLast = index === pathnames.length - 1;
 
-// export default AutoBreadcrumbs;
+          if (index === 0) return null;
+
+          if (isPublicId(segment)) {
+            segment = "Details";
+          }
+
+          const label = formatSegment(segment);
+
+          return isLast ? (
+            <Typography color="text.primary" key={to} sx={{ fontWeight: 500 }}>
+              {label}
+            </Typography>
+          ) : (
+            <Link
+              underline="hover"
+              color="inherit"
+              component={RouterLink}
+              to={to}
+              key={to}
+            >
+              {label}
+            </Link>
+          );
+        })}
+      </Breadcrumbs>
+    </Box>
+  );
+};
+
+export default BreadcrumbsNav;

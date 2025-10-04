@@ -1,57 +1,59 @@
-import LandingLayout from "@/layout/LandingLayout";
 import { Box } from "@mui/material";
-// import useIsMobile from "@/hooks/useIsMobile";
 import Options from "@/features/recruiter/home/components/Options";
-import { Search, Plus } from "lucide-react";
-import theme from "@/styles/theme";
+import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
+import SearchIcon from "@mui/icons-material/Search";
+import PostAddIcon from "@mui/icons-material/PostAdd";
 import { useNavigate } from "react-router-dom";
 
 const RecruiterLandingpage = () => {
   const navigate = useNavigate();
-  // const isMobile = useIsMobile();
 
   return (
-    <LandingLayout>
+    <>
       <Box
         sx={{
-          mt: { xs: 4, sm: 8 },
+          mt: { xs: 6, sm: 10 },
+          px: { xs: 3, sm: 6 },
+          py: { xs: 6, sm: 8 },
           minHeight: { xs: "auto", sm: "80vh" },
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
           alignItems: "center",
-          px: { xs: 2, sm: 4 },
-          py: { xs: 4, sm: 6 },
-          gap: { xs: 4, sm: 6 },
-          textAlign: "center",
         }}
       >
         <Box
           sx={{
-            display: "flex",
-            flexDirection: { xs: "column", sm: "row" },
-            gap: { xs: 4, sm: 5 },
+            display: "grid",
+            gridTemplateColumns: {
+              xs: "1fr",
+              sm: "repeat(auto-fit, minmax(260px, 1fr))",
+            },
+            gap: { xs: 4, sm: 6 },
             width: "100%",
-            maxWidth: "48rem",
-            justifyContent: "center",
-            alignItems: "stretch",
+            maxWidth: "64rem",
           }}
         >
           <Options
-            icon={<Search size={36} color={theme.palette.primary.main} />}
+            icon={<SearchIcon color="primary" sx={{ fontSize: 36 }} />}
             handleOnClick={() => navigate("/recruiter/jobs")}
             title="Job Tracker"
             description="View and manage your current jobs"
           />
           <Options
-            icon={<Plus size={36} color={theme.palette.primary.main} />}
+            icon={<PostAddIcon color="primary" sx={{ fontSize: 36 }} />}
             handleOnClick={() => navigate("/recruiter/create-job")}
             title="Create New Job"
             description="Construct your new interview process"
           />
+          <Options
+            icon={<QuestionAnswerIcon color="primary" sx={{ fontSize: 36 }} />}
+            handleOnClick={() => navigate("/interviewer")}
+            title="My Interviews"
+            description="View and manage your interviews"
+          />
         </Box>
       </Box>
-    </LandingLayout>
+    </>
   );
 };
 

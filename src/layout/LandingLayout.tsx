@@ -1,9 +1,6 @@
 import React from "react";
 import { Box, Container } from "@mui/material";
 import Navbar from "@/components/navbar/Navbar";
-// import Footer from "@/components/Footer"; // Optional future layout
-// import { useUIContext } from "@/context/UIContext"; // If you use global UI state
-// import { useAuth0 } from "@auth0/auth0-react";
 
 type LandingLayoutProps = {
   children: React.ReactNode;

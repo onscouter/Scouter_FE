@@ -1,5 +1,5 @@
 import type { BaseFilters } from "@/types/filters";
-import type { Competency } from "@/types/competency";
+import type { Competency, CompetencyMinimal } from "@/types/competency";
 
 export type JobStatus = "ALL" | "ACTIVE" | "PAUSED" | "COMPLETED";
 
@@ -39,9 +39,20 @@ export interface JobPayload extends JobMinimal {
   competencies: Competency[];
 }
 
-export interface JobResponse {
-  job_position_public_id: string;
+export interface JobPromptInput {
+  job_title: string;
+  job_description: string;
+}
+
+// export interface JobResponse {
+//   job_position_public_id: string;
+//   title: string;
+//   description: string;
+//   competencies: Competency[];
+// }
+
+export interface SuggestCompetencies {
   title: string;
   description: string;
-  competencies: Competency[];
+  competencies: CompetencyMinimal[];
 }

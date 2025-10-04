@@ -1,15 +1,17 @@
+import { store } from "@/store";
 import axios from "axios";
+import { clearUser, setUser } from "@/store/authSlice";
 
 const apiClient = axios.create({
-  // baseURL: import.meta.env.VITE_API_BASE_URL_LOCAL,
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: import.meta.env.VITE_API_BASE_URL_LOCAL,
+  // baseURL: import.meta.env.VITE_API_BASE_URL,
   timeout: 12000,
   withCredentials: true,
 });
 
 // Request interceptor (optional: logging, etc.)
 apiClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
+  const token = store.getState().auth.accessToken;
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -22,21 +24,27 @@ apiClient.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !originalRequest.url.includes("/auth/refresh")
+    ) {
       originalRequest._retry = true;
 
       try {
-        const res = await axios.post(
-          "/auth/refresh",
-          {},
-          { withCredentials: true }
-        );
+        const res = await apiClient.post("/auth/refresh", {});
         const newToken = res.data.access_token;
-        localStorage.setItem("token", newToken);
+        store.dispatch(
+          setUser({
+            user: res.data.employee,
+            accessToken: newToken,
+          })
+        );
+
         originalRequest.headers.Authorization = `Bearer ${newToken}`;
         return apiClient(originalRequest);
       } catch (refreshError) {
-        localStorage.removeItem("token");
+        store.dispatch(clearUser());
         window.location.href = "/login";
         return Promise.reject(refreshError);
       }

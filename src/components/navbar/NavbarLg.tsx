@@ -4,7 +4,7 @@ import AnimatedButton from "@/components/AnimatedButton";
 type NavbarLgProps = {
   handleLogOut: () => void;
   handleLogin: () => void;
-  isAuthenticated?: boolean;
+  isAuthenticated: boolean;
 };
 
 const NavbarLg: React.FC<NavbarLgProps> = ({

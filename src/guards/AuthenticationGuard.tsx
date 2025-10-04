@@ -1,22 +1,17 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectUser } from "@/store/authSlice";
-import LoaderOverlay from "@/components/LoaderOverlay";
-import { useAuthGuard } from "@/hooks/useAuthGuard";
+import { useLocation, Navigate } from "react-router-dom";
+import { selectUser, selectHasAttemptedRefresh } from "@/store/authSlice";
 
-type AuthenticationGuardProps = {
-  children: React.ReactNode;
-};
-
-const AuthenticationGuard: React.FC<AuthenticationGuardProps> = ({
-  children,
-}) => {
-  const loading = useAuthGuard();
+const AuthenticationGuard = ({ children }: { children: React.ReactNode }) => {
   const user = useSelector(selectUser);
-  if (loading) return <LoaderOverlay />;
-  if (user) return <>{children}</>;
+  const hasAttemptedRefresh = useSelector(selectHasAttemptedRefresh);
+  const location = useLocation();
 
-  return null;
+  if (!hasAttemptedRefresh) return null;
+  if (!user) return <Navigate to="/login" state={{ from: location }} replace />;
+
+  return <>{children}</>;
 };
 
 export default AuthenticationGuard;

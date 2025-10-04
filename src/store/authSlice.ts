@@ -1,38 +1,20 @@
-import {
-  createSlice,
-  // createAsyncThunk,
-  type PayloadAction,
-} from "@reduxjs/toolkit";
-// import apiClient from "@/api";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { type Employee } from "@/types/employee";
 import type { RootState } from "@/store";
 
 interface AuthState {
   user: Employee | null;
-  isAuthenticated?: boolean;
+  accessToken: string | null;
   error: string | null;
+  hasAttemptedRefresh: boolean;
 }
 
 const initialState: AuthState = {
   user: null,
-  isAuthenticated: false,
+  accessToken: null,
   error: null,
+  hasAttemptedRefresh: false,
 };
-
-// export const fetchBackendUser = createAsyncThunk<
-//   Employee,
-//   void,
-//   { rejectValue: string }
-// >("auth/fetchUser", async (_, { rejectWithValue }) => {
-//   try {
-//     const res = await apiClient.get<Employee>("/user/me");
-//     return res.data;
-//   } catch (error) {
-//     const message =
-//       error instanceof Error ? error.message : "Failed to fetch user";
-//     return rejectWithValue(message);
-//   }
-// });
 
 const authSlice = createSlice({
   name: "auth",
@@ -40,34 +22,32 @@ const authSlice = createSlice({
   reducers: {
     clearUser(state) {
       state.user = null;
-      state.isAuthenticated = false;
+      state.accessToken = null;
       state.error = null;
+      state.hasAttemptedRefresh = true;
     },
-    setUser(state, action: PayloadAction<Employee | null>) {
-      state.user = action.payload;
-      state.isAuthenticated = true;
+    setUser(
+      state,
+      action: PayloadAction<{
+        user: Employee | null;
+        accessToken: string | null;
+      }>
+    ) {
+      state.user = action.payload.user;
+      state.accessToken = action.payload.accessToken;
       state.error = null;
+      state.hasAttemptedRefresh = true;
+    },
+    setAccessToken(state, action: PayloadAction<string | null>) {
+      state.accessToken = action.payload;
     },
   },
-  // extraReducers: (builder) => {
-  //   builder
-  //     .addCase(fetchBackendUser.pending, (state) => {
-  //       state.error = null;
-  //     })
-  //     .addCase(fetchBackendUser.fulfilled, (state, action) => {
-  //       state.user = action.payload;
-  //     })
-  //     .addCase(fetchBackendUser.rejected, (state, action) => {
-  //       state.user = null;
-  //       state.error = action.payload ?? "Failed to fetch user";
-  //     });
-  // },
 });
 
-export const { clearUser, setUser } = authSlice.actions;
-
-export const selectIsAuthenticated = (state: RootState) =>
-  state.auth.isAuthenticated;
+export const { clearUser, setUser, setAccessToken } = authSlice.actions;
+export const selectHasAttemptedRefresh = (state: RootState) =>
+  state.auth.hasAttemptedRefresh;
+export const selectAccessToken = (state: RootState) => state.auth.accessToken;
 export const selectUser = (state: RootState) => state.auth.user;
 export const selectRole = (state: RootState) => state.auth.user?.role;
 export const selectCompany = (state: RootState) => state.auth.user?.company;

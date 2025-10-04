@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 // import { toast } from "react-toastify";
-import TrackerLayout from "@/layout/TrackerLayout";
 import RubricHeader from "@/features/recruiter/competencyRubric/components/RubricHeader";
 import RubricEditor from "@/features/recruiter/competencyRubric/components/RubricEditor";
 import { selectCompetencies } from "@/store/newCompetencySlice";
@@ -31,7 +30,7 @@ const CompetencyForm: React.FC<CompetencyFormProps> = ({ handleSave }) => {
   if (!current) return null;
 
   return (
-    <TrackerLayout maxWidth={800}>
+    <>
       <RubricHeader
         stepIndex={stepIndex}
         total={competencies.length}
@@ -42,7 +41,7 @@ const CompetencyForm: React.FC<CompetencyFormProps> = ({ handleSave }) => {
         onSave={handleSave}
       />
       <RubricEditor competency={current} />
-    </TrackerLayout>
+    </>
   );
 };
 

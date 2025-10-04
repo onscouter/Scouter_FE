@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import RecruiterLayout from "@/layout/RecruiterLayout";
 import AuthenticationGuard from "@/guards/AuthenticationGuard";
 import RecruiterPage from "@/pages/recruiter";
@@ -13,8 +13,6 @@ import ScheduleInterviewPage from "@/pages/candidates/schedule-interview";
 const RecruiterRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<RecruiterPage />} />
-
       <Route
         path="/"
         element={
@@ -23,6 +21,7 @@ const RecruiterRoutes = () => {
           </AuthenticationGuard>
         }
       >
+        <Route index element={<RecruiterPage />} />
         <Route path="jobs" element={<JobTrackerPage />} />
         <Route
           path="jobs/:job_position_public_id"
@@ -46,12 +45,6 @@ const RecruiterRoutes = () => {
           element={<ScheduleInterviewPage />}
         />
       </Route>
-
-      {/* Optional: redirect /recruiter/* unknown paths */}
-      <Route
-        path="/recruiter/*"
-        element={<Navigate to="/recruiter" replace />}
-      />
     </Routes>
   );
 };

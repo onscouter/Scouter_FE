@@ -50,11 +50,20 @@ const LoginForm: React.FC = () => {
     submitLogin(data, {
       onSuccess: (data: LoginResponse) => {
         const { access_token, employee } = data;
-        localStorage.setItem("token", access_token);
-        dispatch(setUser(employee));
+        console.log("Login successful:", employee);
+        console.log("Access Token:", access_token);
+
+        dispatch(setUser({ user: employee, accessToken: access_token }));
 
         toast.dismiss();
         setLastToast(null);
+        dispatch(
+          setUser({
+            user: data.employee,
+            accessToken: data.access_token,
+          })
+        );
+        console.log("[Login] User set:", data.employee);
 
         const redirectMap: Record<typeof employee.role, string> = {
           admin: "/admin",
@@ -77,6 +86,7 @@ const LoginForm: React.FC = () => {
       },
 
       onError: (error: AxiosError | Error) => {
+        console.error("Login failed:", error);
         const message =
           (axios.isAxiosError(error) && error.response?.data?.detail) ||
           "Invalid login";

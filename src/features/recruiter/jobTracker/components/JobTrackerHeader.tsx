@@ -43,7 +43,7 @@ const JobTrackerHeader: React.FC<JobTrackerHeaderProps> = ({
           mr: { md: "auto" },
         }}
       >
-        Candidate Tracker
+        Job Tracker
       </Typography>
 
       {/* Search + Button */}

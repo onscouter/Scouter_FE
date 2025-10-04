@@ -1,11 +1,9 @@
-import TrackerLayout from "@/layout/TrackerLayout";
 import { Box } from "@mui/material";
 import EmptyState from "@/components/EmptyState";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo } from "react";
 import { selectUser } from "@/store/authSlice";
 import { setAppLoading } from "@/store/appSlice";
-// import { useNavigate } from "react-router-dom";
 import InterviewTrackerHeader from "@/features/interviewer/interviewTracker/components/InterviewTrackerHeader";
 import { useInterviewTracker } from "@/features/interviewer/interviewTracker/useInterviewTracker";
 import InterviewTable from "@/features/interviewer/interviewTracker/components/InterviewTable";
@@ -14,7 +12,6 @@ import type { Interview } from "@/types/interview";
 
 const InterviewerLandingPage = () => {
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
   const user = useSelector(selectUser);
   const employee_id = user?.employee_public_id ?? "";
 
@@ -68,7 +65,7 @@ const InterviewerLandingPage = () => {
   const shouldShowEmptyState = total === 0;
 
   return (
-    <TrackerLayout>
+    <>
       <InterviewTrackerHeader
         searchInput={searchInput}
         setSearchInput={setSearchInput}
@@ -114,7 +111,7 @@ const InterviewerLandingPage = () => {
           />
         )}
       </Box>
-    </TrackerLayout>
+    </>
   );
 };
 

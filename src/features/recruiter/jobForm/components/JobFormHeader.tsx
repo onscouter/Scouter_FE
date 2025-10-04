@@ -14,6 +14,7 @@ interface JobFormHeaderProps {
   description: string;
   setDescription: (val: string) => void;
   handleSuggestClick: () => void;
+  isSuggestDisabled: boolean;
 }
 
 const JobFormHeader: React.FC<JobFormHeaderProps> = ({
@@ -22,6 +23,7 @@ const JobFormHeader: React.FC<JobFormHeaderProps> = ({
   description,
   setDescription,
   handleSuggestClick,
+  isSuggestDisabled,
 }) => {
   const theme = useTheme();
 
@@ -73,17 +75,15 @@ const JobFormHeader: React.FC<JobFormHeaderProps> = ({
           <Button
             variant="contained"
             startIcon={<LightbulbIcon />}
-            disabled={!title || !description}
+            disabled={isSuggestDisabled}
             onClick={handleSuggestClick}
             sx={{
               whiteSpace: "nowrap",
               flexShrink: 0,
-              backgroundColor:
-                title && description
-                  ? theme.palette.primary.main
-                  : theme.palette.grey[300],
-              color:
-                title && description ? "#fff" : theme.palette.text.disabled,
+              backgroundColor: isSuggestDisabled
+                ? theme.palette.grey[300]
+                : theme.palette.primary.main,
+              color: isSuggestDisabled ? theme.palette.text.disabled : "#fff",
               borderRadius: 2,
               height: 56,
               fontWeight: 600,

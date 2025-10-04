@@ -1,10 +1,9 @@
 import AppButton from "@/components/AppButton";
 import type { RootState } from "@/store";
 import { selectQuestions } from "@/store/newCompetencySlice";
-import { Box, Typography, Button, Link } from "@mui/material";
+import { Box, Typography, Button } from "@mui/material";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 interface RubricHeaderProps {
   stepIndex: number;
@@ -25,7 +24,6 @@ const RubricHeader = ({
   onPrev,
   onSave,
 }: RubricHeaderProps) => {
-  const navigate = useNavigate();
   const questions = useSelector((state: RootState) =>
     selectQuestions(state, competency_public_id)
   );
@@ -48,23 +46,6 @@ const RubricHeader = ({
           alignItems: "center",
         }}
       >
-        <Link
-          onClick={() => navigate("/recruiter/create-job")}
-          underline="hover"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: 1,
-            cursor: "pointer",
-            fontWeight: 500,
-            color: "text.primary",
-          }}
-        >
-          <ArrowLeft size={16} />
-          {/* need to figure out redux logic for this */}
-          Back to Competencies (Come back to this)
-        </Link>
-
         <Typography variant="body2" color="text.secondary">
           {stepIndex + 1} of {total}
         </Typography>

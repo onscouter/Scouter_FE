@@ -6,6 +6,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
 import SettingsIcon from "@mui/icons-material/Settings";
 import useIsMobile from "@/hooks/useIsMobile";
+import BreadcrumbsNav from "@/components/BreadCrumbs";
 
 const AdminLayout = () => {
   const navigate = useNavigate();
@@ -38,9 +39,12 @@ const AdminLayout = () => {
   return (
     <Dashboard>
       <Box sx={{ position: "relative", minHeight: "100vh" }}>
-        <Box flex={1} p={{ xs: 2, sm: 4 }}>
+        <BreadcrumbsNav />
+
+        <Box p={{ xs: 2, sm: 4 }}>
           <Outlet />
         </Box>
+
         {!isMobile && (
           <SpeedDial
             ariaLabel="Admin Navigation"
